@@ -1,0 +1,50 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap');
+
+@import './utils/vars.scss';
+
+@import './utils/place-holders.scss';
+
+@import './utils/mixins.scss';
+
+@import './utils/framework';
+
+
+@import './components/layout/header';
+
+@import './components/layout/categoriesLinks';
+
+@import './components/general/general';
+
+@import './components/layout/main-sidebar';
+@import './components/layout/progressNav';
+
+@import './pages/home';
+
+@import './pages/showResults';
+
+@import './pages/orders';
+
+@import './pages/producDetails';
+
+@import './pages/cart';
+
+@import './pages/profile';
+
+@import './components/layout/footer';
+
+@import './components/layout/subscribe';
+
+
+
+
+div::after{
+  //  content: url(././../assets/checked.png);
+}
+
+
+
+
+
+
+

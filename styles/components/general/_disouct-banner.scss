@@ -1,0 +1,68 @@
+.disouct-banner{
+    position: relative;
+    background: url('/images/discount.webp');
+    background-size: cover;
+    height: 120px;
+    padding: 28px 45px 38px 30px;
+    border-radius: 6px;
+    margin-top: 20px;
+    margin-bottom: 41px;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+
+    .intro{
+        h2{
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+    }
+
+    a{
+        z-index: 1;
+        display: block;
+        width:120px;
+        padding: 11px 1rem;
+        text-align: center;
+        background:#FF9017;
+        border: 1px solid #FF9017;
+        border-radius: 6px;
+        transition:background-color .3s ease-in-out , color .3s ease-in-out , width .6s ease-in-out ;
+
+        &:hover{
+            background-color:#fff;
+            color:#FF9017;
+        }
+    }
+
+    &::after{
+        content: '';
+        position: absolute;
+        top:-100px;
+        right: -100px;
+        height: 400%;
+        width: 50%;
+        background: rgba(0, 0, 255, 0.205);
+        transform: rotateZ(-15deg);
+
+        transition: width .6s linear;
+    }
+
+    &:hover{
+        &::after{
+            width: 150%;
+        }
+
+        a{
+            width: 170px;
+        }
+    }
+}
+
+.results .product-details{
+    margin-bottom: 88px;
+}

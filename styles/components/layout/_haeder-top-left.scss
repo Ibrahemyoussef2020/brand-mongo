@@ -1,0 +1,59 @@
+
+.pc{
+    display: none;
+
+    @include min-width($small_size){
+        display: block;
+    }
+}
+
+.mob{
+    margin: 10px 0;
+
+    @include min-width($small_size){
+        display: none;
+    }
+
+    .back-heading{
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        .back {
+            position: relative;
+            top: 2px;
+        }
+    }
+}
+
+.home  > .mob{
+    margin: 0 ;
+}   
+
+    
+
+
+
+.flex{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    .aside_toggle{
+        height: 24px;
+        width: 24px;
+        border: none;
+        outline: none;
+        background: inherit;
+        padding: 0;
+        @include min-width($small_size){
+            display: none;
+        }
+
+        svg{
+            position: relative;
+            top: -3px;
+            height: 100%;
+            width: 100%;
+            color: #222;
+        }
+    }
+}

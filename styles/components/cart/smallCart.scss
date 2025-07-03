@@ -1,0 +1,299 @@
+.small-cart{
+    border-top: 1px solid $gray_300;
+
+    @include min-width($large_size){
+        display: none;
+    }
+    .container{
+        .cart-body{
+            padding: 7px 20px 7px;
+            background: #fff;
+            flex: 1;
+            overflow: hidden; 
+
+            article.show-more{
+                .remove-add-fav{
+                    display: flex !important;
+                }
+            }
+            
+    
+            article{          
+                border-bottom: 1px solid $gray_300;
+                margin-bottom: 20px;
+
+                @include min-max-width(0,$large_size){
+                    &:first-of-type{
+                        padding-top: 10px;
+                    }
+                }
+    
+                .article-wrapper{
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 10px;
+                    margin-bottom: 5px;
+
+                    @include min-width($small_size){
+                        margin-bottom: 10px;
+                    }
+            
+                    .img-wrapper{
+                        padding: 10px 9px 11px;
+                        border: 1px solid $gray_300;
+                        border-radius: 6px;
+                        background: #fefefe;
+                    }
+            
+                    .details{
+                        flex: 1;
+                        h3{
+                            font-size: 1rem;
+                            font-weight: 400;
+                            margin-bottom: 8px;
+                        }
+    
+                        .features{
+                            display: flex;
+                            gap: 4px;
+                            color: $gray_500;   
+                        }
+        
+                            .feature{
+                            display: flex;
+                            gap: 4px;
+                            font-size: 13px;
+                            color: $gray_500;
+
+                            h3{
+                                font-size: inherit;
+                                font-weight: 400;
+                                color: $gray_500;      
+                            }
+
+                            @include min-width($x-large_size){
+                                font-size: 1rem;
+                            }
+                        }
+
+                        > .feature{
+                            margin-bottom: 12px;
+                        }
+                    
+                }
+
+                .more{
+                    position: relative;
+
+                    svg{
+                        color: $gray_500;
+                    }
+
+                    .list{
+                        position: relative;
+                        z-index: 1;
+                    }
+
+                    .remove-add-fav{
+                        position: absolute;
+                        top: -3px;
+                        left: -65px;
+                        display: none;
+                        justify-content:space-between;
+                        gap: 5px;
+                        padding:3px 5px 0 ;
+                        min-width: 60px;
+                        height: 25px;
+                        background:#fefefe;                          
+                        border: .1px solid #ccc;
+                        z-index: 0;
+                        box-shadow: -1px 1px 6px 1px #999;                       
+
+                        .remove{
+                            padding:0px 3px;
+                            border: 1px solid $gray_500;
+                            border-radius: 4px;
+                            margin-bottom: 10px;
+                            border: none;
+                        }
+                    }
+                }
+
+            }
+
+            .buttons-price{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+                
+                .buttons{                 
+                    display: flex;
+                    align-items: center;
+
+                    button{
+                        width: 40px;
+                        height: 40px;
+                        padding: 0 10px;
+                        border: 1px solid $gray_300;
+                        
+                        font-size: 13px;
+                        font-weight: 500;
+                        color: $gray_500;
+
+                        &:first-of-type{
+                            border-radius: 6px 0 0 6px;
+                        }
+
+                        &:last-of-type{
+                            border-radius: 0 6px 6px 0;
+                        }
+
+                        svg{
+                            font-size: 1rem;
+                        }
+                    }
+
+                    span{
+                        display: inline-block;
+                        width: 70px;
+                        height: 40px;
+                        text-align: center;
+                        border-top: 1px solid $gray_300;
+                        border-bottom: 1px solid $gray_300;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+
+                .price{
+                    font-weight: 500;
+                    color: #222;
+                }
+            }
+        }
+        }
+        
+
+
+        /// buy card
+        /// 
+        
+        .buy-card{
+            width:100%;
+
+            .coupon{
+                padding: 5px 1rem  5px;
+                border-radius: 6px;
+                background: #fff;
+
+                form{
+                    height: 40px;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+
+                    input{
+                        height: 100%;
+                        flex: 1;
+                        padding-left: 10px;
+                        border: 1px solid $gray_300;
+                        border-radius: 6px 0 0 6px;
+                    }
+
+                    button{
+                        height: 100%;
+                        width: 85px;
+                        border: 1px solid $gray_300;
+                        border-left: none;
+                        border-radius: 0 6px 6px 0;
+                        color: $primary;
+                        font-weight: 600;
+                        background: #fff;
+                    }
+                }
+            }
+
+            .buy-process{
+                padding: 21px 1rem 20px 20px;
+                background: #fff;
+                border-radius: 6px;
+
+                .buy-card__details{
+                    padding-bottom:12px;
+                    
+                    
+                    article{
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-bottom: 9px;
+                        color: $gray_600;
+                        font-weight: 500;
+
+                        h3{
+                            font-size: 1rem;
+                            font-weight: 500;
+                            color: $gray_500;
+                        }
+
+                        span{
+                            color: #1C1C1C;
+                        }
+                    }
+                }
+
+                .total{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 22px;
+                    font-size: 18px;
+                    color: #1C1C1C;
+
+                    h3{
+                        font-size:inherit;
+                        font-weight: 500;
+                        color: #1C1C1C;
+                    }
+
+                    span{
+                        font-size: 20px;
+                        font-weight: 500;
+                    }
+                }
+
+
+                .buy{
+                    padding:11px;
+                    width: 100%;
+                    background: #00B517;
+                    border: 1px solid #00B517;
+                    border-radius: 6px;
+                    color: #fff;
+                    font-size: 18px;
+                    font-weight: 500;
+                    text-align: center;
+                    margin-bottom: 18px;
+
+                    transition: background-color .3s ease-in-out , color .3s ease-in-out;
+
+                    &:hover{
+                        color: #00B517;
+                        background-color: #fff;
+                    }
+                }
+
+                .payment{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    margin-bottom: 10px;
+                }
+            }
+
+        }
+    }
+}

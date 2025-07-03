@@ -1,0 +1,181 @@
+.product-details-page{
+ 
+    .bottom{
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+
+        .left{
+            flex: 1;
+            border: 1px solid $gray_300;
+            border-radius: 8px;
+
+
+            nav{
+                display: flex;
+                border-bottom: 1px solid $gray_350;
+                position: relative;
+                background: #fff;
+
+                &::after{
+                    content: '';
+                    position: absolute;
+                    bottom: -1px;
+                    height: 2px;
+                    width: 135px;
+                    background: $primary;
+                    transition: left .3s linear , width .3s linear;
+                }
+
+                &.desc-wrapper:after{
+                    left:10px;
+                    width: 103px;
+                }
+                &.reviews-wrapper:after{
+                    left:120px;
+                    width: 103px;
+                }
+                &.shipping-wrapper:after{
+                    left:223px;
+                    width: 103px;
+                }
+                &.seller-wrapper:after{
+                    left:346px;
+                    width: 120px;
+                }
+    
+                a{
+                    display: block;
+                    font-weight: 600;
+                    text-align: center;
+                    padding: 16px 0 13px;
+                    color: $gray_500;
+    
+                    &.selected{
+                        color: $primary;
+                    }
+                    &.desc{
+                        min-width: 120px;
+                    }
+                    &.reviews,&.shipping{
+                        width: 103px;
+                    }
+                    &.seller{
+                        width: 152px;
+                    }
+                }
+            }
+
+            .component{
+                background: #fff;
+                padding-top: 20px;
+                padding-left: 20px;
+            }
+
+            /// not ready pages
+            /// 
+            
+            h2{
+                margin-bottom: 20px;
+            }
+
+            /// details
+            /// 
+            
+            .details{
+                line-height: 24px;
+                color: $gray_600;
+                margin-bottom: 23px;
+            }
+
+            /// tabel
+            /// 
+            
+            .table{
+                margin-bottom: 23px;
+                background: #fff;
+                max-width: 576px;
+                .row{
+                    display: flex;
+                    > div{
+                        flex: 1;
+                        padding: 10px 10px 7px;
+                    }
+                    .ceil-right{
+                        background: $gray_200;
+                        h3{
+                            font-size:1rem;
+                            color: $gray_600;
+                            font-weight: 400;
+                        }
+                    }
+                }
+            }
+
+            /// features
+            /// 
+            
+            .features{
+                padding-bottom: 18px;
+                background: #fff;
+                
+                .feature{
+                    display: flex;
+                    align-items: center;
+                    gap: 7px;
+                    margin-bottom: 11px;
+                }
+            }
+
+            ///
+        }
+
+        /// right
+        /// 
+        
+        .right{
+            width: 280px;
+            padding:20px 22px 15px 16px;
+            border: 1px solid $gray_300;
+            border-radius: 6px;
+            background: #fff;
+
+            h2{
+                font-size: 1rem;
+                font-weight: 600;
+                margin-bottom: 14px;
+            }
+
+            .products-wrapper{
+                a{
+                    display: flex;
+                    align-items: center;
+                    gap: 11px;
+                    margin-bottom: 1rem;
+
+                    .img-wrapper{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 80px;
+                        height: 80px;
+                        padding: 6px 7px;
+                        border: 1px solid $gray_300;
+                        border-radius: 6px;
+                    }
+
+                    h3{
+                        font-size: 1rem;
+                        font-weight: 400;
+                        line-height: 24px;
+                        margin-bottom: 5px;
+                    }
+
+                    .limts{
+                        color: $gray_500;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,215 @@
+.easy-req{
+    position: relative;
+    max-width: 100%;
+    height: 175px;
+    margin-bottom: 20px;
+
+    &:hover{
+        form{
+            transform: perspective(500px) translateZ(50px) !important;
+        }
+    }
+
+    &:has(form.visible){
+        height: 285px;
+    }
+
+    @include min-width($medium_size){
+        height: 420px !important;   
+        margin-bottom: 30px;
+    }
+
+    img{
+        width: 100%;
+        height: 100%;
+    }
+  
+    .query{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        color: #fff;
+
+        @include min-width($medium_size){
+            padding: 30px 31px 45px 30px;
+        }
+
+       .intro{
+        width: 0;
+        overflow: hidden;
+        max-width: 350px;
+        padding: 0;
+        transition: width .3s ease-in-out , padding .1s ease-in-out;
+
+        @include min-width($medium_size){
+            margin-top: 10px;
+        }
+
+        &.visible{
+            width: 100%;
+            max-width: 350px;
+           @include min-max-width(0,$medium_size){
+            padding: 25px 23px 34px;
+           }
+        }
+
+            h2{
+                font-size: 1.5rem;
+                line-height: 2rem;
+                font-weight: 600;
+            }
+
+            p{
+                display: none;
+                margin-top: 13px;
+                line-height: 1.5;
+            }
+
+            .external-btn{
+                display: block;
+                width: fit-content;
+                margin-top: 17px;
+                padding: 7px 10px;
+                border-radius: 4px;
+                background: $primary;
+                color: #fff;
+            }
+
+            @include min-width($medium_size){
+                max-width: 450px;
+
+                p{
+                    display: block;
+                }
+
+                .external-btn{
+                    display: none;
+                }
+            }
+
+       }
+
+
+       /// form
+       /// 
+       
+       form{
+        overflow: hidden;
+        width: 0;
+        margin: .7rem 1rem;
+        transition: width .3s ease-in-out;
+        color:#1C1C1C;
+        background: #fff;
+        border-radius: 6px;
+        transform-style: preserve-3d;
+        transform: perspective(500px) translateZ(0);
+        transition: transform .5s ease-in-out ;
+
+        &.visible{
+            width: 100%;
+            max-width: 491px;
+        }  
+
+        h3{
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 1rem;
+
+            @include min-width($medium_size){
+                margin: 0 0 18px 1rem;
+            }
+        }
+
+        .form__body{
+            padding: .5rem;
+
+            @include min-width($medium_size){
+                display: block;
+            }
+
+            .block{
+                display: block;
+                width: 95%;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 10px;
+                border: 1px solid #1C1C1C;
+                border-radius: 6px;
+                
+                @include min-width($medium_size){
+                    margin-bottom: 20px !important;
+                }
+
+                &:first-child{
+                    margin-bottom: .5rem;
+                }
+            }
+
+            .selects{
+                display: flex;
+                gap: 8px;
+                padding-left: .7rem;
+                
+
+                @include min-max-width(0,$medium_size){
+                    padding: 1rem 0.5rem;
+                }
+
+                select{
+                    display: block;
+                    min-width: 70px;
+                    padding: 10px;
+                    border: .5px solid #555;
+                    border-radius: 6px;
+                    width: 100%;
+
+                    @include min-width($medium_size){
+                        margin-bottom: 20px;
+
+                        &:first-child{
+                            width: 206px;
+                        }
+    
+                        &:last-child{
+                            width: 111px;
+                        }
+                    } 
+
+                }
+            }
+
+        }
+        
+        button{
+            display: block;
+            width: fit-content;
+            margin: 0 0 0 1.3rem;
+            padding: 7px 10px;
+            border-radius: 4px;
+            background: $primary;
+            color: #fff;
+
+            @include min-width($medium_size){
+                padding: 10px 1rem;
+                
+            }
+        }
+
+        //form
+          @include min-width($medium_size){
+            max-width: unset;
+            width: 491px;
+            min-width: 350px;
+            height: 346px;
+            padding: 22px 31px 20px 25px;
+            overflow: visible;
+          }
+       }
+    }
+}

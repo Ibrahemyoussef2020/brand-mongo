@@ -1,0 +1,163 @@
+@import './mixins.scss';
+@import './vars.scss';
+
+%search-bar{
+    width: 665px;
+    height: 40px;
+    border: 2px solid $primary;
+    border-radius: 7px;
+    display: flex;
+    margin: 0 1.5rem 0 .5rem;
+    @include min-width($large_size){
+        margin: 0 2.5rem 0 .5rem;
+    }
+    
+    .search_input_wrapper{
+        flex: 1;
+        position: relative;
+        z-index: 1;
+
+        input{
+            width: 100%;
+            height: 100%;
+            outline: none;
+            border: none;
+            padding-left: .5rem;
+            border-radius: 10px;
+            @include min-width($large_size){
+                border-radius: 0;
+                border-top-left-radius:10px;
+                border-bottom-left-radius:10px;
+            }
+        }
+
+        .search_close{
+            position: absolute;
+            top: 5px;
+            right: 1rem;
+            z-index: 1000;
+            font-size: 1.5rem;
+            color: $gray-500;
+            transition: transform .5s ease-in-out;
+            
+            &.visible{
+                transform: scale3d(1,1,1) !important;
+            }
+
+            &.hidden{
+                transform: scale3d(1,0,1) !important;
+            }
+        }
+
+        .suggegtion_list{
+            position: absolute;
+            top: 38px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            min-width: 100%;
+            z-index: 1000;
+            background:#FFF;
+            padding: 0 .5rem .5rem;
+            border-bottom-left-radius: 7px;
+            border-bottom-right-radius: 7px;
+            
+            a{
+                display: block;
+                padding: .5rem 5px;
+                background:inherit;
+                color: black;
+                cursor: pointer;
+            }
+        }
+    }
+    select{
+        width: 145px;
+        border: none;
+        outline: none;
+        border-left: 1px solid $primary;
+        display: none;
+        @include min-width($large_size){
+            display: inline;
+        };
+    }
+    .search_button{
+        width: 100px;
+        color: #fff;
+        background: $primary-gradient;
+        border: none;
+        outline: none;
+        display: none;
+        @include min-width($large_size){
+            display: inline;
+        };
+    }
+}
+
+
+// ___________________ screen only _____________//
+
+%screen-only{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+// ____________________ custumCheckbox _______________//
+
+%customCheckBox{
+    position: relative;
+    padding-left: 25px;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+
+    input {
+        @extend %screen-only;
+    }
+
+    &::before{
+        content: '';
+        position: absolute;
+        top:0;
+        left: 0;
+        width:20px;
+        height:20px;
+        padding: 5px 5px 5px;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+      }
+      
+      &::after{
+        content:url(/images/checked.png);
+        position: absolute;
+        top:0;
+        left: 0;
+        font-family:'Font Awesome 6 Free';
+    
+        width:20px;
+        height:20px;
+        padding: 5px 5px 7px;
+        border: 1px solid $primary;
+        background: $primary;
+        color: #fff;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        border-radius: 2px;
+      }
+
+      &:has(input:checked){
+        &::after{
+            display: flex !important;
+        }
+      }
+}

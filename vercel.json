@@ -1,0 +1,35 @@
+{
+    "routes":[
+        {
+            "src":"/",            "dest":"/"
+        },
+        {
+            "src":"cart",
+            "dest":"/"
+        },
+        {
+            "src":"/itemDetails/[category]/[item]",
+            "dest":"/"
+        },
+        {
+            "src":"orders",
+            "dest":"/"
+        },
+        {
+            "src":"profile",
+            "dest":"/"
+        },
+        {
+            "src":"saved",
+            "dest":"/"
+        },
+        {
+            "src":"/showResults/[category]",
+            "dest":"/"
+        },
+        {
+            "src":"layout",
+            "dest":"/"
+        }
+    ]
+}

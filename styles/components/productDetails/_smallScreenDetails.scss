@@ -1,0 +1,242 @@
+.mobile-details{
+    max-width: 100%;
+
+    @include min-width($small_size){
+        padding-top: 20px;
+    }
+    @include min-width($large_size){
+        display: none;
+    }
+
+    .images{
+
+        .swiper-wrapper{
+            display: flex;
+            min-width: 100%;
+    
+            .custom-slide{
+                background:#e7e7e761;
+                width: 100%;
+                min-width: 100%;
+                display: flex;
+                justify-content: center;
+        
+                .img-wrapper{
+                    width:calc(100% - 100px);
+                    min-width:calc(100% - 100px);
+                    max-width:400px;
+                    padding: 20px 10px;
+                    text-align: center;
+                    background: #fff;
+                }
+            }
+        }
+    
+        .swiper-button-prev,.swiper-button-next{
+            top: 230px;
+            left: unset;
+            right: 70px;
+            max-width: 150px;
+        }
+        .swiper-button-next{
+            width: 30px;
+            height: 28px;
+            background:rgb(0 0 0 / 25%);
+            right: 20px;
+            border-radius: 0 28px 28px  0;
+            &::after{
+                position: absolute;
+                top: -17px;
+                height: 16px;
+                width: 16px;
+                content: url(/images/icons/right-swiper.png) !important;
+            }
+        }
+        .swiper-button-prev{
+            width: 30px;
+            height: 28px;
+            background:rgb(0 0 0 / 25%);
+            right: 50px;
+            border-radius: 28px 0 0 28px;
+            &::after{
+                position: absolute;
+                top: -17px;
+                height: 16px;
+                width: 16px;
+                content: url(/images/icons/left-swiper.png) !important;
+            }
+        }
+
+    }
+
+
+    /// mobile-details-info
+    /// 
+    
+    .mobile-details-info{
+        padding:  1rem 1rem 0;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid $gray_300;
+        background: #fff;
+
+        .verified{
+            display: flex;
+            justify-content: space-between;
+            gap: 26px;
+            min-width: 330px;
+            max-width: 366px;
+            font-size: 13px;
+            margin-bottom: 13px;
+
+            .rating{
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                color: #FF9017;
+
+                .fill{
+                    color: #FF9017;
+                }
+                .empty{
+                    color: #D4CDC5;
+                }
+            }
+
+            .review-sold{
+                display: flex;
+                align-items: center;
+                gap: 9px;
+                color: #787A80;
+            }
+        }
+
+        .buy-fav{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 20px;
+            
+
+            button:first-of-type{
+                flex: 1;
+                padding: 11px ;
+                text-align: center;
+                background: $primary;
+                border: 1px solid $primary;
+                color: #fff;
+                font-weight: 500;
+                border-radius: 6px;
+
+                transition: color .3s ease-in-out , background-color .3s ease-in-out;
+
+                &:hover{
+                    background:#fff;
+                    color:$primary-gradient;
+                }
+            }
+
+            button:last-of-type{
+                height: 40px;
+                width: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid $gray_300;
+                border-radius: 6px;
+
+                svg{
+                    color: $primary;
+                    font-size: 1.2rem;
+                }
+            }
+        }
+
+        .table{
+            margin-bottom: 23px;
+            .row{
+                display: flex;
+                > div{
+                    flex: 1;
+                    padding: 10px 10px 7px;
+                }
+                .ceil-right{
+                    background: $gray_200;
+                    h3{
+                        font-size:1rem;
+                        color: $gray_600;
+                        font-weight: 400;
+                    }
+                }
+            }
+        }
+
+        .desc{
+            color: $gray_600;
+            line-height: 22px;
+            font-weight: 500;
+            margin-bottom: 14px;
+           
+
+            > p{
+                margin-bottom: 8px;
+            }
+            details{
+                transition: all .5s ease-in-out;
+                ::marker{
+                    content: 'Read more' !important;
+                    color: $primary;
+                    font-weight: 600;
+                }
+                p{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+
+    /// card
+    /// 
+    
+    .card{
+        width: calc(100% - 20px);
+        margin: 10px auto 0;
+        padding:10px;
+        border: 1px solid $gray_300;
+        border-radius: 6px;
+        background: #fff;
+
+        .supplier{
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding:10px 0 12px;
+            border-bottom: 1px solid $gray_300;
+            color: $gray_600;
+
+            p:first-of-type{
+                margin-bottom:5px;
+            }
+        }
+
+        .features{
+            padding: 12px 0 4px;
+            display: flex;
+            justify-content: space-between;
+            color: $gray_500;
+            font-weight: 500;
+
+            .feature{
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+        }
+    }
+
+    .similar{
+        padding-left: 10px;
+        padding-bottom: 41px;
+        background: $gray_200;
+    }
+}
+

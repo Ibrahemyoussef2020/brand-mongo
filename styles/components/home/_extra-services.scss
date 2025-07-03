@@ -1,0 +1,95 @@
+.extra-services{
+    margin-bottom: 30px;
+    h2{
+        margin-bottom: 24px;
+    }
+    
+    .services{
+
+        display: flex;
+       flex-wrap: wrap;
+        justify-content: space-around;
+
+        gap: 20px;
+
+        article{
+            flex: 1;
+            height: 100%;
+            max-width: 600px;
+            cursor: pointer;
+            
+            .cover{
+                position: relative;
+                width: 100%;
+                min-width: 125px;
+                height: 120px;
+
+                @include min-width(430px){
+                     min-width: 200px;
+                 }
+                @include min-width(690px){
+                    min-width: 220px;
+                }
+                @include min-width($medium_size){
+                    min-width: 280px;
+                }
+                @include min-width($large_size){
+                    min-width: 310px;
+                }
+                @include min-width($x-large_size){
+                    min-width: 280px;
+                }
+
+                .icon-container{
+                    position: absolute;
+                    bottom: -20px;
+                    right: 7px;
+                    width: 55px;
+                    height: 55px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: #fff;
+                    border: 2px solid #eee;
+                    border-radius: 50%;
+
+                    transition: all .3s ease-in-out;
+
+                    @include min-width($small_size){
+                        bottom: -25px;
+                        right: 25px;
+                    }
+
+                }
+
+            }
+
+            .body{
+                border: .1px solid #ddd;
+                border-top: none;
+                padding: 18px 20px;     
+            }
+
+            &:hover{
+                .icon-container{
+                    width: 100%;
+                    right: 0;
+                    border-radius: 0;
+                    bottom: 0px;
+                    justify-content: start;
+                    padding-left: 10px;
+                }
+
+               .body{
+                    br{
+                        display: none;
+                    }
+
+                    p{
+                        text-align: center;
+                    }
+               }
+            }
+        }
+    }
+}

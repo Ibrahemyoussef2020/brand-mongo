@@ -1,0 +1,32 @@
+.payment-features{
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px 0;
+
+    @include min-width($large_size){
+        display: flex;
+    }
+
+    article{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        h3{
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 24px;
+            color: $gray_600;
+        }
+
+        p{
+            color: $gray_500;
+            color: #A9ACB0;
+            display: none;
+            @include min-width($x-large_size){
+                display: block;
+            }
+        }
+    }
+}

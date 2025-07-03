@@ -1,0 +1,236 @@
+@import '../components/showResults/filter-sidebar.scss';
+@import '../components/showResults/resulte';
+@import '../components/showResults/selectedFilter';
+@import '../components/showResults/pagenations';
+
+
+.mobile-filter-center{
+    display: flex;
+    gap: 5px;
+    
+}
+
+.show-result{
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    position: relative;
+    font-weight: 500;
+ 
+    .main{
+        flex: 1;
+        min-width: 100%;
+        padding: 0 5px  5px;
+
+        @include min-width($large_size){
+            min-width: calc(100% - 300px) !important;
+        }
+
+        .filter-nav{
+            flex: 1;
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding:  23px 20px 20px 11px;
+            background-color: #fff;
+            margin-bottom: 20px;
+            border-top: 1px solid $gray_300;
+            border-bottom: 1px solid $gray_300;
+
+            @include min-max-width($small_size,$medium_size){
+                padding: 23px 0 20px 11px;
+            }
+
+            .left{
+                span:first-child{
+                    font-weight: 400;
+                }
+                span:nth-child(2){
+                    font-weight: 500;
+
+                    span{
+                        @include min-max-width(0,$medium_size){
+                            display: none;
+                        }
+                    }
+                }
+                span:nth-child(3){
+                    font-weight: 600;
+
+                    @include min-max-width(0,$medium_size){
+                        display: none;
+                    }
+                }
+
+                display: none;
+
+                @include min-width($small_size){
+                    display: block;
+                }
+            }
+    
+            ///
+            /// right
+            
+            .right{
+                display: flex;
+                gap: 5px;
+                overflow: none;
+
+                @include min-width($small_size){
+                    gap: 12px;
+                }
+            
+    
+                .verified{
+                    @extend %customCheckBox;
+                    display: none;
+                    gap: 9px;
+                    margin-top: 4px;
+                    @include min-width($large_size){
+                        margin-top: 12px;
+                    }
+                    span{
+                        position: relative;
+                        top: 2px;
+                    }
+
+                    @include min-width($small_size){
+                        display: block;
+                    }
+                }
+
+                .select-wrapper{
+                    display: none;
+                    .featured-nav{
+                        width: 172px;
+                        height: 40px;
+                        padding-left: 11px;
+                        border: 1px solid $gray_350;
+                        border-radius: 4px; 
+                    }
+
+                    @include min-width($large_size){
+                        display: block;
+                    }
+                }
+
+
+                .featured-nav-mobile{
+                    position: relative;
+                    height: 30px;
+                    width: 135px;
+
+                    @include min-width($large_size){
+                        display: none;
+                    }
+
+                    select{
+                        position: relative;
+                        background:transparent;
+                        z-index: 1;
+                        height: 100%;
+                        width: 100%;
+                        padding-left: 18px;
+                        border: 1px solid $gray_350;
+                        border-radius: 6px;
+                        appearance: none;                
+                    }
+
+                    &::after{
+                        display: none;
+                    }
+
+                    .icon-wrapper{
+                        z-index: 0;
+                        position: absolute;
+                        top: 10px;
+                        right: 9px;
+                        
+                       span{
+                        display: block;
+                        height: 2px;
+                        background:$gray_500;
+                        margin-bottom: 2px;
+
+                            &:first-child{
+                                width: 14px;
+                            }
+                            &:nth-child(2){
+                                width: 10px;
+                            }
+                            &:last-child{
+                                width: 6px;
+                            }
+                       } 
+                    }
+                }
+
+
+                .filter{
+                    position: relative;
+                    width: 135px;
+                    height: 30px;
+                    border: 1px solid $gray_350;
+                    border-radius: 6px; 
+
+                    @include min-width($large_size){
+                        display: none;
+                    }
+
+                    .icon{
+                        position: absolute;
+                        top: 5px;
+                        right: 10px;
+
+                        svg{
+                            font-size: 13px;
+                            color: $gray_500;
+                        }
+                    }
+                }
+
+
+                .modes{
+                    display: flex;
+                   
+
+                    .selected{
+                        background-color: #eee !important;
+                    }
+
+                    .grid-btn-mode{
+                        height: 30px;
+                        padding: 4px 6px;
+                        background-color: #fefefe;
+                        border: 1px solid $gray_350;
+                        border-radius: 6px 0 0 6px;
+                        transition: background-color .3s linear;
+
+                        @include min-width($large_size){
+                            padding: 8px 8px;
+                            height: 100%;
+                            min-height: 100%;
+                        }
+                    }
+    
+                    .list-btn-mode{
+                        height: 30px;
+                        padding: 4px 6px;
+                        background-color: #fefefe;
+                        border: 1px solid $gray_350;
+                        border-radius: 0px 6px 6px 0px;
+                        transition: background-color .3s linear;
+
+                        @include min-width($large_size){
+                            padding: 8px 8px;
+                            height: 100%;
+                            min-height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,132 @@
+footer{
+    overflow: hidden;
+   .website-info{
+    padding: 40px 20px 60px;
+    background: #fff;
+    
+    @include min-width($small_size){
+        display: flex;
+    }
+
+    .container{
+        @include min-width($x-large_size){
+            display: flex;
+            justify-content: space-between;
+        }
+        .intro{
+            margin-bottom: 3rem;
+            p{
+                color: $gray_600;
+                margin:1rem 0;
+                max-width: 280px;
+            }
+    
+            .social{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 15px;
+
+                a{
+                    transition:  transform .2s linear;
+                    &:hover{
+                        transform: scale3d(1.1,1.1,1.1);
+                    }
+                }
+            }
+        }
+    
+    
+        .lists{
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 15px;
+            
+            @include min-width($small_size){
+                gap: 25px;
+            }
+            @include min-width($x-large_size){
+                padding-left: 61px;
+            }
+            @include min-width($x-large_size){
+                gap: 30px;
+            }
+            article{
+                min-width: 74px;
+    
+                h3{
+                    font-size: 1rem;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                    color: $gray_600;
+                }
+    
+                ul{
+                    li{
+                        margin-bottom: 7px;
+                        color: $gray_500;
+
+                        a{
+                            transition: color .1s ease-in-out , font-weight .1s ease-in-out;
+
+                            &:hover{
+                                color: #007aff;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                }
+            }
+    
+            /// app
+            /// 
+            article.app{
+            
+                div{
+                     padding-top: 5px;
+                     a{
+                        display: block;
+                        &:first-of-type{
+                            margin-bottom: 8px;
+                        }
+                     }
+                }
+             }
+        }
+    }
+
+   }
+
+
+
+   /////////////
+   /// copy right
+   
+   .copyright{
+    padding: 21px 10px 23px;
+    background: $gray_200;
+
+    @include min-width($medium_size){
+        padding: 21px 0px 23px;
+    }
+
+    .container{
+        display: flex;
+        justify-content: space-between;
+
+        div{
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            select{
+                max-width: 20px;
+                border: none;
+                background: $gray_200;
+            }
+        }
+    }
+   }
+}

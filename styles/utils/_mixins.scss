@@ -1,0 +1,18 @@
+
+@use './vars.scss';
+
+
+/// media queury min-width
+/// 
+
+@mixin min-width($size){
+    @media (min-width:$size){@content;}
+}
+
+/// media queury min-max-width
+/// 
+
+@mixin min-max-width($from,$to){
+   $limit:calc($to - 1px); 
+   @media only screen and (min-width:$from) and (max-width:$limit) {@content;}
+}

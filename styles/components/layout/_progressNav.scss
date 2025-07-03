@@ -1,0 +1,41 @@
+.progress-nav{
+    padding-left: 10px;
+    display: none;
+
+    @include min-width($small_size){
+        display: block;
+    }
+
+    ul{
+        padding: 0 0 20px 0;
+        display: flex;
+        color: $gray_500;
+        gap: 29px;
+
+        li{
+            position: relative;
+            transition: color .2s linear , font-weight .2s linear;
+            
+            &:hover{
+                color: #000;
+            }
+
+            span {
+                position: absolute;
+                top: 2px;
+                right: -21px;
+                width: 10px;
+                height: 10px;
+                font-weight: 600;
+                font-size: 15px;
+                color: #8b96a5;
+                z-index: 1;
+
+                 img{
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+            }
+        }
+    }
+}

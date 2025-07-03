@@ -1,0 +1,36 @@
+.categories-links-swipper{
+    background-color: #fff;
+    padding: 10px 0 17px;
+    color: $primary;
+    text-transform: capitalize;
+
+    @include min-width($small_size){
+        margin-bottom: 20px;
+    }   
+
+    @include min-width($large_size){
+        display: none;
+    }
+
+    .swiper-wrapper{
+        justify-content: center;
+        gap: 10px;
+        .swiper-slide{
+            width: fit-content !important;
+    
+            a{
+                display: block;
+                padding: 10px;
+                border-radius: 6px;
+                background-color: $gray_200;
+                transition: color .5s linear ,background-color .5s linear ;
+
+                &:hover{
+                    color: $gray_200;
+                    background-color: $primary;
+                }
+
+            }
+        }
+    }
+}

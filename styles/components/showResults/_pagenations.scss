@@ -1,0 +1,56 @@
+.result-pagenations{
+    width: fit-content;
+    max-height: 40px;
+    gap: 9px;
+    margin: 30px 0 43px auto;
+
+    display: none;
+    display: flex;
+
+    @include min-width($small_size){
+        display: flex;
+    }
+
+    .select-results-showen{
+        background: #fff;
+
+        select{
+            width: 100px;
+            height: 40px;
+            padding: 0 10px;
+            border: 1px solid $gray_300;
+            border-radius: 4px; 
+            
+            @include min-width($small_size){
+                width: 125px;
+            }
+        }
+    }
+    
+
+
+    .pags-control-wrapper{
+        display: flex;
+        align-items: center;
+        height: 40px;
+        min-width: 217px;
+        border: 1px solid $gray_300;
+        border-radius: 4px;
+        background-color: #fff;
+        overflow: hidden;
+
+        button{
+            width: 44px;
+            height: 40px;
+            cursor: not-allowed;
+
+            &.selected{
+                background-color: $gray_200;
+            }
+        }
+
+        button:not(.right){
+            border-right: 1px solid $gray_300;
+        }
+    }
+}

@@ -1,0 +1,95 @@
+.broweserd-product{
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    max-width: 100%;
+    overflow: hidden;
+
+    .browser-product{
+        position: absolute;
+        bottom: -50%;
+        left: 50%;
+        transform: translate(-50%, 50%);
+        height: 50px;
+        width: -moz-fit-content;
+        width: fit-content;
+        transition: bottom 0.3s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        background: #000;
+        color: #fff;
+        font-weight: 900;
+        border: 3px solid #fff;
+        outline: 1px solid #000;
+        border-radius: 0.3rem;
+        padding: 5px 10px;
+        z-index: 10;
+   
+
+        &:hover{
+            img{
+                left: 5px;
+            }
+        }
+
+        img{
+          position: relative;
+          max-width: 25px;
+          max-height: 30px;
+        }
+
+        span,img{
+            display: block;
+        }
+
+        span{
+            width: fit-content !important;
+        }
+        
+    }
+
+    &:hover{
+        .browser-product{
+            bottom: 50%;
+        }
+    }
+}
+
+@keyframes show-link {
+    0%{
+        top: -50%;
+        transform: translateY(-50%);
+    }
+
+    50%{
+        top: 70%;
+        transform: translateY(-70%);
+    }
+
+    100%{
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+@keyframes hide-link {
+    0%{
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    50%{
+        top: 70%;
+        transform: translateY(-70%);
+    }
+
+    100%{
+        top: -50%;
+        transform: translateY(-50%);
+    }
+}
+
+
+

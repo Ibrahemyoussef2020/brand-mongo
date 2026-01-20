@@ -17,40 +17,43 @@ import { fetchAllProducts } from "@/lib/services";
 
 const OffersSwiper = () => {
 
-    const [products,setProducts] = useState<ProductProps[]|[]>([]);
+  const [products, setProducts] = useState<ProductProps[] | []>([]);
 
 
-    const fetchAllProductsFn = async()=>{
-      const data = await fetchAllProducts('deelOffers')
-      setProducts(data.data)      
-    }
-    
+  const fetchAllProductsFn = async () => {
+    const data = await fetchAllProducts('deelOffers')
+    console.log(data.data)
+    setProducts(data.data)
+  }
 
-    useEffect(()=>{
-      fetchAllProductsFn()
-    },[])
+
+  useEffect(() => {
+    fetchAllProductsFn();
+
+    console.log(products)
+  }, [])
 
 
 
 
   return (
     <div className="offers-swiper">
-       <div className="container">
-       <Swiper
-        slidesPerView={3}
-        loop={true}
-        className="wraper-center h-[250px]"
-        breakpoints={{
-          570: {
-          //  slidesPerView: 3,
-          },
-        }}
-      >
-        {products?.map((product:ProductProps, i:number) => {
-  
+      <div className="container">
+        <Swiper
+          slidesPerView={3}
+          loop={true}
+          className="wraper-center h-[250px]"
+          breakpoints={{
+            570: {
+              //  slidesPerView: 3,
+            },
+          }}
+        >
+          {products?.map((product: ProductProps, i: number) => {
+
             return (
               <SwiperSlide
-                key={product._id + '' + product.image  + ''  + product.static_id}
+                key={product._id + '' + product.image + '' + product.static_id}
                 className="broweserd-product"
               >
                 <div
@@ -70,9 +73,9 @@ const OffersSwiper = () => {
                 </div>
               </SwiperSlide>
             );
-        })}
-      </Swiper>
-       </div>
+          })}
+        </Swiper>
+      </div>
     </div>
   )
 }

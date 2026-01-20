@@ -3,9 +3,10 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/lib/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
 
-export const GET = async (request:NextRequest)=>{
-    const {users} = data;        
+export const GET = async (request: NextRequest) => {
+    const { users } = data;
 
     await dbConnect();
 
@@ -14,7 +15,7 @@ export const GET = async (request:NextRequest)=>{
 
 
     return NextResponse.json({
-        message:'Sended Successfuly',
-        data:users
+        message: 'Sended Successfuly',
+        data: users
     })
 }

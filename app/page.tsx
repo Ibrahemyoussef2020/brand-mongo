@@ -1,4 +1,6 @@
 
+export const dynamic = 'force-dynamic';
+
 import CategoriesLinksSwipper from '@/components/layout/categoriesLinksSwipper';
 import HomeCover from '@/components/home/HomeCover'
 import HomeOffers from '@/components/home/HomeOffers'
@@ -12,9 +14,7 @@ import Suppliers from '@/components/home/Suppliers';
 import ProgressNav from '@/components/layout/ProgressNav';
 import Header from '@/components/layout/Header';
 import MenuSidebar from '@/components/layout/menu-sidebar';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { FilterProps } from '@/types';
+import { Suspense } from 'react';
 
 
 
@@ -24,22 +24,24 @@ const Home = () => {
 
   return (
     <>
-    <Header page='home' heading='Home' /> 
-    <MenuSidebar />
+      <Header page='home' heading='Home' />
+      <MenuSidebar />
 
-    <CategoriesLinksSwipper />
-    <div className='home container'>
-      <ProgressNav page='home' category='no category' item='no item'/>
-      <HomeCover />
-      <HomeOffers />
-      <HomeOuter />
-      <Electronics />
-      <EasyRrquest />
-      <RecomendedItem />
-      <ExtraServices />
-      <Suppliers />
-      <Subscribe />
-    </div>
+      <CategoriesLinksSwipper />
+      <div className='home container'>
+        <ProgressNav page='home' category='no category' item='no item' />
+        <HomeCover />
+        <HomeOffers />
+        <HomeOuter />
+        <Electronics />
+        <EasyRrquest />
+        <Suspense fallback={<div>Loading recommended items...</div>}>
+          <RecomendedItem />
+        </Suspense>
+        <ExtraServices />
+        <Suppliers />
+        <Subscribe />
+      </div>
     </>
   )
 }

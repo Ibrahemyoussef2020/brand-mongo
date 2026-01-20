@@ -3,9 +3,10 @@ import dbConnect from "@/lib/dbConnect";
 import FlagsModel from "@/lib/models/FlagsModel";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
 
-export const GET = async (request:NextRequest)=>{
-    const {flags} = data;        
+export const GET = async (request: NextRequest) => {
+    const { flags } = data;
 
     await dbConnect();
 
@@ -14,7 +15,7 @@ export const GET = async (request:NextRequest)=>{
 
 
     return NextResponse.json({
-        message:'Sended Successfuly',
-        data:flags
+        message: 'Sended Successfuly',
+        data: flags
     })
 }

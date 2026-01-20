@@ -1,0 +1,208 @@
+[2026-01-19T20:49:36.037Z] --- SEEDING recommendedItems ---
+[2026-01-19T20:49:36.038Z] Data source check: Found 10 items
+[2026-01-19T20:49:36.038Z] Connecting to DB...
+[2026-01-19T20:49:36.082Z] ERROR: Error: Connection failed!
+    at dbConnect (webpack-internal:///(rsc)/./lib/dbConnect.ts:12:15)
+    at async GET (webpack-internal:///(rsc)/./app/api/recommendedItems/seed/route.ts:35:9)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:63809
+    at async eU.execute (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:53964)
+    at async eU.handle (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:65062)
+    at async doRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1333:42)
+    at async cacheEntry.responseCache.get.routeKind (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1555:28)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1463:28)
+    at async DevServer.renderPageComponent (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1856:24)
+    at async DevServer.renderToResponseImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1894:32)
+    at async DevServer.pipeImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:911:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\next-server.js:271:17)
+    at async DevServer.handleRequestImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:807:17)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:331:20
+    at async Span.traceAsyncFn (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\trace\trace.js:151:20)
+    at async DevServer.handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:328:24)
+    at async invokeRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:163:21)
+    at async handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:342:24)
+    at async requestHandlerImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:366:13)
+    at async Server.requestListener (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\start-server.js:140:13)
+[2026-01-19T20:50:05.744Z] --- SEEDING recommendedItems ---
+[2026-01-19T20:50:05.745Z] Data source check: Found 10 items
+[2026-01-19T20:50:05.745Z] Connecting to DB...
+[2026-01-19T20:50:06.049Z] ERROR: Error: Connection failed!
+    at dbConnect (webpack-internal:///(rsc)/./lib/dbConnect.ts:12:15)
+    at async GET (webpack-internal:///(rsc)/./app/api/recommendedItems/seed/route.ts:35:9)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:63809
+    at async eU.execute (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:53964)
+    at async eU.handle (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:65062)
+    at async doRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1333:42)
+    at async cacheEntry.responseCache.get.routeKind (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1555:28)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1463:28)
+    at async DevServer.renderPageComponent (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1856:24)
+    at async DevServer.renderToResponseImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1894:32)
+    at async DevServer.pipeImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:911:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\next-server.js:271:17)
+    at async DevServer.handleRequestImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:807:17)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:331:20
+    at async Span.traceAsyncFn (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\trace\trace.js:151:20)
+    at async DevServer.handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:328:24)
+    at async invokeRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:163:21)
+    at async handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:342:24)
+    at async requestHandlerImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:366:13)
+    at async Server.requestListener (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\start-server.js:140:13)
+[2026-01-19T20:50:42.627Z] --- SEEDING recommendedItems ---
+[2026-01-19T20:50:42.628Z] Data source check: Found 10 items
+[2026-01-19T20:50:42.628Z] Connecting to DB...
+[2026-01-19T20:50:42.737Z] ERROR: Error: Connection failed: querySrv ENOTFOUND _mongodb._tcp.cluster0.j6zud.mongodb.net
+    at dbConnect (webpack-internal:///(rsc)/./lib/dbConnect.ts:16:15)
+    at async GET (webpack-internal:///(rsc)/./app/api/recommendedItems/seed/route.ts:35:9)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:63809
+    at async eU.execute (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:53964)
+    at async eU.handle (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:65062)
+    at async doRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1333:42)
+    at async cacheEntry.responseCache.get.routeKind (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1555:28)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1463:28)
+    at async DevServer.renderPageComponent (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1856:24)
+    at async DevServer.renderToResponseImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1894:32)
+    at async DevServer.pipeImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:911:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\next-server.js:271:17)
+    at async DevServer.handleRequestImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:807:17)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:331:20
+    at async Span.traceAsyncFn (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\trace\trace.js:151:20)
+    at async DevServer.handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:328:24)
+    at async invokeRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:163:21)
+    at async handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:342:24)
+    at async requestHandlerImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:366:13)
+    at async Server.requestListener (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\start-server.js:140:13)
+[2026-01-19T20:51:19.420Z] --- SEEDING recommendedItems ---
+[2026-01-19T20:51:19.420Z] Data source check: Found 10 items
+[2026-01-19T20:51:19.420Z] Connecting to DB...
+[2026-01-19T20:51:19.839Z] ERROR: Error: Connection failed: querySrv ENOTFOUND _mongodb._tcp.cluster0.j6zud.mongodb.net
+    at dbConnect (webpack-internal:///(rsc)/./lib/dbConnect.ts:16:15)
+    at async GET (webpack-internal:///(rsc)/./app/api/recommendedItems/seed/route.ts:35:9)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:63809
+    at async eU.execute (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:53964)
+    at async eU.handle (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:65062)
+    at async doRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1333:42)
+    at async cacheEntry.responseCache.get.routeKind (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1555:28)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1463:28)
+    at async DevServer.renderPageComponent (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1856:24)
+    at async DevServer.renderToResponseImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1894:32)
+    at async DevServer.pipeImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:911:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\next-server.js:271:17)
+    at async DevServer.handleRequestImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:807:17)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:331:20
+    at async Span.traceAsyncFn (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\trace\trace.js:151:20)
+    at async DevServer.handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:328:24)
+    at async invokeRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:163:21)
+    at async handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:342:24)
+    at async requestHandlerImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:366:13)
+    at async Server.requestListener (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\start-server.js:140:13)
+[2026-01-19T20:54:36.645Z] --- SEEDING recommendedItems ---
+[2026-01-19T20:54:36.646Z] Data source check: Found 10 items
+[2026-01-19T20:54:36.646Z] Connecting to DB...
+[2026-01-19T20:54:36.722Z] ERROR: Error: Connection failed: querySrv ENOTFOUND _mongodb._tcp.cluster0.j6zud.mongodb.net
+    at dbConnect (webpack-internal:///(rsc)/./lib/dbConnect.ts:16:15)
+    at async GET (webpack-internal:///(rsc)/./app/api/recommendedItems/seed/route.ts:35:9)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:63809
+    at async eU.execute (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:53964)
+    at async eU.handle (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:65062)
+    at async doRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1333:42)
+    at async cacheEntry.responseCache.get.routeKind (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1555:28)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1463:28)
+    at async DevServer.renderPageComponent (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1856:24)
+    at async DevServer.renderToResponseImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:1894:32)
+    at async DevServer.pipeImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:911:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\next-server.js:271:17)
+    at async DevServer.handleRequestImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\base-server.js:807:17)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:331:20
+    at async Span.traceAsyncFn (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\trace\trace.js:151:20)
+    at async DevServer.handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\dev\next-dev-server.js:328:24)
+    at async invokeRender (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:163:21)
+    at async handleRequest (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:342:24)
+    at async requestHandlerImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\router-server.js:366:13)
+    at async Server.requestListener (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\server\lib\start-server.js:140:13)
+[2026-01-19T21:04:38.815Z] --- SEEDING recommendedItems ---
+[2026-01-19T21:04:38.817Z] Data source check: Found 10 items
+[2026-01-19T21:04:38.817Z] Connecting to DB...
+[2026-01-19T21:04:39.723Z] Database connected
+[2026-01-19T21:04:39.723Z] Deleting old items...
+[2026-01-19T21:04:39.975Z] Old items deleted
+[2026-01-19T21:04:39.976Z] Inserting new items...
+[2026-01-19T21:04:40.102Z] New items inserted: 10
+[2026-01-19T21:04:41.661Z] --- SEEDING recommendedItems ---
+[2026-01-19T21:04:41.662Z] Data source check: Found 10 items
+[2026-01-19T21:04:41.662Z] Connecting to DB...
+[2026-01-19T21:04:41.662Z] Database connected
+[2026-01-19T21:04:41.663Z] Deleting old items...
+[2026-01-19T21:04:41.702Z] --- SEEDING recommendedItems ---
+[2026-01-19T21:04:41.703Z] Data source check: Found 10 items
+[2026-01-19T21:04:41.703Z] Connecting to DB...
+[2026-01-19T21:04:41.703Z] Database connected
+[2026-01-19T21:04:41.704Z] Deleting old items...
+[2026-01-19T21:04:42.120Z] Old items deleted
+[2026-01-19T21:04:42.120Z] Inserting new items...
+[2026-01-19T21:04:42.180Z] Old items deleted
+[2026-01-19T21:04:42.180Z] Inserting new items...
+[2026-01-19T21:04:42.221Z] New items inserted: 10
+[2026-01-19T21:04:42.300Z] New items inserted: 10
+[2026-01-19T21:07:19.063Z] --- SEEDING recommendedItems ---
+[2026-01-19T21:07:19.064Z] Data source check: Found 10 items
+[2026-01-19T21:07:19.064Z] Connecting to DB...
+[2026-01-19T21:07:20.411Z] Database connected
+[2026-01-19T21:07:20.412Z] Deleting old items...
+[2026-01-19T21:07:20.866Z] Old items deleted
+[2026-01-19T21:07:20.866Z] Inserting new items...
+[2026-01-19T21:07:20.975Z] New items inserted: 10
+[2026-01-20T04:06:37.142Z] --- SEEDING recommendedItems ---
+[2026-01-20T04:06:37.144Z] Data source check: Found 10 items
+[2026-01-20T04:06:37.145Z] Connecting to DB...
+[2026-01-20T04:06:38.337Z] Database connected
+[2026-01-20T04:06:38.339Z] Deleting old items...
+[2026-01-20T04:06:38.882Z] Old items deleted
+[2026-01-20T04:06:38.883Z] Inserting new items...
+[2026-01-20T04:06:39.065Z] New items inserted: 10
+[2026-01-20T04:11:01.981Z] --- SEEDING recommendedItems ---
+[2026-01-20T04:11:01.981Z] Data source check: Found 10 items
+[2026-01-20T04:11:01.981Z] Connecting to DB...
+[2026-01-20T04:11:01.982Z] Database connected
+[2026-01-20T04:11:01.982Z] Deleting old items...
+[2026-01-20T04:11:02.050Z] Old items deleted
+[2026-01-20T04:11:02.051Z] Inserting new items...
+[2026-01-20T04:11:02.151Z] New items inserted: 10
+[2026-01-20T04:13:12.594Z] --- SEEDING recommendedItems ---
+[2026-01-20T04:13:12.595Z] Data source check: Found 10 items
+[2026-01-20T04:13:12.595Z] Connecting to DB...
+[2026-01-20T04:13:12.595Z] Database connected
+[2026-01-20T04:13:12.595Z] Deleting old items...
+[2026-01-20T04:13:12.661Z] Old items deleted
+[2026-01-20T04:13:12.662Z] Inserting new items...
+[2026-01-20T04:13:12.773Z] New items inserted: 10
+[2026-01-20T04:15:45.469Z] --- SEEDING recommendedItems ---
+[2026-01-20T04:15:45.469Z] Data source check: Found 10 items
+[2026-01-20T04:15:45.470Z] Connecting to DB...
+[2026-01-20T04:15:45.470Z] Database connected
+[2026-01-20T04:15:45.470Z] Deleting old items...
+[2026-01-20T04:15:45.538Z] Old items deleted
+[2026-01-20T04:15:45.538Z] Inserting new items...
+[2026-01-20T04:15:45.637Z] New items inserted: 10
+[2026-01-20T04:19:43.083Z] --- SEEDING recommendedItems ---
+[2026-01-20T04:19:43.083Z] Data source check: Found 10 items
+[2026-01-20T04:19:43.084Z] Connecting to DB...
+[2026-01-20T04:19:43.084Z] Database connected
+[2026-01-20T04:19:43.085Z] Deleting old items...
+[2026-01-20T04:19:43.243Z] Old items deleted
+[2026-01-20T04:19:43.243Z] Inserting new items...
+[2026-01-20T04:19:43.657Z] New items inserted: 10
+[2026-01-20T04:20:19.788Z] --- SEEDING recommendedItems ---
+[2026-01-20T04:20:19.788Z] Data source check: Found 10 items
+[2026-01-20T04:20:19.788Z] Connecting to DB...
+[2026-01-20T04:20:19.789Z] Database connected
+[2026-01-20T04:20:19.789Z] Deleting old items...
+[2026-01-20T04:20:19.856Z] Old items deleted
+[2026-01-20T04:20:19.857Z] Inserting new items...
+[2026-01-20T04:20:19.951Z] New items inserted: 10
+[2026-01-20T04:26:44.858Z] --- SEEDING recommendedItems ---
+[2026-01-20T04:26:44.858Z] Data source check: Found 10 items
+[2026-01-20T04:26:44.858Z] Connecting to DB...
+[2026-01-20T04:26:44.858Z] Database connected
+[2026-01-20T04:26:44.859Z] Deleting old items...
+[2026-01-20T04:26:44.928Z] Old items deleted
+[2026-01-20T04:26:44.929Z] Inserting new items...
+[2026-01-20T04:26:45.034Z] New items inserted: 10

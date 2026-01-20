@@ -69,7 +69,7 @@ const OffersSwiper = () => {
                   <div>
                     <span>{product.discount}</span>
                   </div>
-                  <BrowserProduct section='deal-offers' productId={product._id} />
+                  <BrowserProduct section='deelOffers' productId={product._id} /> 
                 </div>
               </SwiperSlide>
             );

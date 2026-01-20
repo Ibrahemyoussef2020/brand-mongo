@@ -5,39 +5,32 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = 'force-dynamic';
 
-/**
- * Extract query parameters and build the query object
- */
 function buildQuery(searchParams: URLSearchParams) {
   const query: any = {};
 
-  // Filtering by ID (single selection)
   if (searchParams.has("id")) {
     query.static_id = searchParams.get("id");
-    return query; // If searching by ID, no need to add other filters
+    return query;
   }
 
-  // Filtering by multiple categories (checkbox selection)
   if (searchParams.has("category")) {
     query.category = { $in: searchParams.getAll("category") };
+    console.log('categoryy', query.category);
+
   }
 
-  // Filtering by multiple brands (checkbox selection)
   if (searchParams.has("brand")) {
     query.brand = { $in: searchParams.getAll("brand") };
   }
 
-  // Filtering by multiple colors (checkbox selection)
   if (searchParams.has("color")) {
     query.color = { $in: searchParams.getAll("color") };
   }
 
-  // Filtering by multiple avgRatings (checkbox selection)
   if (searchParams.has("avgRating")) {
     query.avgRating = { $in: searchParams.getAll("avgRating").map(Number) };
   }
 
-  // Filtering by price range
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
 
@@ -47,29 +40,22 @@ function buildQuery(searchParams: URLSearchParams) {
     if (maxPrice) query.price.$lte = parseFloat(maxPrice);
   }
 
-  // Filtering by ratings (minimum ratings)
   if (searchParams.has("ratings")) {
     query.ratings = { $gte: parseFloat(searchParams.get("ratings")!) };
   }
 
-  // Filtering by description (partial text search)
   if (searchParams.has("description")) {
     query.description = { $regex: searchParams.get("description"), $options: "i" };
   }
-
-  // Filtering by boolean fields (free_delivery, to_home, premium_offer, verified)
   ["free_delivery", "to_home", "premium_offer", "verified"].forEach((field) => {
     if (searchParams.has(field)) {
-      query[field] = searchParams.get(field) === "true";
+      query[field] = searchParams.get(field) == "true";
     }
   });
 
   return query;
 }
 
-/**
- * Handle pagination logic
- */
 function getPaginationParams(searchParams: URLSearchParams) {
   const pageParam = searchParams.get("page");
   const limitParam = searchParams.get("limit");
@@ -89,9 +75,6 @@ function getPaginationParams(searchParams: URLSearchParams) {
   return { isPaginationEnabled, page, limit };
 }
 
-/**
- * Fetch products based on query and pagination
- */
 async function fetchProducts(query: any, page: number, limit: number, isPaginationEnabled: boolean) {
   let products;
   let totalProducts = 0;
@@ -100,6 +83,7 @@ async function fetchProducts(query: any, page: number, limit: number, isPaginati
   if (isPaginationEnabled) {
     const skip = (page - 1) * limit;
     products = await ProductModel.find(query).skip(skip).limit(limit);
+    console.log('products', products);
     totalProducts = await ProductModel.countDocuments(query);
     totalPages = Math.ceil(totalProducts / limit);
   } else {
@@ -110,21 +94,15 @@ async function fetchProducts(query: any, page: number, limit: number, isPaginati
   return { products, totalProducts, totalPages };
 }
 
-/**
- * Main GET function
- */
 export async function GET(req: Request) {
   try {
     await dbConnect();
     const { searchParams } = new URL(req.url);
 
-    // Build the query based on filters
     const query = buildQuery(searchParams);
 
-    // Get pagination parameters
     const { isPaginationEnabled, page, limit } = getPaginationParams(searchParams);
 
-    // Fetch products with filters and pagination
     const { products, totalProducts, totalPages } = await fetchProducts(query, page, limit, isPaginationEnabled);
 
     return NextResponse.json({

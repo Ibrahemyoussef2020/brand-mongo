@@ -18,6 +18,7 @@ interface props {
 
 
 const SmallProductDetails = ({product,category}:props) => {
+   
   if (product != null) {
     return (
       <div className="mobile-details">

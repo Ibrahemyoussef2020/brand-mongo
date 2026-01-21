@@ -8,11 +8,6 @@ export const dynamic = 'force-dynamic';
 function buildQuery(searchParams: URLSearchParams) {
   const query: any = {};
 
-  if (searchParams.has("id")) {
-    query.static_id = searchParams.get("id");
-    return query;
-  }
-
   if (searchParams.has("category")) {
     query.category = { $in: searchParams.getAll("category") };
     console.log('categoryy', query.category);

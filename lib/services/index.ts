@@ -1,6 +1,7 @@
 import url from "@/config";
 import { ProductProps } from "@/types";
 import axios from "axios";
+import { log } from "node:console";
 
 const baseUrl = process.env.MAIN_URL || url;
 
@@ -42,9 +43,8 @@ export const fetchCategoryProducts = async (section: string, category: string) =
 
 export const fetchSingleProduct = async (section: string, productId: string) => {
   const baseUrl = process.env.MAIN_URL || url;
-  console.log('baseUrllllllllllllllllllll', section, 'id', productId)
-  const response = await axios.get(`${baseUrl}/api/${section}/seed?id=${productId}`);
-  console.log('response__', response.data);
+  
+  const response = await axios.get(`${baseUrl}/api/${section}/seed/${productId}`);
   
   const data = await response.data;
   return data

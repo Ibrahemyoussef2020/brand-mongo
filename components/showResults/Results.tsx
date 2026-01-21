@@ -73,7 +73,7 @@ const Results = ({products,category,maxCountProducts,handleFilter}:props) => {
                                     
                                     <span className="shipping in-list">pluse delivery</span>
                                     }
-                                    <Link href={`/itemDetails/${category}/${product._id}`} className="mobile-details in-list">
+                                    <Link href={`/itemDetails/${category}/${product.static_id}`} className="mobile-details in-list">
                                         View details       
                                     </Link>
                                 </div>
@@ -98,11 +98,11 @@ const Results = ({products,category,maxCountProducts,handleFilter}:props) => {
                             {product.section} - {product.color}
                         </p>
 
-                        <Link href={`/itemDetails/${category}/${product._id}`} className="details in-list">
+                        <Link href={`/itemDetails/${category}/${product.static_id}`} className="details in-list">
                             View details       
                         </Link>
 
-                        <BrowserProduct section={category} productId={product._id}/>
+                        <BrowserProduct section={category} productId={product.static_id}/>
                     </div>
                 </article>
                 }

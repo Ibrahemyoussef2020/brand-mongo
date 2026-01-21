@@ -23,12 +23,12 @@ type ParamsProps = {
 const page = async ({ params }: ParamsProps) => {
   const { category, item } = params;
 
+
   const {data} = await fetchSingleProduct('products', item);
   const product = data;
 
 
-  console.log('productttttttttt',product);
-  
+ 
 
   return (
     <>

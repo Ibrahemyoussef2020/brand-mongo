@@ -91,7 +91,6 @@ async function fetchProducts(query: any, page: number, limit: number, isPaginati
     totalProducts = products.length;
   }
 
-  console.log('ppppppppppppppppppppppppppppppsppppppppppppppppppppp', products , 'ppppppppppppppppppppppppppppppppppppppppppppppppppppp');
 
   return { products, totalProducts, totalPages };
 }

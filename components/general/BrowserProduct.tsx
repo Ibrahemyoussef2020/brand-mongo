@@ -9,10 +9,11 @@ interface prop {
 
 const BrowserProduct = (prop: prop) => {
   const { section, productId } = prop;
+  
 
   return (
     <Link
-      href={!productId ? `/showResults/${section}` : `/itemDetails/${section}/${productId}`}
+      href={!productId ? `/showCategories/${section}` : `/itemDetails/${section}/${productId}`}
       className='browser-product'>
       <span>Details</span>
       <Image

@@ -4,7 +4,7 @@ import Header from "@/components/layout/Header"
 import MenuSidebar from "@/components/layout/menu-sidebar"
 
 import {  showProducts } from "@/app/apis";
-import FilterSidebar from "@/components/showResults/FilterSidebar";
+import FilterSidebar from "@/components/showCategories/FilterSidebar";
 import { FilterInputProps, ProductProps } from "@/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,11 +23,11 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import ProductRating from "@/components/general/ProductRating";
-import Results from "@/components/showResults/Results";
+import Results from "@/components/showCategories/Results";
 import ProgressNav from "@/components/layout/ProgressNav";
-import FilterNav from "@/components/showResults/FilterNav";
-import FiltersSelected from "@/components/showResults/FiltersSelected";
-import Pagenations from "@/components/showResults/Pagenations";
+import FilterNav from "@/components/showCategories/FilterNav";
+import FiltersSelected from "@/components/showCategories/FiltersSelected";
+import Pagenations from "@/components/showCategories/Pagenations";
 import Subscribe from "@/components/layout/Subscribe";
 import AnotherItems from "@/components/general/AnotherItems";
 import CategoriesLinksSwipper from "@/components/layout/categoriesLinksSwipper";

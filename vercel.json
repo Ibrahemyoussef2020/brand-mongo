@@ -24,7 +24,7 @@
             "dest":"/"
         },
         {
-            "src":"/showResults/[category]",
+            "src":"/showCategories/[category]",
             "dest":"/"
         },
         {

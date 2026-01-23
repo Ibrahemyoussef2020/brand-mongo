@@ -46,7 +46,7 @@ const CategoriesLinksSwipper = () => {
                 className="py-4 !flex items-center min-w-[300px]  h-[100%]"
               >
                 <Link
-                  href={`/showResults/${category}`}
+                  href={`/showCategories/${category}`}
                   className="block !m-auto"
                 >
                   {category}

@@ -22,15 +22,12 @@ const OffersSwiper = () => {
 
   const fetchAllProductsFn = async () => {
     const data = await fetchAllProducts('deelOffers')
-    console.log(data.data)
     setProducts(data.data)
   }
 
 
   useEffect(() => {
     fetchAllProductsFn();
-
-    console.log(products)
   }, [])
 
 

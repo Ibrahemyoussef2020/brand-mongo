@@ -34,7 +34,7 @@ const Results = ({products,category,maxCountProducts,handleFilter}:props) => {
         {
             products?.map((product:ProductProps,index:number) => {
                 if (index < maxCountProducts) {
-                    return <article key={product._id} className="broweserd-product">
+                    return <article key={product._id + product.static_id + Math.random()} className="broweserd-product">
                     <div className="img-wrapper in-list">
                         <Image
                         src={`/${product.image}.webp`}

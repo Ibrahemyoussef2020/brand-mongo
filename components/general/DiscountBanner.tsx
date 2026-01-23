@@ -11,7 +11,7 @@ const DiscountBanner = () => {
             </p>
         </div>
 
-        <Link href='/showResults/deal-offers'>Shop now</Link>
+        <Link href='/showCategories/deal-offers'>Shop now</Link>
     </div>
   )
 }

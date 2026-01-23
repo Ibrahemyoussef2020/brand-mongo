@@ -14,6 +14,9 @@ export const seedDatabase = async (section: string) => {
 export const fetchAllProducts = async (section: string) => {
   if (section) {
 
+    console.log(section);
+  
+
     const baseUrl = process.env.MAIN_URL || url;
 
     const response = await fetch(`${baseUrl}/api/${section}/seed`, { method: 'GET' });

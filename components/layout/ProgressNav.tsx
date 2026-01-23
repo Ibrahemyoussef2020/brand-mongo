@@ -44,7 +44,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
                 </span>
             </li>
             <li>
-                <Link href={`/showResults/${category}`}>{category}</Link>
+                <Link href={`/showCategories/${category}`}>{category}</Link>
                 <span>
                     <Image
                         height={15}
@@ -73,7 +73,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
                 </span>
             </li>
             <li>
-                <Link href={`/showResults/${category}`}>{category}</Link>
+                <Link href={`/showCategories/${category}`}>{category}</Link>
                 <span>
                     <Image
                         height={15}

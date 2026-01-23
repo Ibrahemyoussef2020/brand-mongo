@@ -7,17 +7,17 @@ import React from 'react'
 const HomeCover = () => {
   return (
     <section className='cover-wrapper'>
-    <div className='lists'>
+    <div className='lists'> 
       <ul>
-        <li><Link href={`showResults/mobiles`}>Automobiles</Link></li>
-        <li><Link href={`showResults/fashion`}>Clothes and wear</Link></li>
-        <li><Link href={`showResults/kitchen-tools`}>Home interiors</Link></li>
-        <li><Link href={`showResults/computers`}>Computer and tech</Link></li>
-        <li><Link href={`showResults/kitchen-tools`}>Tools, equipments</Link></li>
-        <li><Link href={`showResults/sports`}>Sports and outdoor</Link></li>
-        <li><Link href={`showResults/pets`}>Animal and pets</Link></li>
-        <li><Link href={`showResults/chairs`}>Office furniture</Link></li>
-        <li><Link href={`showResults/headphones`}>More category</Link></li>
+        <li><Link href={`showCategories/products/mobiles`}>Automobiles</Link></li>
+        <li><Link href={`showCategories/fashion`}>Clothes and wear</Link></li>
+        <li><Link href={`showCategories/kitchen-tools`}>Home interiors</Link></li>
+        <li><Link href={`showCategories/computers`}>Computer and tech</Link></li>
+        <li><Link href={`showCategories/kitchen-tools`}>Tools, equipments</Link></li>
+        <li><Link href={`showCategories/sports`}>Sports and outdoor</Link></li>
+        <li><Link href={`showCategories/pets`}>Animal and pets</Link></li>
+        <li><Link href={`showCategories/chairs`}>Office furniture</Link></li>
+        <li><Link href={`showCategories/headphones`}>More category</Link></li>
       </ul>
     </div>
 

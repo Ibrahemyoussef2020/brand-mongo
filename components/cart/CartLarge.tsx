@@ -55,7 +55,7 @@ const CartLarge = () => {
                     products?.map((product:ProductProps) => {
                         const details = `${product.title} ${product.description}`
 
-                        return <article key={product._id}>
+                        return <article key={product._id + product.static_id}>
                             <div className="left">
                                 <div className="img-wrapper">
                                     <Image

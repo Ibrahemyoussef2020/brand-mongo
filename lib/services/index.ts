@@ -13,7 +13,6 @@ export const seedDatabase = async (section: string) => {
 
 export const fetchAllProducts = async (section: string) => {
   if (section) {
-    console.log('baseUrllllllllllllllllllll', section, process.env.MAIN_URL)
 
     const baseUrl = process.env.MAIN_URL || url;
 

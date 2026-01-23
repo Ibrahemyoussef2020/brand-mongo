@@ -55,7 +55,7 @@ const toggleMoreButtons = (id:string)=>{
               products?.map((product:ProductProps) => {
                   const details = `${product.title} ${product.description}`
 
-                  return <article key={product._id} className={customStringIncludes(moreList,product._id) ? 'show-more' : ''}>
+                  return <article key={product._id + product.static_id + Math.random()} className={customStringIncludes(moreList,product._id) ? 'show-more' : ''}>
                       <div className="article-wrapper">
                           <div className="img-wrapper">
                               <Image

@@ -53,7 +53,7 @@ const OffersSwiper = () => {
 
             return (
               <SwiperSlide
-                key={product._id + '' + product.image + '' + product.static_id}
+                key={product._id + '' + product.image + '' + product.static_id + Math.random()}
                 className="broweserd-product"
               >
                 <div
@@ -69,7 +69,7 @@ const OffersSwiper = () => {
                   <div>
                     <span>{product.discount}</span>
                   </div>
-                  <BrowserProduct section='deelOffers' productId={product._id} /> 
+                  <BrowserProduct section='deelOffers' productId={product.static_id} /> 
                 </div>
               </SwiperSlide>
             );

@@ -7,7 +7,7 @@ import {  showProducts } from "@/app/apis";
 import FilterSidebar from "@/components/showCategories/FilterSidebar";
 import { FilterInputProps, ProductProps } from "@/types";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import {
     filterProductsList,
@@ -39,11 +39,12 @@ type prop = {
 }
 
 
-let filterList:FilterProps[]|[] = [];
 
 const page = () => {
     const params = useParams<prop>();
     const {category} = params;
+    
+    const filterListRef = useRef<FilterProps[]>([]);
     
 
     const [products,setProducts] = useState<[]|ProductProps[]>([]);
@@ -76,7 +77,8 @@ const page = () => {
       console.log(category);
       
       const categories = await fetchCategoryProducts('products' , category );
-      setProducts(categories?.data)      
+      setProducts(categories?.data)   
+      setConstantProducts(categories?.data)   
     }
 
     useEffect(()=> {
@@ -85,97 +87,21 @@ const page = () => {
 
 
 
-
-//__________  start handle filter ____________//
-
-
-// const handleFilter = (filterData:FilterProps, isAdded:boolean):boolean|void => {
-    
-//     let newFilterList = filterList;
-
-//     if (filterData.type === 'clear') {
-//       filterList = [];
-//       const modifiedProducts = filterProductsList(filterList, constantProducts);
-//       setProducts(modifiedProducts);
-//       setFilterSelectedList(filterList)
-
-//       return true
-//     }
-
-//     else if(filterData.type === 'remove-filter'){
-//       filterList = filterList.filter((filter:FilterProps )=> filter.prop !== filterData.prop  )
-//       const modifiedProducts = filterProductsList(filterList, constantProducts );
-//       setProducts(modifiedProducts);
-    
-//       const newSelectedFiltesr = filterList.map(filter => filter.type === filterData.type && filter.type === 'list' ?  filter.values = [] : null)
-
-//       setFilterSelectedList(filterList)
-
-      
-//       return true
-//     }
-
-
-//     if (isAdded) {
-        
-//       const isExist = filterList.find(filter => filter.prop === filterData.prop);
-
-//       if (isExist) {
-//         filterList = filterList.map(filter => filter.prop === filterData.prop ? filterData : filter)
-//       } else {
-        
-//         filterList = [...filterList, filterData];
-//       }
-      
-//       setFilterSelectedList(filterList)
-
-      
-//     }
-//     else {
-//       if (filterData.type === 'list') {
-          
-//           const newValues = filterData.values;
-//           const newFilterData = {...filterData , values:newValues}
-
-//           filterList = filterList.map(filter => newFilterData)
-//       }else{
-//         filterList = filterList.filter(filterItem => filterItem.prop !== filterData.prop)
-//       }
-
-//       setFilterSelectedList(filterList)
-//     }
-
-
-//    const numberDependences =  filterData.hasOwnProperty('values') ?  filterData.values.length : 1;
-
-
-//     if (filterData.type === 'list') {
-//       filterList = !filterData.values.length ? filterList.filter(filterData => !filterData.hasOwnProperty('values')) : filterList;
-//       newFilterList = filterList
-//     }
-//     else{
-//       newFilterList = filterList;
-//     } 
-    
-//     const modifiedProducts = filterProductsList(newFilterList, constantProducts , numberDependences);
-    
-//     setProducts(modifiedProducts);
-//     setFiltersClear(false)
-//     setFilterRemove({name:'',value:''})
-//     setFilterSelectedList(newFilterList)
-
-//   }
-
-
 const fetchFilteredProducts = async (filters: FilterProps[]) => {
+
+  
+  
   try {
  
     const queryParams = filters
       .flatMap((filter) => {
+
+        console.log(`------------------> ${filter.prop}=${filter.value}`);
+        
         if (filter.type === "list") {
           return filter.values?.map((value) => `${filter.prop}=${encodeURIComponent(value)}`) || [];
         }
-        if (filter.type === "minmax") {
+        if (filter.type === "minmax") {          
           return [
             filter.min !== undefined ? `${filter.prop}_min=${filter.min}` : "",
             filter.max !== undefined ? `${filter.prop}_max=${filter.max}` : "",
@@ -213,11 +139,12 @@ const fetchFilteredProducts = async (filters: FilterProps[]) => {
 
 
 const handleFilter = async (filterData: FilterProps, isAdded: boolean) => {
-  let updatedFilters = [...filterList];
+  let updatedFilters = [...filterListRef.current];
 
   // ✅ 1. Clear all filters
   if (filterData.type === "clear") {
     updatedFilters = [];
+    filterListRef.current = updatedFilters;
     setFilterSelectedList(updatedFilters);
     await fetchFilteredProducts(updatedFilters); // Fetch products after clearing filters
     return null;
@@ -226,6 +153,7 @@ const handleFilter = async (filterData: FilterProps, isAdded: boolean) => {
   // ✅ 2. Remove a specific filter
   if (filterData.type === "remove-filter") {
     updatedFilters = updatedFilters.filter((filter) => filter.prop !== filterData.prop);
+    filterListRef.current = updatedFilters;
     setFilterSelectedList(updatedFilters);
     await fetchFilteredProducts(updatedFilters);
     return null;
@@ -257,6 +185,7 @@ const handleFilter = async (filterData: FilterProps, isAdded: boolean) => {
   }
 
   // ✅ Update filter state
+  filterListRef.current = updatedFilters;
   setFilterSelectedList(updatedFilters);
 
   // ✅ Fetch new filtered data

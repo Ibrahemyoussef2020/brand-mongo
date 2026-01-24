@@ -1,1 +1,1 @@
-productttttttttt this log aray , search about it and fix it to log object one product by id
+solve category filter in showCategories

@@ -10,11 +10,13 @@ function buildQuery(searchParams: URLSearchParams) {
 
   if (searchParams.has("category")) {
     query.category = { $in: searchParams.getAll("category") };
-    console.log('categoryy', query.category);
 
   }
+  if (searchParams.has("type")) {
+    query.type = { $in: searchParams.getAll("type") };
 
-  if (searchParams.has("brand")) {
+  }
+  if (searchParams.has("brand")) { 
     query.brand = { $in: searchParams.getAll("brand") };
   }
 
@@ -26,13 +28,13 @@ function buildQuery(searchParams: URLSearchParams) {
     query.avgRating = { $in: searchParams.getAll("avgRating").map(Number) };
   }
 
-  const minPrice = searchParams.get("minPrice");
-  const maxPrice = searchParams.get("maxPrice");
+  const price_min = searchParams.get("price_min");
+  const price_max = searchParams.get("price_max");
 
-  if (minPrice || maxPrice) {
+  if (price_min || price_max) {
     query.price = {};
-    if (minPrice) query.price.$gte = parseFloat(minPrice);
-    if (maxPrice) query.price.$lte = parseFloat(maxPrice);
+    if (price_min) query.price.$gte = parseFloat(price_min);
+    if (price_max) query.price.$lte = parseFloat(price_max);
   }
 
   if (searchParams.has("ratings")) {

@@ -13,8 +13,7 @@ import {toggleMobileAsideFilter} from '@/redux/slices';
 import { IRootState } from '@/redux/store';
 
 
-let ratingValues:string[]|[] = [];
-let brandValues:string[]|[] = [];
+
 
 
 interface StringProductProps{ 
@@ -39,6 +38,9 @@ const FilterSidebar = (props:FilterSidebarProps) => {
   filterSelectedList,
   setFilterSelectedList
   } = props;
+
+  const brandValues = filterSelectedList.find(f => f.prop === 'brand')?.values || [];
+  const ratingValues = filterSelectedList.find(f => f.prop === 'avgRating')?.values || [];
 
   const dispatch = useDispatch();
   const {isOppend } =  useSelector((state:IRootState)=> state.combine.asideFilter)
@@ -90,6 +92,8 @@ const FilterSidebar = (props:FilterSidebarProps) => {
     setMaxPriceFromData(maxPrice);
 
 
+    console.log(constantList);
+    
     console.log(colors);
     console.log(brands);
     console.log(types);
@@ -179,16 +183,17 @@ const FilterSidebar = (props:FilterSidebarProps) => {
 
 
   const handleFilterBrand = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let nextBrandValues;
     if (e.target.checked) {
-      brandValues = [...brandValues, e.target.value];
+      nextBrandValues = [...brandValues, e.target.value];
     } else {
-      brandValues = brandValues.filter((brand: string) => brand !== e.target.value);
+      nextBrandValues = brandValues.filter((brand: string) => brand !== e.target.value);
     }
   
     handleFilter({
       prop: 'brand',
       type: 'list',
-      values: brandValues
+      values: nextBrandValues
     }, e.target.checked);
   
     setFiltersClear(false);
@@ -202,16 +207,17 @@ const FilterSidebar = (props:FilterSidebarProps) => {
 
 
 const handleFilterRating = (e: React.ChangeEvent<HTMLInputElement>) => {
+  let nextRatingValues;
   if (e.target.checked) {
-    ratingValues = [...ratingValues, e.target.value];
+    nextRatingValues = [...ratingValues, e.target.value];
   } else {
-    ratingValues = ratingValues.filter((rate: string) => rate !== e.target.value);
+    nextRatingValues = ratingValues.filter((rate: string) => rate !== e.target.value);
   }
 
   handleFilter({
     prop: 'avgRating',
     type: 'list',
-    values: ratingValues
+    values: nextRatingValues
   }, e.target.checked);
 
   setFiltersClear(false);
@@ -254,11 +260,11 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
     updatedFilter = { prop, type: "custom", value: filter.value };
     
   } else if (prop === "brand") {
-    brandValues = brandValues.filter((brand) => brand !== filter.value);
-    updatedFilter = { prop, type: "list", values: brandValues };
+    const nextBrandValues = brandValues.filter((brand) => brand !== filter.value);
+    updatedFilter = { prop, type: "list", values: nextBrandValues };
   } else if (prop === "avgRating") {
-    ratingValues = ratingValues.filter((rate) => rate !== filter.value);
-    updatedFilter = { prop, type: "list", values: ratingValues };
+    const nextRatingValues = ratingValues.filter((rate) => rate !== filter.value);
+    updatedFilter = { prop, type: "list", values: nextRatingValues };
   }
 
   // ✅ 3. Apply the updated filter (if valid)
@@ -294,9 +300,9 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
   
     // ✅ تصفية القيم المخزنة
     if (filter === 'avgRating') {
-      ratingValues = [];
+      // Handled by handleFilter with type 'clear'
     } else if (filter === 'brand') {
-      brandValues = [];
+      // Handled by handleFilter with type 'clear'
     }
   
     // ✅ إزالة الفلتر
@@ -313,42 +319,8 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
   
 
 
-  //_______________ Clear all filters _______________//
-
-  // function handleClearFilters(){
-  //   if (filtersClear) {
-  //     ref_premium_offer.current.map((ref:HTMLInputElement )=> ref.checked = false)
-  //     ref_free_delivery.current.map((ref:HTMLInputElement )=> ref.checked = false);
-  //     ref_to_home.current.map((ref:HTMLInputElement )=> ref.checked = false) 
-      
-  //     ref_typeEls.current?.filter((ref:HTMLInputElement)  => ref !== null)
-  //     .map((ref:HTMLInputElement)  => ref.checked = false)
-  //     ref_ratingEls.current.filter((ref:HTMLInputElement)  => ref !== null)
-  //     .map((ref:HTMLInputElement)  => ref.checked = false)
-  //     ref_brandEls.current.filter((ref:HTMLInputElement)  => ref !== null)
-  //     .map((ref:HTMLInputElement)  => ref.checked = false)
-  //     ref_colorEls.current.filter((ref:HTMLInputElement)  => ref !== null)
-  //     .map((ref:HTMLInputElement)  => ref.checked = false)
-
-
-  //     brandValues = [];
-  //     ratingValues = []
-     
-  //       handleFilter({
-  //         prop:'',
-  //         checked:true,
-  //         type: 'clear',
-  //         value: '',
-  //         values:[],
-  //         filterFn: (product:ProductProps,filter:FilterProps) => true,
-  //       } , false)
-
-  //     }
-  // }
-
   const handleClearFilters = () => {
     if (filtersClear) {
-      // ✅ إلغاء تحديد جميع الإدخالات
       [
         ref_premium_offer,
         ref_free_delivery,
@@ -361,11 +333,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
         ref.current?.map((input: HTMLInputElement) => (input.checked = false));
       });
   
-      // ✅ إعادة تعيين القيم
-      brandValues = [];
-      ratingValues = [];
   
-      // ✅ مسح جميع الفلاتر
       const updatedFilter: FilterProps = {
         prop: '',
         type: 'clear'

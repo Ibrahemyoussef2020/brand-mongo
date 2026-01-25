@@ -1,1 +1,2 @@
-solve category filter in showCategories
+1- make url for filters   
+2- build anthor showResults for anthor sections.

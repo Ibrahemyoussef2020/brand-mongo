@@ -20,8 +20,10 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
 
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const { value } = e.target;
-    setSort(e.target.value)
-    const items = sortLists({ filter: e.target.value, products })
+    setSort(value)
+    // The sorting logic should ideally be triggered by the sort state change in page.tsx
+    // or by the updated products in handled by parent.
+    const items = sortLists({ filter: value, products })
     setProducts(items)
   }
 
@@ -41,18 +43,13 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
     setFiltersClear(false)
   }
 
-  const isVierifiedFoundInFilters = filterSelectedList.some((filter: FilterProps) => filter.prop === 'verified')
+  const isVerified = filterSelectedList.some((filter: FilterProps) => filter.prop === 'verified' && (filter.checked || filter.value === 'true'))
 
   useEffect(() => {
     if (filtersClear) {
-      verifiedRef.current.checked = false;
+      if (verifiedRef.current) verifiedRef.current.checked = false;
     }
-
-    if (!isVierifiedFoundInFilters) {
-      verifiedRef.current.checked = false
-    }
-
-  }, [filtersClear, filterSelectedList])
+  }, [filtersClear])
 
 
   const productsShowenCount = Math.min(maxCountProducts, +products.length)
@@ -70,6 +67,7 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
             type="checkbox"
             name="verified"
             value='verified'
+            checked={isVerified}
             ref={verifiedRef}
 
           />
@@ -80,6 +78,7 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
         <div className='select-wrapper'>
           <select
             onChange={handleSort}
+            value={sort || "#"}
             className="featured-nav" id="featured-nav" name="featured-nav"
           >
             <option value="#">Featured</option>
@@ -94,6 +93,7 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
           <div className="featured-nav-mobile">
             <select
               onChange={handleSort}
+              value={sort || "#"}
               id="featured-nav-mobile" name="featured-nav-mobile"
             >
               <option value="#">Featured</option>

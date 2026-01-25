@@ -41,6 +41,12 @@ const FilterSidebar = (props:FilterSidebarProps) => {
 
   const brandValues = filterSelectedList.find(f => f.prop === 'brand')?.values || [];
   const ratingValues = filterSelectedList.find(f => f.prop === 'avgRating')?.values || [];
+  const typeValue = filterSelectedList.find(f => f.prop === 'type')?.value || '';
+  const colorValue = filterSelectedList.find(f => f.prop === 'color')?.value || '';
+  const isPremium = filterSelectedList.find(f => f.prop === 'premium_offer')?.checked || false;
+  const isFreeDelivery = filterSelectedList.find(f => f.prop === 'free_delivery')?.checked || false;
+  const isToHome = filterSelectedList.find(f => f.prop === 'to_home')?.checked || false;
+  const priceFilter = filterSelectedList.find(f => f.prop === 'price');
 
   const dispatch = useDispatch();
   const {isOppend } =  useSelector((state:IRootState)=> state.combine.asideFilter)
@@ -110,7 +116,11 @@ const FilterSidebar = (props:FilterSidebarProps) => {
       handleClearFilters()
     }
 
-  },[selectedValue,filterRemove,filtersClear,minPriceValue,maxPriceValue,visibleSection,constantList])
+    if (priceFilter) {
+      if (priceFilter.min !== undefined) setMinPriceValue(priceFilter.min);
+      if (priceFilter.max !== undefined) setMaxPriceValue(priceFilter.max);
+    }
+  },[selectedValue,filterRemove,filtersClear,minPriceValue,maxPriceValue,visibleSection,constantList, priceFilter ])
 
   //________________ price _______________________//
 
@@ -270,7 +280,6 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
   // ✅ 3. Apply the updated filter (if valid)
   if (updatedFilter) {
     handleFilter(updatedFilter, false);
-    handleClearFilters()
   }
 
   // ✅ 4. Reset filter UI state
@@ -308,7 +317,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
     // ✅ إزالة الفلتر
     const updatedFilter: FilterProps = {
       prop: filter,
-      type: 'clear'
+      type: 'remove-filter'
     };
   
     handleFilter(updatedFilter, false);
@@ -402,6 +411,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
                     type="radio" 
                     name="type" 
                     value={type} 
+                    checked={typeValue === type}
                     ref={(el:HTMLInputElement) => (ref_typeEls.current[index] = el)}
                     />
                   <span>{selectedValue.slice(0,-1)} a {type}</span>
@@ -448,7 +458,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
                     type="checkbox" 
                     name="brand" 
                     value={brand}
-                    data-values={brandValues}
+                    checked={brandValues.includes(brand)}
                     ref={(el:HTMLInputElement) => (ref_brandEls.current[index] = el)}
                     />
                   <span>{brand[0].toUpperCase()}{brand.slice(1)}</span>
@@ -498,6 +508,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
                   id="premium_offer"
                   name="premium_offer"
                   value="premium_offer"
+                  checked={isPremium}
                   ref={(el:HTMLInputElement) => (ref_premium_offer.current[0] = el)}
                 />
                 <span className={`label__sub-title ml-1`}>
@@ -512,6 +523,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
                   id="free_delivery"
                   name="free_delivery"
                   value="free_delivery"
+                  checked={isFreeDelivery}
                   ref={(el:HTMLInputElement) => (ref_free_delivery.current[0] = el)}
                 />
                 <span className={`label__sub-title ml-2`}>
@@ -525,6 +537,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
                   id="to_home"
                   name="to_home"
                   value="to_home"
+                  checked={isToHome}
                   ref={(el:HTMLInputElement) => (ref_to_home.current[0] = el)}
                 />
                 <span className={`label__sub-title ml-2`}>
@@ -613,6 +626,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
                     type="radio" 
                     name="color" 
                     value={color}
+                    checked={colorValue === color}
                     ref={(el:HTMLInputElement) => (ref_colorEls.current[index] = el)}
                     />
                   <span>{color}</span>
@@ -659,6 +673,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
               name="avgRating"
               value="5"
               data-values={ratingValues}
+              checked={ratingValues.includes("5")}
               ref={(el:HTMLInputElement) => (ref_ratingEls.current[5] = el)}
             />
             <span>
@@ -678,6 +693,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
               name="avgRating"
               value="4"
               data-values={ratingValues}
+              checked={ratingValues.includes("4")}
               ref={(el:HTMLInputElement) => (ref_ratingEls.current[4] = el)}
             />
             <span> 
@@ -697,6 +713,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
               name="avgRating"
               value="3"
               data-values={ratingValues}
+              checked={ratingValues.includes("3")}
               ref={(el:HTMLInputElement) => (ref_ratingEls.current[3] = el)}
             />
             <span> 
@@ -716,6 +733,7 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
               name="avgRating"
               value="2"
               data-values={ratingValues}
+              checked={ratingValues.includes("2")}
               ref={(el:HTMLInputElement) => (ref_ratingEls.current[2] = el)}
             />
             <span> 

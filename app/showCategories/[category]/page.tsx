@@ -6,8 +6,8 @@ import MenuSidebar from "@/components/layout/menu-sidebar"
 import {  showProducts } from "@/app/apis";
 import FilterSidebar from "@/components/showCategories/FilterSidebar";
 import { FilterInputProps, ProductProps } from "@/types";
-import { useParams } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useParams, useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 import {
     filterProductsList,
@@ -42,6 +42,9 @@ type prop = {
 
 const page = () => {
     const params = useParams<prop>();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
     const {category} = params;
     
     const filterListRef = useRef<FilterProps[]>([]);
@@ -72,68 +75,136 @@ const page = () => {
     const [maxCountProducts,setMaxCountProducts] = useState<number>(100);
 
 
-    const fetchCategoryProductsFn = async()=>{
+    // fetchCategoryProductsFn is no longer needed as standalone as it's consolidated in the sync effect
 
-      console.log(category);
+    // Update URL with filters, sort, and design
+    const updateURL = useCallback((filters: FilterProps[], currentSort?: string, currentDesign?: string) => {
+      const params = new URLSearchParams();
       
-      const categories = await fetchCategoryProducts('products' , category );
-      setProducts(categories?.data)   
-      setConstantProducts(categories?.data)   
-    }
-
-    useEffect(()=> {
-      fetchCategoryProductsFn()
-      }, [category,sort]);
-
-
-
-const fetchFilteredProducts = async (filters: FilterProps[]) => {
-
-  
-  
-  try {
- 
-    const queryParams = filters
-      .flatMap((filter) => {
-
-        console.log(`------------------> ${filter.prop}=${filter.value}`);
-        
-        if (filter.type === "list") {
-          return filter.values?.map((value) => `${filter.prop}=${encodeURIComponent(value)}`) || [];
+      filters.forEach((filter) => {
+        if (filter.type === "list" && filter.values) {
+          filter.values.forEach(v => params.append(filter.prop, v));
+        } else if (filter.type === "minmax") {
+          if (filter.min !== undefined) params.set(`${filter.prop}_min`, filter.min.toString());
+          if (filter.max !== undefined) params.set(`${filter.prop}_max`, filter.max.toString());
+        } else if (filter.type === "boolean" || filter.type === "custom") {
+          const val = filter.checked ?? filter.value;
+          if (val !== undefined && val !== false) params.set(filter.prop, val.toString());
         }
-        if (filter.type === "minmax") {          
-          return [
-            filter.min !== undefined ? `${filter.prop}_min=${filter.min}` : "",
-            filter.max !== undefined ? `${filter.prop}_max=${filter.max}` : "",
-          ].filter(Boolean);
+      });
+
+      if (currentSort && currentSort !== '#') params.set('sort', currentSort);
+      if (currentDesign) params.set('design', currentDesign);
+
+      const queryString = params.toString();
+      router.push(`${pathname}${queryString ? `?${queryString}` : ''}`, { scroll: false });
+    }, [pathname, router]);
+
+    // Unified sync effect for products and filters
+    useEffect(() => {
+      let isCancelled = false;
+
+      const runSync = async () => {
+        // Parse filters from search params
+        const filters: FilterProps[] = [];
+        const groupedParams: Record<string, string[]> = {};
+        searchParams.forEach((value, key) => {
+          if (!groupedParams[key]) groupedParams[key] = [];
+          groupedParams[key].push(value);
+        });
+
+        const listProps = ['brand', 'avgRating'];
+        const booleanProps = ['premium_offer', 'free_delivery', 'to_home', 'verified'];
+        const nonFilterParams = ['sort', 'design'];
+
+        Object.entries(groupedParams).forEach(([key, values]) => {
+          if (nonFilterParams.includes(key)) return;
+
+          if (key.endsWith('_min') || key.endsWith('_max')) {
+            const baseProp = key.replace(/_(min|max)$/, '');
+            let filter = filters.find(f => f.prop === baseProp && f.type === 'minmax');
+            if (!filter) {
+              filter = { prop: baseProp, type: 'minmax' };
+              filters.push(filter);
+            }
+            if (key.endsWith('_min')) filter.min = Number(values[0]);
+            if (key.endsWith('_max')) filter.max = Number(values[0]);
+          } else if (listProps.includes(key)) {
+            filters.push({ prop: key, type: 'list', values });
+          } else if (booleanProps.includes(key)) {
+            filters.push({ prop: key, type: 'boolean', checked: values[0] === 'true' });
+          } else {
+            filters.push({ prop: key, type: 'custom', value: values[0] });
+          }
+        });
+
+        if (isCancelled) return;
+        setFilterSelectedList(filters);
+        filterListRef.current = filters;
+
+        // Parse sort and design
+        const urlSort = searchParams.get('sort') || '';
+        setSort(urlSort);
+        const urlDesign = searchParams.get('design') || 'list';
+        setDesign(urlDesign);
+
+        // 1. Fetch Constant Products (Sidebar)
+        const categories = await fetchCategoryProducts('products', category);
+        if (isCancelled) return;
+        const allProducts = categories?.data || [];
+        setConstantProducts(allProducts);
+
+        // 2. Fetch Displayed Products
+        let displayProducts = [];
+        const hasFilters = filters.length > 0;
+
+        if (hasFilters) {
+          const queryParams = filters
+            .flatMap((filter) => {
+              if (filter.type === "list") {
+                return filter.values?.map((value) => `${filter.prop}=${encodeURIComponent(value)}`) || [];
+              }
+              if (filter.type === "minmax") {
+                return [
+                  filter.min !== undefined ? `${filter.prop}_min=${filter.min}` : "",
+                  filter.max !== undefined ? `${filter.prop}_max=${filter.max}` : "",
+                ].filter(Boolean);
+              }
+              if (filter.type === "boolean" || filter.type === "custom") {
+                return `${filter.prop}=${filter.checked ?? filter.value}`;
+              }
+              return "";
+            })
+            .join("&");
+
+          const url = `/api/products/seed?category=${category}&${queryParams}`;
+          const response = await fetch(url, { method: "GET" });
+          if (isCancelled) return;
+          if (response.ok) {
+            const data = await response.json();
+            displayProducts = data?.data || [];
+          }
+        } else {
+          displayProducts = allProducts;
         }
-        if (filter.type === "boolean" || filter.type === "custom") {
-          return `${filter.prop}=${filter.checked ?? filter.value}`;
+
+        // 3. Apply Sorting
+        if (urlSort && urlSort !== '#') {
+          displayProducts = sortLists({ filter: urlSort, products: displayProducts });
         }
-        return "";
-      })
-      .join("&");
 
-    const url = `/api/products/seed?category=${category}&${queryParams}`;
+        if (isCancelled) return;
+        setProducts(displayProducts);
+      };
+
+      runSync();
+      return () => { isCancelled = true; };
+    }, [searchParams, category]);
 
 
-    console.log('url' , url);
-    
-    const response = await fetch(url, { method: "GET" });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch filtered products");
-    }
 
-    const data = await response.json();
 
-    console.log("filtered::=>", data);
-
-    setProducts(data?.data);
-  } catch (error: any) {
-    console.error("Error fetching filtered products:", error.message);
-  }
-};
 
 
 
@@ -144,23 +215,13 @@ const handleFilter = async (filterData: FilterProps, isAdded: boolean) => {
   // ✅ 1. Clear all filters
   if (filterData.type === "clear") {
     updatedFilters = [];
-    filterListRef.current = updatedFilters;
-    setFilterSelectedList(updatedFilters);
-    await fetchFilteredProducts(updatedFilters); // Fetch products after clearing filters
-    return null;
-  }
-
+  } 
   // ✅ 2. Remove a specific filter
-  if (filterData.type === "remove-filter") {
+  else if (filterData.type === "remove-filter") {
     updatedFilters = updatedFilters.filter((filter) => filter.prop !== filterData.prop);
-    filterListRef.current = updatedFilters;
-    setFilterSelectedList(updatedFilters);
-    await fetchFilteredProducts(updatedFilters);
-    return null;
-  }
-
+  } 
   // ✅ 3. Adding or updating a filter
-  if (isAdded) {
+  else if (isAdded) {
     const existingFilterIndex = updatedFilters.findIndex((filter) => filter.prop === filterData.prop);
 
     if (existingFilterIndex !== -1) {
@@ -188,8 +249,8 @@ const handleFilter = async (filterData: FilterProps, isAdded: boolean) => {
   filterListRef.current = updatedFilters;
   setFilterSelectedList(updatedFilters);
 
-  // ✅ Fetch new filtered data
-  await fetchFilteredProducts(updatedFilters);
+  // ✅ Update URL (this will trigger the useEffect to fetch products)
+  updateURL(updatedFilters, sort, design);
 
   // ✅ Reset temporary states
   setFiltersClear(false);
@@ -250,10 +311,16 @@ const handleFilter = async (filterData: FilterProps, isAdded: boolean) => {
                 setProducts={setProducts} 
                 category={category}
                 sort={sort}
-                setSort={setSort}
+                setSort={(val) => {
+                  setSort(val);
+                  updateURL(filterSelectedList, val, design);
+                }}
                 handleSortStrategy={handleSortStrategy}
                 design={design}
-                setDesign={setDesign} 
+                setDesign={(val) => {
+                  setDesign(val);
+                  updateURL(filterSelectedList, sort, val);
+                }} 
                 filterSelectedList={filterSelectedList}
                 filtersClear={filtersClear}
                 setFiltersClear={setFiltersClear}

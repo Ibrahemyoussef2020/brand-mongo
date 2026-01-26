@@ -89,6 +89,20 @@ const FiltersSelected = ({ filterSelectedList, filterRemove, setFilterRemove, se
                   </button>
                 </SwiperSlide>
               }
+              else if(filter.hasOwnProperty('price')){
+                return <SwiperSlide
+                  key={filter.value}
+                  className="filter-selected"
+                >
+                  <button onClick={_ => setFilterRemove({ name: `${filter.prop}`, value: `${filter.value}` })}>
+                    <span className="value">{filter.value}</span>
+
+                    <span className="close">
+                      <FontAwesomeIcon icon={faXmark} />
+                    </span>
+                  </button>
+                </SwiperSlide>
+              }
             })
         }
       </Swiper> : null}

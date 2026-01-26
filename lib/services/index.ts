@@ -3,9 +3,16 @@ import { ProductProps } from "@/types";
 import axios from "axios";
 import { log } from "node:console";
 
-const baseUrl = process.env.MAIN_URL || url;
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return '';
+  }
+  return process.env.MAIN_URL || url;
+};
+
 
 export const seedDatabase = async (section: string) => {
+  const baseUrl = getBaseUrl();
   const response = await fetch(`${baseUrl}/api/${section}?seed=true`, { method: 'GET' });
   const data = await response.json();
   return data
@@ -17,7 +24,7 @@ export const fetchAllProducts = async (section: string) => {
     console.log(section);
   
 
-    const baseUrl = process.env.MAIN_URL || url;
+    const baseUrl = getBaseUrl();
 
     const response = await fetch(`${baseUrl}/api/${section}/seed`, { method: 'GET' });
 
@@ -36,7 +43,7 @@ export const fetchAllProducts = async (section: string) => {
 
 
 export const fetchCategoryProducts = async (section: string, category: string) => {
-  const baseUrl = process.env.MAIN_URL || url;
+  const baseUrl = getBaseUrl();
   const response = await fetch(`${baseUrl}/api/${section}/seed?category=${category}`);
   const data = await response.json();
   return data
@@ -44,7 +51,7 @@ export const fetchCategoryProducts = async (section: string, category: string) =
 
 
 export const fetchSingleProduct = async (section: string, productId: string) => {
-  const baseUrl = process.env.MAIN_URL || url;
+  const baseUrl = getBaseUrl();
   
   const response = await axios.get(`${baseUrl}/api/${section}/seed/${productId}`);
   

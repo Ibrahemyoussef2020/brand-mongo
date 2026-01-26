@@ -27,26 +27,26 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
 
         <Searchbar size="pc" />
         <div className='navigations_pc'>
-          <Link href='/profile'>
+          <Link href='/profile' prefetch={false}>
             <FontAwesomeIcon icon={faUser} width={19} color="gray" />
             <div>Profile</div>
           </Link>
-          <Link href='#request'>
+          <Link href='#request' prefetch={false}>
             <FontAwesomeIcon icon={faEnvelopeOpenText} width={19} color="gray" />
             <div>Message</div>
           </Link>
-          <Link href='/orders'>
+          <Link href='/orders' prefetch={false}>
             <FontAwesomeIcon icon={faHeart} width={19} color="gray"  />
             <div>Orders</div>
           </Link>
-          <Link href='/cart'>
+          <Link href='/cart' prefetch={false}>
             <FontAwesomeIcon icon={faCartShopping} width={19} color="gray" />
             <div>My cart</div>
           </Link>
         </div>
 
         <div className='navigations_mobile'>
-        <Link href='/cart'>
+        <Link href='/cart' prefetch={false}>
             <Image 
               src='/images/icons/shopping.png'
               width={20}
@@ -54,7 +54,7 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
               alt=""
             />
           </Link>
-          <Link href='/profile'>
+          <Link href='/profile' prefetch={false}>
             <Image 
               src='/images/icons/user.png'
               width={16}
@@ -76,13 +76,13 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
                 <button>Hot offers</button>
             </li>
             <li>
-                <Link href='#'>Gift boxes</Link>
+                <Link href='#' prefetch={false}>Gift boxes</Link>
             </li>
             <li>
-                <Link href='#'>Projects</Link>
+                <Link href='#' prefetch={false}>Projects</Link>
             </li>
             <li>
-                <Link href='#'>Menu item</Link>
+                <Link href='#' prefetch={false}>Menu item</Link>
             </li>
             <li>
               help

@@ -3,6 +3,7 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import {customStringIncludes, filterProductsList} from '@/utilities'
 import { FilterInputProps, FilterProps, FilterSidebarProps, ProductProps } from '@/types';
+import { getInitialFilterData, getNewVisibleSections, getUpdatedListValues } from '@/helpers/sidebar';
 import DropArrow from '../general/DropArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -80,20 +81,13 @@ const FilterSidebar = (props:FilterSidebarProps) => {
   
 
   // 1. Initialize data from constantList
+  // 1. Initialize data from constantList
   useEffect(() => {
-    const colors = new Set(constantList.map((product: ProductProps) => product.color));
-    setProductsColor([...colors]);
-
-    const brands = new Set(constantList.map((product) => product.brand));
-    setProductsBrand([...brands]);
-
-    const types = new Set(constantList.map((product) => product.type));
-    setProductsType([...types]);
-
-    const prices = constantList.map((product: ProductProps) => product.price);
-    const minPrice = Math.floor(Math.min(...prices));
-    const maxPrice = Math.floor(Math.max(...prices));
-
+    const { colors, brands, types, minPrice, maxPrice } = getInitialFilterData(constantList);
+    
+    setProductsColor(colors);
+    setProductsBrand(brands);
+    setProductsType(types);
     setMinPriceFromData(minPrice);
     setMaxPriceFromData(maxPrice);
   }, [constantList]);
@@ -143,7 +137,7 @@ const FilterSidebar = (props:FilterSidebarProps) => {
   
 
 
-      
+
   //_______________ filter boolean _______________//
 
 
@@ -189,12 +183,7 @@ const FilterSidebar = (props:FilterSidebarProps) => {
 
 
   const handleFilterBrand = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let nextBrandValues;
-    if (e.target.checked) {
-      nextBrandValues = [...brandValues, e.target.value];
-    } else {
-      nextBrandValues = brandValues.filter((brand: string) => brand !== e.target.value);
-    }
+    const nextBrandValues = getUpdatedListValues(brandValues, e.target.value, e.target.checked);
   
     handleFilter({
       prop: 'brand',
@@ -213,12 +202,7 @@ const FilterSidebar = (props:FilterSidebarProps) => {
 
 
 const handleFilterRating = (e: React.ChangeEvent<HTMLInputElement>) => {
-  let nextRatingValues;
-  if (e.target.checked) {
-    nextRatingValues = [...ratingValues, e.target.value];
-  } else {
-    nextRatingValues = ratingValues.filter((rate: string) => rate !== e.target.value);
-  }
+  const nextRatingValues = getUpdatedListValues(ratingValues, e.target.value, e.target.checked);
 
   handleFilter({
     prop: 'avgRating',
@@ -371,16 +355,8 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
 //_______________ prop arrows  _______________//
 
   const toggleArrowDrop = (value:string)=>{
-    if (customStringIncludes(visibleSection,value)) {
-      const list = visibleSection.filter((string:string) => {
-        return string !== value
-      })
-      setVisibleSection(list)
-
-    }else{
-      const list = [...visibleSection,value];
-      setVisibleSection(list)
-    }
+    const list = getNewVisibleSections(visibleSection, value);
+    setVisibleSection(list);
   }
 
 //_______________ Dom  _______________//

@@ -4,7 +4,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { FilterProps, FiltersSelectedProps } from '@/types'
-import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -18,6 +18,10 @@ const FiltersSelected = ({ filterSelectedList, filterRemove, setFilterRemove, se
   }
 
 
+  useEffect(() => {
+    console.log(filterSelectedList)
+  })
+
   return (
     <div className={`filter-selected-list ${filterSelectedList.length ? '' : 'empty-selected-list'}`}>
       {filterSelectedList?.length ? <button onClick={handleClear} className="clear-selected-filters">
@@ -28,24 +32,23 @@ const FiltersSelected = ({ filterSelectedList, filterRemove, setFilterRemove, se
         spaceBetween={7}
         loop={true}
         breakpoints={{
-          570: { 
+          570: {
             slidesPerView: 5,
-          }, 
+          },
         }}
-        className="!overflow-auto bg-red-500 p-2"
       >
         {
           filterSelectedList
-            .filter((filter: FilterProps) => filter.type !== 'remove-filter' && filter.type !== 'clear')
+            .filter((filter: FilterProps) => filter.type !== 'remove-filter' && filter.type !== 'clear' && filter.prop !== 'price')
             .map((filter: FilterProps) => {
 
-              if (filter.type === 'list' && filter.values?.length) {
+              if (filter.hasOwnProperty('values') && filter.values?.length) {
 
                 const prop = filter.prop;
 
                 return filter.values!.map((f: string) => (
                   <SwiperSlide
-                    key={f + prop + Math.random()}
+                    key={f}
                     className="filter-selected"
                   >
                     <button onClick={_ => setFilterRemove({ name: `${prop}`, value: f })}>
@@ -57,10 +60,10 @@ const FiltersSelected = ({ filterSelectedList, filterRemove, setFilterRemove, se
                   </SwiperSlide>
                 ))
               }
-              else if (filter.type === 'custom') {
+              else if (filter.hasOwnProperty('value')) {
 
                 return <SwiperSlide
-                  key={filter.value + filter.prop + Math.random()}
+                  key={filter.value}
                   className="filter-selected"
                 >
                   <button onClick={_ => setFilterRemove({ name: `${filter.prop}`, value: `${filter.value}` })}>
@@ -72,12 +75,12 @@ const FiltersSelected = ({ filterSelectedList, filterRemove, setFilterRemove, se
                   </button>
                 </SwiperSlide>
               }
-              else if(filter.type === 'boolean'){
+              else if(filter.hasOwnProperty('checked')){
                 return <SwiperSlide
-                  key={filter.value + filter.prop + Math.random()}
+                  key={filter.value}
                   className="filter-selected"
                 >
-                  <button onClick={_ => setFilterRemove({ name: `${filter.prop}`, value: `${(filter.checked|| true).toString()}` })}>
+                  <button onClick={_ => setFilterRemove({ name: `${filter.prop}`, value: `${filter.value}` })}>
                     <span className="value">{filter.prop}</span>
 
                     <span className="close">
@@ -85,34 +88,6 @@ const FiltersSelected = ({ filterSelectedList, filterRemove, setFilterRemove, se
                     </span>
                   </button>
                 </SwiperSlide>
-              }
-              else if(filter.type === 'minmax'){
-                return [
-                  <SwiperSlide
-                    key={filter.value + filter.prop + 'min' + Math.random()}
-                    className="filter-selected"
-                  >
-                    <button onClick={_ => setFilterRemove({ name: `${filter.prop}`, value: `${(filter.min||0).toString()}` })}>
-                      <span className="value">min : {filter.min}</span>
-
-                      <span className="close">
-                        <FontAwesomeIcon icon={faXmark} />
-                      </span>
-                    </button>
-                  </SwiperSlide>,
-                  <SwiperSlide
-                    key={filter.value + filter.prop + 'max' + Math.random()}
-                    className="filter-selected"
-                  >
-                    <button onClick={_ => setFilterRemove({ name: `${filter.prop}`, value: `${(filter.max||0).toString()}` })}>
-                      <span className="value">max : {filter.max}</span>
-
-                      <span className="close">
-                        <FontAwesomeIcon icon={faXmark} />
-                      </span>
-                    </button>
-                  </SwiperSlide>
-                ]
               }
             })
         }

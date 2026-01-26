@@ -79,48 +79,44 @@ const FilterSidebar = (props:FilterSidebarProps) => {
   
   
 
-  useEffect(()=>{
-    const colors = new Set(constantList.map((product:ProductProps )=> product.color))
-    setProductsColor([...colors])
+  // 1. Initialize data from constantList
+  useEffect(() => {
+    const colors = new Set(constantList.map((product: ProductProps) => product.color));
+    setProductsColor([...colors]);
 
-    const brands = new Set(constantList.map(product => product.brand))
-    setProductsBrand([...brands])
+    const brands = new Set(constantList.map((product) => product.brand));
+    setProductsBrand([...brands]);
 
-    const types = new Set(constantList.map(product => product.type))
-    setProductsType([...types])
+    const types = new Set(constantList.map((product) => product.type));
+    setProductsType([...types]);
 
-    const prices = constantList.map((product:ProductProps)=> product.price)
-
+    const prices = constantList.map((product: ProductProps) => product.price);
     const minPrice = Math.floor(Math.min(...prices));
     const maxPrice = Math.floor(Math.max(...prices));
-    
+
     setMinPriceFromData(minPrice);
     setMaxPriceFromData(maxPrice);
+  }, [constantList]);
 
-
-    console.log(constantList);
-    
-    console.log(colors);
-    console.log(brands);
-    console.log(types);
-    console.log(prices);
-    
-    
-
-
+  // 2. Handle filter removal and clearing
+  useEffect(() => {
     if (filterRemove.name !== '') {
-     handleUnCheckInput(filterRemove)
+      handleUnCheckInput(filterRemove);
     }
 
     if (filtersClear) {
-      handleClearFilters()
+      handleClearFilters();
     }
+  }, [filterRemove, filtersClear]);
 
+  // 3. Sync local price state with external props (priceFilter)
+  // Only run this when the actual filter prop changes, NOT when internal state changes.
+  useEffect(() => {
     if (priceFilter) {
       if (priceFilter.min !== undefined) setMinPriceValue(priceFilter.min);
       if (priceFilter.max !== undefined) setMaxPriceValue(priceFilter.max);
     }
-  },[selectedValue,filterRemove,filtersClear,minPriceValue,maxPriceValue,visibleSection,constantList, priceFilter ])
+  }, [priceFilter]);
 
   //________________ price _______________________//
 
@@ -275,6 +271,22 @@ const handleUnCheckInput = (filter: FilterInputProps) => {
   } else if (prop === "avgRating") {
     const nextRatingValues = ratingValues.filter((rate) => rate !== filter.value);
     updatedFilter = { prop, type: "list", values: nextRatingValues };
+  } else if (prop === "price") {
+    const valToRemove = Number(filter.value);
+    let newMin = minPriceValue;
+    let newMax = maxPriceValue;
+
+    if (valToRemove === minPriceValue) {
+      newMin = minPriceFromData;
+      setMinPriceValue(newMin);
+    }
+    
+    if (valToRemove === maxPriceValue) {
+      newMax = maxPriceFromData;
+      setMaxPriceValue(newMax);
+    }
+
+    updatedFilter = { prop, type: "minmax", min: newMin, max: newMax };
   }
 
   // ✅ 3. Apply the updated filter (if valid)

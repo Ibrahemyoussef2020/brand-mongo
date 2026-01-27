@@ -9,30 +9,15 @@ import Link from "next/link";
 import { ProductProps } from "@/types";
 import Image from "next/image";
 import BrowserProduct from "../general/BrowserProduct";
-import { useEffect, useState } from "react";
-import { showProducts } from "@/app/apis";
-import { fetchCategoryProducts } from "@/lib/services";
 
 interface props {
-    category:string,
-    title:string
+    products: ProductProps[],
+    title: string,
+    category: string
 }
 
 
-const AnotherItems = ({category='consumer-sections',title}:props) => {
-    const [products,setProducts] = useState<[]|ProductProps[]>([]);
-
-     const fetchAllProductsFn = async()=>{
-      console.log(category);
-      
-          const data = await fetchCategoryProducts('products' , category)
-          setProducts(data?.data)      
-        }
-
-    useEffect(()=>{
-      fetchAllProductsFn();
-    },[category])
-
+const AnotherItems = ({products, title, category='consumer-sections'}:props) => {
  if (products?.length) {
   return (
     <section className="another-items">

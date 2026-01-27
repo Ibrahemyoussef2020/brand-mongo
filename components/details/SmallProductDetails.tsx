@@ -1,4 +1,3 @@
-
 import { ProductProps } from "@/types"
 import Image from "next/image";
 
@@ -10,15 +9,18 @@ import DetailsSmallSlider from "./DetailsSmallSlider";
 import ToggleFav from "../general/ToggleFav";
 import AddRemoveCart from "../general/AddRemoveCart";
 import ProgressNav from "../layout/ProgressNav";
+import { getProductsFromDB } from "@/lib/db/fetchProducts";
 
 interface props {
     product:ProductProps,
     category:string
 }
 
+const SmallProductDetails = async ({product,category}:props) => {
+    // Fetch similar products for AnotherItems
+    const similarResult = await getProductsFromDB({ category });
+    const similarProducts = similarResult?.data as unknown as ProductProps[] || [];
 
-const SmallProductDetails = ({product,category}:props) => {
-   
   if (product != null) {
     return (
       <div className="mobile-details">
@@ -172,7 +174,7 @@ const SmallProductDetails = ({product,category}:props) => {
        </div> 
 
       <div className="similar">
-        <AnotherItems category={category} title="Similar products" />
+        <AnotherItems products={similarProducts} category={category} title="Similar products" />
       </div>
        
       </div>

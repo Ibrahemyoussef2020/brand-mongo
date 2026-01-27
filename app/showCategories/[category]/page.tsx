@@ -339,7 +339,7 @@ const handleFilter = async (filterData: FilterProps, isAdded: boolean) => {
 
               
               <Results products={products} category={category} maxCountProducts={maxCountProducts} handleFilter={handleFilter}/>
-              <AnotherItems title='You may also like' category={category} />
+              <AnotherItems products={products} title='You may also like' category={category} />
               <Pagenations maxCountProducts={maxCountProducts} setMaxCountProducts={setMaxCountProducts} />
             </div>
           </div>

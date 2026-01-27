@@ -8,7 +8,7 @@ import { ProductProps } from "@/types";
 import LargeProductDetails from "@/components/details/LargeProductDetails";
 import SmallProductDetails from "@/components/details/SmallProductDetails";
 import ProgressNav from "@/components/layout/ProgressNav";
-import { fetchSingleProduct } from "@/lib/services";
+import { getSingleProductFromDB } from "@/lib/db/fetchProducts";
 
 interface prop {
   category: string;
@@ -24,8 +24,7 @@ const page = async ({ params }: ParamsProps) => {
   const { category, item } = params;
 
 
-  const {data} = await fetchSingleProduct('products', item);
-  const product = data;
+  const product = await getSingleProductFromDB(item);
 
 
  
@@ -36,8 +35,8 @@ const page = async ({ params }: ParamsProps) => {
       <MenuSidebar />
       <div className="product-details-page">
         <div className="container">
-          <LargeProductDetails product={product as ProductProps} category={category} />
-          <SmallProductDetails product={product as ProductProps} category={category} />
+          <LargeProductDetails product={product as unknown as ProductProps} category={category} />
+          <SmallProductDetails product={product as unknown as ProductProps} category={category} />
         </div>
       </div>
     </>

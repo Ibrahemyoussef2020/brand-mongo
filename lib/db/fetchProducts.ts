@@ -104,6 +104,24 @@ export async function getProductsFromDB(searchParams: URLSearchParams | any) {
   };
 }
 
+export async function getSingleProductFromDB(static_id: string) {
+  await dbConnect();
+  
+  // First try to find in database
+  let product = await ProductModel.findOne({ static_id }).lean();
+  
+  // If not found in DB, try to find in seed data and add to DB
+  if (!product) {
+    const seedProduct = data.products.find((p) => p.static_id === static_id);
+    if (seedProduct) {
+      await ProductModel.create(seedProduct);
+      product = await ProductModel.findOne({ static_id }).lean();
+    }
+  }
+  
+  return product;
+}
+
 // --- Helpers for Recommended Items ---
 
 export async function getRecommendedItemsFromDB() {

@@ -1,4 +1,4 @@
-import { fetchProductsToServer } from "@/app/apis"
+import { getProductsFromDB } from "@/lib/db/fetchProducts"
 import { ProductProps } from "@/types"
 import Image from "next/image"
 import Link from "next/link";
@@ -6,14 +6,15 @@ import Link from "next/link";
 
 const DetailsMayLik = async () => {
   
-  const products = await fetchProductsToServer('home-sections');  
+  const result = await getProductsFromDB({ category: 'home-sections' });
+  const products = result?.data;  
   
   return (
     <div className="may-like right">
     <h2>You may like</h2>
     <div className="products-wrapper">
         {
-            products?.map((product:ProductProps,index:number) =>{
+            (products as unknown as ProductProps[])?.map((product:ProductProps,index:number) =>{
                 const  heading = `${product.title} ${product.description}`
                  if (index < 5) {
                     return <Link href={`/itemDetails/home-sections/${product._id}`} key={product._id}>

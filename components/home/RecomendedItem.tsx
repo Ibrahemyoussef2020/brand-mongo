@@ -1,17 +1,16 @@
-import { fetchProductsToServer } from '@/app/apis';
+import { getRecommendedItemsFromDB } from '@/lib/db/fetchProducts';
 import { ProductProps } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import BrowserProduct from '../general/BrowserProduct';
-import { fetchAllProducts } from '@/lib/services';
 
 
 
 const RecomendedItem = async () => {
 
 
-    const recomendedItems = await fetchAllProducts('recommendedItems');
+    const recomendedItems = await getRecommendedItemsFromDB();
 
 
     if (!recomendedItems?.data) {
@@ -23,7 +22,7 @@ const RecomendedItem = async () => {
             <h2>Recommended items</h2>
             <div>
                 {
-                    recomendedItems?.data?.map((recomendedItem: ProductProps) => {
+                    (recomendedItems?.data as unknown as ProductProps[])?.map((recomendedItem: ProductProps) => {
                         return <article key={recomendedItem._id}>
                             <div className='broweserd-product'>
                                 <div className='img-wrapper'>

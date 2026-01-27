@@ -1,7 +1,6 @@
 import Header from "@/components/layout/Header"
 import MenuSidebar from "@/components/layout/menu-sidebar"
 
-import { showProducts } from "@/app/apis";
 import { ProductProps } from "@/types";
 
 

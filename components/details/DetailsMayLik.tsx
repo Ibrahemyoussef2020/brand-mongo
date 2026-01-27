@@ -1,4 +1,4 @@
-import { getProductsFromDB } from "@/lib/db/fetchProducts"
+import {  getRecommendedItemsFromDB } from "@/lib/db/fetchProducts"
 import { ProductProps } from "@/types"
 import Image from "next/image"
 import Link from "next/link";
@@ -6,8 +6,12 @@ import Link from "next/link";
 
 const DetailsMayLik = async () => {
   
-  const result = await getProductsFromDB({ category: 'home-sections' });
+  const result = await getRecommendedItemsFromDB();
   const products = result?.data;  
+
+
+  console.log("rrrrrrrrrrrrrrrrrrrrrjjjjrrrr" ,result);
+  
   
   return (
     <div className="may-like right">

@@ -9,6 +9,9 @@ import SmallProductDetails from "@/components/details/SmallProductDetails";
 import ProgressNav from "@/components/layout/ProgressNav";
 import { getSingleProductFromDB } from "@/lib/db/fetchProducts";
 
+import { notFound } from "next/navigation";
+
+
 interface prop {
   category: string;
   item: string
@@ -19,33 +22,43 @@ type ParamsProps = {
   searchParams?: { [key: string]: string | string[] | undefined };
 }
 
+
+
+
 const page = async ({ params }: ParamsProps) => {
   const { category, item } = params;
 
+  
 
-  const product = await getSingleProductFromDB(item);
+  const product = await getSingleProductFromDB(item); 
+  
 
+  if (!product) {
+    notFound()
+  }
 
- 
 
   return (
     <>
-      <Header page='details' heading='All products' />
+      <Header page="details" heading="All products" />
       <MenuSidebar />
       <div className="product-details-page">
         <div className="container">
-          <LargeProductDetails product={product as unknown as ProductProps} category={category} />
-          <SmallProductDetails product={product as unknown as ProductProps} category={category} />
+          <LargeProductDetails
+            product={product as unknown as ProductProps}
+            category={category}
+          />
+          <SmallProductDetails
+            product={product as unknown as ProductProps}
+            category={category}
+          />
         </div>
       </div>
     </>
-  )
+  );
+};
 
-}
-
-export default page
-
-/*
+export default page;
 
 
-*/
+

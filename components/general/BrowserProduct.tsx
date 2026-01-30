@@ -4,16 +4,17 @@ import React from 'react'
 
 interface prop {
   section: string,
-  productId: string
+  productId: string,
+  base?:string
 }
 
 const BrowserProduct = (prop: prop) => {
-  const { section, productId } = prop;
+  const { section, productId , base="showSections" } = prop;
   
 
   return (
     <Link
-      href={!productId ? `/showCategories/${section}` : `/itemDetails/${section}/${productId}`}
+      href={!productId ? `/${base}/${section}` : `/itemDetails/${section}/${productId}`}
       className='browser-product'>
       <span>Details</span>
       <Image

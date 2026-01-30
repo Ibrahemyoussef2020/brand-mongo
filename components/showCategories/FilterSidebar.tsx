@@ -8,10 +8,10 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import {toggleMobileAsideFilter} from '@/redux/slices';
 import { IRootState } from '@/redux/store';
-import FilterTrack from './fsidebarfilters/FilterTrack';
-import FilterBoolean from './fsidebarfilters/FilterBoolean';
-import FilterList from './fsidebarfilters/FilterList';
-import FilterCustom from './fsidebarfilters/FilterCustom';
+import FilterTrack from './sidebarfilters/FilterTrack';
+import FilterBoolean from './sidebarfilters/FilterBoolean';
+import FilterList from './sidebarfilters/FilterList';
+import FilterCustom from './sidebarfilters/FilterCustom';
 
 
 

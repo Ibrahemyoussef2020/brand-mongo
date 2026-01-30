@@ -3,9 +3,9 @@
 import Header from "@/components/layout/Header"
 import MenuSidebar from "@/components/layout/menu-sidebar"
 import FilterSidebar from "@/components/showCategories/FilterSidebar";
-import Results from "@/components/showCategories/Results";
-import ProgressNav from "@/components/layout/ProgressNav";
-import FilterNav from "@/components/showCategories/FilterNav";
+import ResultsSection from "@/components/showSections/ResultsSection";
+import ProgressNavSection from "@/components/showSections/ProgressNavSection";
+import FilterNavSection from "@/components/showSections/FilterNavSection";
 import FiltersSelected from "@/components/showCategories/FiltersSelected";
 import Pagenations from "@/components/showCategories/Pagenations";
 import Subscribe from "@/components/layout/Subscribe";
@@ -18,7 +18,7 @@ import { useShowCategories } from "@/hooks/useShowCategories";
 const page = () => {
     
     const {
-        category,
+        category = '',
         products,
         setProducts,
         constantProducts,
@@ -42,7 +42,7 @@ const page = () => {
     
   return (
     <>
-    <Header page="results" heading={category || ''}/> 
+    <Header page="results" heading={category}/> 
 
     <MenuSidebar />
     
@@ -51,7 +51,7 @@ const page = () => {
 
           <CategoriesLinksSwipper />
 
-          <ProgressNav page="results" category={category || ''} item="" />
+          <ProgressNavSection page="results" section={category} item="" />
 
           <div className={`${design} show-result`}>
 
@@ -69,10 +69,10 @@ const page = () => {
             />
 
             <div className="main">
-              <FilterNav 
+              <FilterNavSection 
                 products={products} 
                 setProducts={setProducts} 
-                category={category || ''}
+                section={category}
                 sort={sort}
                 setSort={(val) => {
                   setSort(val);
@@ -101,8 +101,8 @@ const page = () => {
               />
 
               
-              <Results products={products} category={category || ''} maxCountProducts={maxCountProducts} handleFilter={handleFilter}/>
-              <AnotherItems products={products} title='You may also like' category={category || ''} />
+              <ResultsSection products={products} section={category} maxCountProducts={maxCountProducts} handleFilter={handleFilter}/>
+              <AnotherItems products={products} title='You may also like' category={category} />
               <Pagenations maxCountProducts={maxCountProducts} setMaxCountProducts={setMaxCountProducts} />
             </div>
           </div>

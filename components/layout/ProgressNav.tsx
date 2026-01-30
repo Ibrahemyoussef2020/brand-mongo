@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 interface props{
     page:string,
-    category:string,
+    category:string, 
     item:string
 }
 

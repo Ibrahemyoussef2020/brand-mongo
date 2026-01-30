@@ -20,7 +20,7 @@ interface props {
 const AnotherItems = ({products, title, category='consumer-sections'}:props) => {
  if (products?.length) {
   return (
-    <section className="another-items">
+    <section className="another-items"> 
        <div className="container">
        <h2>{title}</h2>
         <Swiper

@@ -10,25 +10,12 @@ import ToggleFav from "../general/ToggleFav"
 
 interface props{
     products:ProductProps[];
-    category:string;
+    section:string;
     maxCountProducts:number,
     handleFilter:(filterData:FilterProps|any, isAdded:boolean)=>boolean|void|any,
 }
 
-const Results = ({products,category,maxCountProducts,handleFilter}:props) => {
-
-
-    const handleClearFilters = ()=>{
-        handleFilter({
-          prop:null,
-          checked:true,
-          type: 'clear',
-          value: null,
-          values:[],
-         filterFn:(product:ProductProps,filter:FilterProps) => true,
-        } , true)
-      }
-    
+const ResultsSection = ({products,section,maxCountProducts,handleFilter}:props) => {
 
   return  <div className="product-results">
         {
@@ -73,7 +60,7 @@ const Results = ({products,category,maxCountProducts,handleFilter}:props) => {
                                     
                                     <span className="shipping in-list">pluse delivery</span>
                                     }
-                                    <Link href={`/itemDetails/${category}/${product.static_id}`} className="mobile-details in-list">
+                                    <Link href={`/itemDetails/${section}/${product.static_id}`} className="mobile-details in-list">
                                         View details       
                                     </Link>
                                 </div>
@@ -98,11 +85,11 @@ const Results = ({products,category,maxCountProducts,handleFilter}:props) => {
                             {product.section} - {product.color}
                         </p>
 
-                        <Link href={`/itemDetails/${category}/${product.static_id}`} className="details in-list">
+                        <Link href={`/itemDetails/${section}/${product.static_id}`} className="details in-list">
                             View details       
                         </Link>
 
-                        <BrowserProduct section={category} productId={product.static_id} base="showCategories"/>
+                        <BrowserProduct section={section} productId={product.static_id} base="showSections"/>
                     </div>
                 </article>
                 }
@@ -111,6 +98,4 @@ const Results = ({products,category,maxCountProducts,handleFilter}:props) => {
     </div>
 }
 
-export default Results
-
-       
+export default ResultsSection

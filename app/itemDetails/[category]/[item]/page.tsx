@@ -7,7 +7,7 @@ import { ProductProps } from "@/types";
 import LargeProductDetails from "@/components/details/LargeProductDetails";
 import SmallProductDetails from "@/components/details/SmallProductDetails";
 import ProgressNav from "@/components/layout/ProgressNav";
-import { getSingleProductFromDB } from "@/lib/db/fetchProducts";
+import { getSingleProductFromDB } from "@/lib/db/fetchSections";
 
 import { notFound } from "next/navigation";
 
@@ -30,7 +30,7 @@ const page = async ({ params }: ParamsProps) => {
 
   
 
-  const product = await getSingleProductFromDB(item); 
+  const product = await getSingleProductFromDB(item, category); 
   
 
   if (!product) {

@@ -9,7 +9,7 @@ const HomeCover = () => {
     <section className='cover-wrapper'>
     <div className='lists'> 
       <ul>
-        <li><Link href={`showCategories/products/mobiles`}>Automobiles</Link></li>
+        <li><Link href={`showCategories/mobiles`}>Automobiles</Link></li>
         <li><Link href={`showCategories/fashion`}>Clothes and wear</Link></li>
         <li><Link href={`showCategories/kitchen-tools`}>Home interiors</Link></li>
         <li><Link href={`showCategories/computers`}>Computer and tech</Link></li>

@@ -59,7 +59,7 @@ const handleAddToCart = (product:ProductProps)=>{
                 className="custom-slide"
               >
             
-            <article>
+            <article style={{height:"370px"}}>
                 <Image
                     src={`/${product.image}.webp`}
                     alt=""
@@ -68,10 +68,10 @@ const handleAddToCart = (product:ProductProps)=>{
                 />
                 <div className="text">
                     <p className="price">${product.price}</p>
-                    <p className="title-desc">{details.slice(0,20)}...</p>
+                    <p className="title-desc">{details.slice(0,37)}...</p>
                     <div className="type-color">
                       <span>{product.section} -</span>
-                      <span> {product.color}</span>
+                      <span> {product.color.slice(0,10)}</span>
                     </div>
                 </div>
                 <AddRemoveCart product={product} process="add-from-fav-lg" />

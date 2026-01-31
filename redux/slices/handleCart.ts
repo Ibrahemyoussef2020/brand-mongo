@@ -19,6 +19,11 @@ const cartSlice = createSlice({
     name : "Cart",
     initialState,
     reducers:{
+        setCart: (state, action) => {
+            state.products = action.payload.items || [];
+            state.bill = action.payload.bill || 0;
+            state.productCount = action.payload.items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
+        },
         addToCart:(state,action)=>{
             const addProduct = state.products?.find((product:ProductProps )=> product._id === action.payload.id)
 
@@ -114,6 +119,6 @@ const cartSlice = createSlice({
     }
 })
 
-export const {addToCart,removeFromCart,clearCart,handleProductsQuantity,handleBill,increaseQuantity,decreaseQuantity} = cartSlice.actions
+export const {addToCart,removeFromCart,clearCart,handleProductsQuantity,handleBill,increaseQuantity,decreaseQuantity,setCart} = cartSlice.actions
 
 export default cartSlice.reducer

@@ -1,4 +1,5 @@
 
+import url from "@/config";
 import { ProductProps } from "@/types";
 import axios from "axios";
 import { log } from "node:console";

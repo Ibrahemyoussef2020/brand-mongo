@@ -12,15 +12,40 @@ import { IRootState } from "@/redux/store"
 import React from "react"
 import EmptyCart from "./EmptyCart"
 
+import { fetchCart, removeFromCartAPI, clearCartAPI } from "@/lib/services/cartService";
+import { useEffect } from "react";
+import { setCart } from "@/redux/slices";
+
 const CartLarge = () => {
     
     const dispatch = useDispatch()
     const {products} = useSelector((state:IRootState) => state.combine.cart)
     const {productCount} = useSelector((state:IRootState) => state.combine.cart)
     const router = useRouter()
+
+    useEffect(() => {
+        const loadCart = async () => {
+            try {
+                const cartData = await fetchCart();
+                // Normalize backend data to match ProductProps (backend uses 'product' as ID, frontend uses '_id')
+                if (cartData && cartData.items) {
+                    cartData.items = cartData.items.map((item:any) => ({
+                        ...item,
+                        _id: item.product, 
+                        // Ensure other required props exist or are handled
+                    }));
+                }
+                dispatch(setCart(cartData));
+            } catch (error) {
+                console.error("Failed to load cart", error);
+            }
+        };
+        loadCart();
+    }, [dispatch]);
   
     const handleModifyQuantity = (e:React.ChangeEvent<HTMLSelectElement> ,id:string)=>{
-
+        // User asked for persistence.
+        
         const newQuantity = {
             id:id,
             value:+e.target.value
@@ -36,7 +61,27 @@ const CartLarge = () => {
 
   const handleSaveForLater = (product:ProductProps)=>{
     dispatch(addToFavStore(product));
-    dispatch(removeFromCart(product._id))
+    handleRemoveItem(product._id);
+  }
+
+  const handleRemoveItem = async (id: string) => {
+      try {
+          // Optimistic update
+          dispatch(removeFromCart(id));
+          await removeFromCartAPI(id);
+      } catch (error) {
+          console.error("Failed to remove item", error);
+          // Ideally revert state here on error
+      }
+  }
+
+  const handleClearCart = async () => {
+      try {
+          dispatch(clearCart());
+          await clearCartAPI();
+      } catch (error) {
+          console.error("Failed to clear cart", error);
+      }
   }
 
 
@@ -86,7 +131,7 @@ const CartLarge = () => {
                                         <span>{product.brand} agent,</span>
                                     </div>
                                     <div className="buttons">
-                                        <button className="remove" onClick={_=>dispatch(removeFromCart(product._id))}>Remove</button>
+                                        <button className="remove" onClick={_=>handleRemoveItem(product._id)}>Remove</button>
                                         <button className="add-fav" onClick={_=>handleSaveForLater(product)}>Save for later</button>
                                     </div>
                                 </div>
@@ -125,7 +170,7 @@ const CartLarge = () => {
                             />
                             <span>Back to shop</span>
                         </button>
-                        <button className="remove" onClick={_=> dispatch(clearCart())}>Remove all</button>
+                        <button className="remove" onClick={handleClearCart}>Remove all</button>
                    </div> 
                 </div>
                 <PaymentFeatures/>

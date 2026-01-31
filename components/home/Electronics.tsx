@@ -12,8 +12,8 @@ const Electronics = () => {
             </div>
             <div className='img-wrapper'>
                 <div className='text'>
-                    <h2>Consumer<br/> electronics and<br/> gadgets</h2>
-                    <Link className='source' href='/showCategories/home-sections' target='_blank'>Source now</Link>  
+                    <h2>Consumer<br/> electronics</h2>
+                    <Link className='source' href='/showSections/homeConsumer'>Source now</Link>  
                 </div>
                 <Image
                     src='/images/consumer-electronics.webp'

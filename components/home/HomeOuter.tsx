@@ -13,7 +13,7 @@ const HomeOuter = () => {
             <div className='img-wrapper'>
                 <div className='text'>
                     <h2>Home and <br/> outdoor</h2>
-                    <Link className='source' href='/showCategories/home-sections' target='_blank'>Source now</Link>  
+                    <Link className='source' href='/showSections/homeOutdoor'>Source now</Link>  
                 </div>
                 <Image
                     src='/images/home-outer.webp'

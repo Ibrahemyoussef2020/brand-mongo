@@ -1,4 +1,4 @@
-import url from "@/config";
+
 import { ProductProps } from "@/types";
 import axios from "axios";
 import { log } from "node:console";
@@ -29,7 +29,7 @@ export const fetchAllProducts = async (section: string) => {
 
     const baseUrl = getBaseUrl();
 
-    const response = await fetch(`${baseUrl}/api/${section}/seed`, { method: 'GET' });
+    const response = await fetch(`${baseUrl}/api/${section}`, { method: 'GET' });
 
 
     if (!response.ok) {

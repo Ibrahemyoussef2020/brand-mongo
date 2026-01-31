@@ -71,7 +71,7 @@ const BothHomeElectricSwiper = ({section}:prop) => {
                     <p>From USD 19</p>  
                   </div>
 
-                  <BrowserProduct section={section} productId={product._id} />
+                  <BrowserProduct section={section} productId={product.static_id} />
 
                 </div>
               </SwiperSlide>

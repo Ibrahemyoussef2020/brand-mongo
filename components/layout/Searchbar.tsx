@@ -37,9 +37,7 @@ const Searchbar = ({size = 'pc'}:prop) => {
   }
   
 
-  useEffect(()=>{
-    fetchAllProductsFn()  
-  },[sug])
+
     
 
     const handleSug  = (e:React.FormEvent<HTMLInputElement>)=>{
@@ -65,9 +63,12 @@ const Searchbar = ({size = 'pc'}:prop) => {
     dispatch(toggleSuggegtionsDrop([]))
   }
 
-  const handleDrop = ()=>{
+  const handleDrop = async () => {
+    if (sugList.length === 0) {
+      await fetchAllProductsFn();
+    }
     setCloseClass('visible');
-    dispatch(toggleSuggegtionsDrop(sugList))  
+    dispatch(toggleSuggegtionsDrop(sugList));
   }
 
   return (
@@ -121,7 +122,7 @@ const Searchbar = ({size = 'pc'}:prop) => {
               value={sug}
               placeholder="Search"
               onChange={handleSug}
-              onFocus={_=>dispatch(toggleSuggegtionsDrop(sugList))}
+              onFocus={handleDrop}
           />
           <button className={`search_close ${closeClass}`}  onClick={_=>handleCloseDrop()}>
           <FontAwesomeIcon icon={faXmark} />

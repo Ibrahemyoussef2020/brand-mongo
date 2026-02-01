@@ -15,11 +15,12 @@ import { useState } from "react"
 import { customStringIncludes } from "@/utilities"
 import { IRootState } from "@/redux/store"
 import EmptyCart from "./EmptyCart"
+import { AppDispatch } from "@/redux/store"
 
 const CartSmall = () => {
   const [moreList ,setMoreList] = useState<string[]|[]>([])
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const {products} = useSelector((state:IRootState) => state.combine.cart)
   const {bill} = useSelector((state:IRootState) => state.combine.cart)
   const {productCount} = useSelector((state:IRootState) => state.combine.cart)

@@ -12,6 +12,7 @@ import { IRootState } from "@/redux/store"
 import React, { useEffect } from "react"
 import EmptyCart from "./EmptyCart"
 import { AppDispatch } from "@/redux/store"
+import Stripe from "../orders/Stripe"
 
 const CartLarge = () => {
     
@@ -179,7 +180,8 @@ const CartLarge = () => {
                         <p>${bill}</p>
                     </div>
 
-                    <button className="buy" onClick={handleByProcess}>Checkout</button>
+                    {/* <button className="buy" onClick={handleByProcess}>Checkout</button> */}
+                    <Stripe />
 
                     <div className="payment">
                         <Link href='#' className="not-allowed">

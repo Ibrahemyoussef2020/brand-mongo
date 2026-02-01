@@ -1,124 +1,122 @@
 import { ProductProps } from "@/types";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const strorageProducts:ProductProps[] | [] = []
-const stroragePurchases:ProductProps[] | [] = []
-const productCount:number = 0
-const theBill:number = 0
-const theFinalBill:number = 0
+// Helper for type safety if needed, but existing code was loose.
 
 const initialState = {
-    products:strorageProducts,
-    purchases:stroragePurchases,
-    productCount:productCount,
-    bill:theBill,
-    finalBill:theFinalBill      
-}
+    products: [] as ProductProps[],
+    purchases: [] as ProductProps[],
+    productCount: 0,
+    bill: 0,
+    finalBill: 0,
+    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+    error: null as string | null
+};
+
+// Async Thunks
+export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
+    const response = await axios.get("/api/cart");
+    return response.data;
+});
+
+export const addToCart = createAsyncThunk("cart/addToCart", async (product: any) => {
+    // product payload should match structure expected by API
+    // Mapping _id to product if needed
+    const payload = { ...product };
+    if (!payload.product && payload._id) {
+        payload.product = payload._id;
+    }
+
+    const response = await axios.post("/api/cart", payload);
+    return response.data;
+});
+
+export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (productId: string) => {
+    const response = await axios.delete("/api/cart", { data: { productId } }); 
+    return response.data;
+});
+
+export const increaseQuantity = createAsyncThunk("cart/increaseQuantity", async (productId: string) => {
+    const response = await axios.patch("/api/cart", { productId, action: 'increase' });
+    return response.data;
+});
+
+export const decreaseQuantity = createAsyncThunk("cart/decreaseQuantity", async (productId: string) => {
+    const response = await axios.patch("/api/cart", { productId, action: 'decrease' });
+    return response.data;
+});
+
+export const handleProductsQuantity = createAsyncThunk("cart/handleProductsQuantity", async (payload: { id: string, value: number }) => {
+    const response = await axios.patch("/api/cart", { productId: payload.id, action: 'set', value: payload.value });
+    return response.data;
+});
+
+export const clearCart = createAsyncThunk("cart/clearCart", async () => {
+    const response = await axios.delete("/api/cart", { data: {} }); 
+    return response.data;
+});
 
 const cartSlice = createSlice({
-    name : "Cart",
+    name: "Cart",
     initialState,
-    reducers:{
+    reducers: {
         setCart: (state, action) => {
-            state.products = action.payload.items || [];
+            const items = action.payload.items?.map((item: any) => ({
+                ...item,
+                _id: item.product || item._id
+            })) || [];
+
+            state.products = items;
             state.bill = action.payload.bill || 0;
-            state.productCount = action.payload.items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
+            state.productCount = items.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
+            state.finalBill = state.bill;
+            state.purchases = state.products;
         },
-        addToCart:(state,action)=>{
-            const addProduct = state.products?.find((product:ProductProps )=> product._id === action.payload.id)
+        handleBill: (state) => {
+             state.finalBill = state.bill;
+             state.purchases = state.products;
+        }
+    },
+    extraReducers: (builder) => {
+        const updateState = (state: any, action: any) => {
+             // Normalize items: map 'product' (ID) to '_id' so components use the correct ID.
+             const items = action.payload.items?.map((item: any) => ({
+                ...item,
+                _id: item.product || item._id
+            })) || [];
 
-            if(addProduct){ 
-                const quantity = addProduct.quantity + 1;//action.payload.quantity;
-                const total = (addProduct.total + action.payload.total) - addProduct.deliveryPrice;
+            state.products = items;
+            state.bill = action.payload.bill || 0;
+            state.productCount = items.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
+            state.status = 'succeeded';
+        };
 
-                state.productCount = state.productCount + quantity;
-                state.bill = state.bill + total;
-                state.products = state.products.map(product => product._id === product._id ? {...product,quantity:quantity,total:total} : product)
-
-            }else{
-                state.productCount = state.productCount + action.payload.quantity;
-                state.bill = state.bill + action.payload.total
-                state.products = [...state.products,action.payload]               
-            }
-
-        },
-        removeFromCart:(state,action)=>{
-            const deletedProduct = state.products?.find(product => product._id === action.payload)
-
-            if (deletedProduct && state.products.length) {           
-
-                    state.bill = state.bill - deletedProduct.total
-                    state.productCount = state.productCount - deletedProduct.quantity
-                    state.products = state.products.filter(product => product._id !== action.payload);
-                           
-            }
-
-        },
-        clearCart:(state)=>{
-            state.bill = 0;
-            state.productCount = 0;
-            state.products = [];                         
-        },
-        handleProductsQuantity:(state,action)=>{
-            const modifiedProduct = state.products.find(product => product._id == action.payload.id)
-            
-            if (modifiedProduct) {
-
-                if (modifiedProduct.quantity > +action.payload.value) {
-                    
-                    const quantityDifference = modifiedProduct.quantity - action.payload.value;
-                    const priceDifference = quantityDifference * modifiedProduct.price;
-
-                    state.productCount = state.productCount - quantityDifference;
-                    state.bill = state.bill - priceDifference;
-                    state.products = state.products.map(product => product._id === action.payload.id ? {...product,quantity:action.payload.value,total:product.total - priceDifference} : product)        
-                }
-                else if (modifiedProduct.quantity < +action.payload.value){
-
-                    const quantityDifference =  action.payload.value - modifiedProduct.quantity;
-                    const priceDifference = quantityDifference * modifiedProduct.price;
-
-                    state.productCount = state.productCount + quantityDifference;
-                    state.bill = state.bill + priceDifference;
-                    state.products = state.products.map(product => product._id === action.payload.id ? {...product,quantity:action.payload.value,total:product.total + priceDifference} : product)
-                }
-    
-            }
-
-        },
-        handleBill:(state)=>{
-  
-            state.finalBill = state.bill
-            state.purchases = state.products
-            
-        },
-        increaseQuantity:(state,action)=>{
-            const increasedProduct = state.products.find(product => product._id === action.payload);
-
-            if (increasedProduct) {
-             const quantity = increasedProduct.quantity + 1;
-             const total = increasedProduct.total + increasedProduct.price;
-  
-              state.productCount = state.productCount + 1;
-              state.bill = state.bill + increasedProduct.price;
-              state.products = state.products.map(product => product._id === action.payload ? {...product,quantity:quantity,total:total} : product) 
-            }
-        },
-        decreaseQuantity:(state,action)=>{
-           const decreasedProduct = state.products.find(product => product._id === action.payload);
-
-           if (decreasedProduct && decreasedProduct.quantity > 1) {
-            const quantity = decreasedProduct.quantity - 1;
-            const total = decreasedProduct.total - decreasedProduct.price;
- 
-             state.productCount = state.productCount - 1;
-             state.bill = state.bill - decreasedProduct.price;
-             state.products = state.products.map(product => product._id === action.payload ? {...product,quantity:quantity,total:total} : product) 
-           }
-        },
+        builder
+            .addCase(fetchCart.fulfilled, updateState)
+            .addCase(addToCart.fulfilled, updateState)
+            .addCase(removeFromCart.fulfilled, updateState)
+            .addCase(increaseQuantity.fulfilled, updateState)
+            .addCase(decreaseQuantity.fulfilled, updateState)
+            .addCase(handleProductsQuantity.fulfilled, updateState)
+            .addCase(clearCart.fulfilled, (state) => {
+                 state.products = [];
+                 state.bill = 0;
+                 state.productCount = 0;
+                 state.finalBill = 0;
+                 state.purchases = [];
+                 state.status = 'succeeded';
+            })
+            .addCase(fetchCart.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || "Failed to fetch cart";
+            })
+            .addCase(addToCart.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || "Failed to add to cart";
+            });
     }
-})
+});
 
-export const {addToCart,removeFromCart,clearCart,handleProductsQuantity,handleBill,increaseQuantity,decreaseQuantity,setCart} = cartSlice.actions
-
-export default cartSlice.reducer
+export const { setCart, handleBill } = cartSlice.actions; 
+export default cartSlice.reducer;

@@ -86,5 +86,5 @@ export {
 }
 //export type IRootState = ReturnType<typeof store.combineReducer>
 export type IRootState = ReturnType<typeof store.getState>
-
+export type AppDispatch = typeof store.dispatch;
 

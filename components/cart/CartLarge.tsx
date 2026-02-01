@@ -1,5 +1,5 @@
 'use client'
-import { addToFavStore, clearCart, handleBill, handleProductsQuantity, removeFromCart } from "@/redux/slices"
+import { addToFavStore, clearCart, handleBill, handleProductsQuantity, removeFromCart, fetchCart, setCart } from "@/redux/slices"
 import { ProductProps } from "@/types"
 import Image from "next/image"
 import Link from "next/link"
@@ -9,48 +9,26 @@ import DiscountBanner from "../general/DiscountBanner"
 import SavedForLater from "../general/SavedForLater"
 import PaymentFeatures from "../general/PaymentFeatures"
 import { IRootState } from "@/redux/store"
-import React from "react"
+import React, { useEffect } from "react"
 import EmptyCart from "./EmptyCart"
-
-import { fetchCart, removeFromCartAPI, clearCartAPI } from "@/lib/services/cartService";
-import { useEffect } from "react";
-import { setCart } from "@/redux/slices";
+import { AppDispatch } from "@/redux/store"
 
 const CartLarge = () => {
     
-    const dispatch = useDispatch()
-    const {products} = useSelector((state:IRootState) => state.combine.cart)
-    const {productCount} = useSelector((state:IRootState) => state.combine.cart)
+    // Use AppDispatch if available or fallback to any
+    const dispatch = useDispatch<AppDispatch>() 
+    const {products, productCount, bill} = useSelector((state:IRootState) => state.combine.cart)
     const router = useRouter()
 
     useEffect(() => {
-        const loadCart = async () => {
-            try {
-                const cartData = await fetchCart();
-                // Normalize backend data to match ProductProps (backend uses 'product' as ID, frontend uses '_id')
-                if (cartData && cartData.items) {
-                    cartData.items = cartData.items.map((item:any) => ({
-                        ...item,
-                        _id: item.product, 
-                        // Ensure other required props exist or are handled
-                    }));
-                }
-                dispatch(setCart(cartData));
-            } catch (error) {
-                console.error("Failed to load cart", error);
-            }
-        };
-        loadCart();
+        dispatch(fetchCart());
     }, [dispatch]);
   
     const handleModifyQuantity = (e:React.ChangeEvent<HTMLSelectElement> ,id:string)=>{
-        // User asked for persistence.
-        
         const newQuantity = {
             id:id,
             value:+e.target.value
         }
-    
         dispatch(handleProductsQuantity(newQuantity))
     }  
 
@@ -61,29 +39,24 @@ const CartLarge = () => {
 
   const handleSaveForLater = (product:ProductProps)=>{
     dispatch(addToFavStore(product));
-    handleRemoveItem(product._id);
+    dispatch(removeFromCart(product._id));
   }
 
-  const handleRemoveItem = async (id: string) => {
-      try {
-          // Optimistic update
-          dispatch(removeFromCart(id));
-          await removeFromCartAPI(id);
-      } catch (error) {
-          console.error("Failed to remove item", error);
-          // Ideally revert state here on error
-      }
+  const handleRemoveItem = (id: string) => {
+      dispatch(removeFromCart(id));
   }
 
-  const handleClearCart = async () => {
-      try {
-          dispatch(clearCart());
-          await clearCartAPI();
-      } catch (error) {
-          console.error("Failed to clear cart", error);
-      }
+  const handleClearCart = () => {
+       dispatch(clearCart());
   }
 
+  // Helper to resolve image path
+  const resolveImage = (imagePath: string) => {
+
+      if (!imagePath) return "/images/placeholder.webp"; // Fallback or empty
+      if (imagePath.includes('.')) return `/${imagePath}`;
+      return `/${imagePath}.webp`;
+  }
 
   return (
     <div className="large-cart">
@@ -98,13 +71,13 @@ const CartLarge = () => {
                     products.length ?
                     
                     products?.map((product:ProductProps) => {
-                        const details = `${product.title} ${product.description}`
+                        const details = `${product.title}`
 
-                        return <article key={product._id + product.static_id + Math.random()}>
+                        return <article key={product._id + Math.random()}>
                             <div className="left">
-                                <div className="img-wrapper">
+                                <div className="img-wrapper ">
                                     <Image
-                                        src={`/${product.image}.webp`}
+                                        src={resolveImage(product.image)}
                                         alt=""
                                         height={60}
                                         width={60}
@@ -138,9 +111,9 @@ const CartLarge = () => {
                             </div>
 
                             <div className="right">
-                                <p>$00,{product.total}</p>
+                                <p>${product.total}</p>
                                 <div className="select-wrapper">
-                                    <select id="select-count" name="select-count" onChange={(e)=> handleModifyQuantity(e,product._id)}>
+                                    <select id="select-count" name="select-count" onChange={(e)=> handleModifyQuantity(e,product._id)} value={product.quantity}>
                                         <option value={product.quantity}>Qty: {product.quantity}</option>
                                         <option value="1">Qty: 1</option>
                                         <option value="2">Qty: 2</option>
@@ -189,21 +162,21 @@ const CartLarge = () => {
                     <div className="buy-card__details">
                         <article>
                             <h3>Subtotal:</h3>
-                            <span>$1403.97</span>
+                            <span>${bill}</span>
                         </article>
                         <article>
                             <h3>Discount:</h3>
-                            <span>$1403.97</span>
+                            <span>$0</span>
                         </article>
                         <article>
                             <h3>Tax:</h3>
-                            <span>$1403.97</span>
+                            <span>$0</span>
                         </article>
                     </div>
 
                     <div className="total">
                         <h3>Total:</h3>
-                        <p>$1403.97</p>
+                        <p>${bill}</p>
                     </div>
 
                     <button className="buy" onClick={handleByProcess}>Checkout</button>

@@ -14,7 +14,7 @@ import { showProducts } from "@/app/apis";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromFavStore } from "@/redux/slices";
 import AddRemoveCart from "./AddRemoveCart";
-import { IRootState } from "@/redux/store";
+import { IRootState, AppDispatch } from "@/redux/store";
 
 
 interface props {
@@ -25,10 +25,11 @@ interface props {
 const SavedForLater = () => {
    
 const {favorites} = useSelector((state:IRootState) => state.combine.fav);
-const dispatch = useDispatch()
+const dispatch = useDispatch<AppDispatch>()
 
 
 const handleAddToCart = (product:ProductProps)=>{
+    
   dispatch(addToCart(product));
   dispatch(removeFromFavStore(product._id))
 }
@@ -68,10 +69,10 @@ const handleAddToCart = (product:ProductProps)=>{
                 />
                 <div className="text">
                     <p className="price">${product.price}</p>
-                    <p className="title-desc">{details.slice(0,37)}...</p>
+                    <p className="title-desc">{details?.slice(0,37)}...</p>
                     <div className="type-color">
                       <span>{product.section} -</span>
-                      <span> {product.color.slice(0,10)}</span>
+                      <span> {product.color?.slice(0,10)}</span>
                     </div>
                 </div>
                 <AddRemoveCart product={product} process="add-from-fav-lg" />

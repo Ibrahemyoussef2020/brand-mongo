@@ -38,17 +38,20 @@
                     .left{
                         display: flex;
                         align-items: flex-start;
-                        gap: 10px;
+                        gap: 1rem;
                 
                         .img-wrapper{
                             padding: 10px 9px 11px;
                             border: 1px solid $gray_300;
                             border-radius: 6px;
                             background: #fefefe;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
                         }
                 
                         .details{
-                            flex: 1;
+                            flex: 1; 
                             h3{
                                 font-size: 1rem;
                                 font-weight: 400;

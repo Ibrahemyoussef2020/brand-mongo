@@ -11,7 +11,7 @@ import { IRootState } from "@/redux/store";
 
 const MenuSidebar = () => {
     
-    const dispatch = useDispatch();
+    const dispatch =useDispatch<AppDispatch>();
     const {isOppend } =  useSelector((state:IRootState )=> state.combine.aside)
     
   return (

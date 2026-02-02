@@ -31,7 +31,7 @@ const FilterSidebar = (props:FilterSidebarProps) => {
   } = props;
 
 
-  const dispatch = useDispatch();
+  const dispatch =useDispatch<AppDispatch>();
   const {isOppend } =  useSelector((state:IRootState)=> state.combine.asideFilter)
 
   const {

@@ -14,7 +14,7 @@ import { IRootState } from '@/redux/store'
 
 const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortStrategy, design, setDesign, filterSelectedList, filtersClear, setFiltersClear, maxCountProducts, handleFilter }: FilterNavprops) => {
 
-  const dispatch = useDispatch()
+  const dispatch =useDispatch<AppDispatch>()
   const { isOppend } = useSelector((state: IRootState) => state.combine.asideFilter)
   const verifiedRef = useRef<any>();
 

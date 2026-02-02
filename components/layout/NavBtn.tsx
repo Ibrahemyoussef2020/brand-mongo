@@ -8,7 +8,7 @@ import { IRootState } from "@/redux/store";
 
 const NavBtn = () => {
 
-    const dispatch = useDispatch()
+    const dispatch =useDispatch<AppDispatch>()
     const {isOppend } =  useSelector((state:IRootState )=> state.combine.aside)
     
   return (

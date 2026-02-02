@@ -8,7 +8,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {addToFavStore, removeFromFavStore} from '@/redux/slices'
 import { ProductProps } from '@/types';
-import { IRootState } from '@/redux/store';
+import { AppDispatch, IRootState } from '@/redux/store';
 
 
 interface props{
@@ -18,7 +18,7 @@ interface props{
 
 const ToggleFav = ({product , component}:props) => {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const {favorites} = useSelector((state:IRootState) => state.combine.fav)
 
  

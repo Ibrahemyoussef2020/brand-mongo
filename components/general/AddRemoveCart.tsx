@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {addToCart, addToFavStore, removeFromCart, removeFromFavStore} from '@/redux/slices'
 import { ProductProps } from '@/types';
 import Image from 'next/image';
-import { IRootState } from '@/redux/store';
+import { AppDispatch, IRootState } from '@/redux/store';
 
 interface props{
     product:ProductProps,
@@ -14,7 +14,7 @@ interface props{
 
 
 const AddRemoveCart = ({product,process='add' }:props) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const {products} = useSelector((state:IRootState) => state.combine.cart)
 
     const addToCartProduct = ()=>{

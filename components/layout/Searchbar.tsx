@@ -27,7 +27,7 @@ const Searchbar = ({size = 'pc'}:prop) => {
   const [closeClass,setCloseClass] = useState('hidden');
   const {suggegtionsFromRedux} =  useSelector((state:IRootState )=> state.combine.suggegtions)
 
-  const dispatch = useDispatch()
+  const dispatch =useDispatch<AppDispatch>()
   const router = useRouter()
 
     

@@ -15,7 +15,7 @@ interface FilterNavSectionProps extends Omit<FilterNavprops, 'category'> {
 
 const FilterNavSection = ({ products, setProducts, section, sort, setSort, design, setDesign, filterSelectedList, filtersClear, setFiltersClear, maxCountProducts, handleFilter }: FilterNavSectionProps) => {
 
-  const dispatch = useDispatch()
+  const dispatch =useDispatch<AppDispatch>()
   const { isOppend } = useSelector((state: IRootState) => state.combine.asideFilter)
   const verifiedRef = useRef<any>();
 

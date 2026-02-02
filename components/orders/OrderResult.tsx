@@ -17,7 +17,7 @@ import EmptyCart from "../cart/EmptyCart";
 
 const OrderResult = () => {
 
-  const dispatch = useDispatch()
+  const dispatch =useDispatch<AppDispatch>()
   const {purchases} = useSelector((state:IRootState) => state.combine.cart)
   const {products} = useSelector((state:IRootState) => state.combine.cart)
   const router = useRouter()

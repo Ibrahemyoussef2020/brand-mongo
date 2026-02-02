@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import {toggleMobileAsideFilter} from '@/redux/slices';
-import { IRootState } from '@/redux/store';
+import { AppDispatch, IRootState } from '@/redux/store';
 import FilterTrack from './sidebarfilters/FilterTrack';
 import FilterBoolean from './sidebarfilters/FilterBoolean';
 import FilterList from './sidebarfilters/FilterList';

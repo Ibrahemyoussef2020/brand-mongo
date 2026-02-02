@@ -5,7 +5,7 @@ import { sortLists } from '@/utilities'
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleMobileAsideFilter } from '@/redux/slices';
 import Image from 'next/image'
-import { IRootState } from '@/redux/store'
+import { AppDispatch, IRootState } from '@/redux/store'
 import React, { useEffect, useRef } from 'react'
 
 

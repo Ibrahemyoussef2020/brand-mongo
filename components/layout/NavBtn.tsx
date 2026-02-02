@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { toggleAside } from "@/redux/slices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { IRootState } from "@/redux/store";
+import { AppDispatch, IRootState } from "@/redux/store";
 
-const NavBtn = () => {
+const NavBtn = () => { 
 
     const dispatch =useDispatch<AppDispatch>()
     const {isOppend } =  useSelector((state:IRootState )=> state.combine.aside)

@@ -10,7 +10,7 @@ import {faMagnifyingGlass, faXmark} from '@fortawesome/free-solid-svg-icons'
 import Link from "next/link"
 import { ProductProps } from "@/types"
 import { useRouter } from "next/navigation"
-import { IRootState } from "@/redux/store"
+import { AppDispatch, IRootState } from "@/redux/store"
 import { fetchAllProducts } from "@/lib/services"
 
 

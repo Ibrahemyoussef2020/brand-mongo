@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleAside  } from "@/redux/slices";
-import { IRootState } from "@/redux/store";
+import { AppDispatch, IRootState } from "@/redux/store";
 
 
 const MenuSidebar = () => {

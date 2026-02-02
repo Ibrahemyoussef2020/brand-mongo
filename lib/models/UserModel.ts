@@ -15,7 +15,8 @@ const UserSchema = new mongoose.Schema(
       static_id: { type: String, required: false },
       name: {type: String, required: true},
       email: {type: String,   required: true, unique: true },
-      password: {type: String, required: true},
+      image: { type: String, required: false },
+      password: {type: String, required: false},
       isAdmin: { type: Boolean, required: true, default: false },
     },
     { timestamps: true }

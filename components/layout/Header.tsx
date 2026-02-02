@@ -8,6 +8,7 @@ import {faUser as faRegularUser} from '@fortawesome/free-regular-svg-icons'
 import Link from "next/link"
 import NavBtn from "./NavBtn"
 import HeaderTopLeft from "./HeaderTopLeft"
+import UserMenu from "./UserMenu"
 
 
 interface props {
@@ -27,10 +28,7 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
 
         <Searchbar size="pc" />
         <div className='navigations_pc'>
-          <Link href='/profile' prefetch={false}>
-            <FontAwesomeIcon icon={faUser} width={19} color="gray" />
-            <div>Profile</div>
-          </Link>
+          <UserMenu />
           <Link href='#request' prefetch={false}>
             <FontAwesomeIcon icon={faEnvelopeOpenText} width={19} color="gray" />
             <div>Message</div>

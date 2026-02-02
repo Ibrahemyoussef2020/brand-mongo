@@ -3,21 +3,27 @@ import Stripe from "stripe";
 import dbConnect from "@/lib/dbConnect";
 import CartModel from "@/lib/models/CartModel";
 
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+
 // Initialize Stripe with secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2026-01-28.clover", // Use latest or pinned version
 });
 
-const TEMP_USER_ID = "temp_user_123"; // TODO: Replace with real auth
-
 export async function POST(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { items, amount } = await req.json();
 
     // Secure calculation: Fetch total from DB to prevent client-side manipulation
     // For now, we trust the cart in DB for the user
     await dbConnect();
-    const cart = await CartModel.findOne({ user: TEMP_USER_ID });
+    const cart = await CartModel.findOne({ user: session.user.id });
 
     if (!cart) {
          return NextResponse.json({ error: "Cart not found" }, { status: 404 });

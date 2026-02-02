@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { IRootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 // Initialize Stripe outside of component to avoid recreating checking on every render
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
@@ -60,15 +61,21 @@ const CheckoutForm = () => {
 const Stripe = () => {
     const [clientSecret, setClientSecret] = useState("");
     const { products, bill } = useSelector((state: IRootState) => state.combine.cart);
+    const router = useRouter();
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
         if(bill > 0){
              axios.post("/api/create-payment-intent", { items: products, amount: bill })
             .then((res) => setClientSecret(res.data.clientSecret))
-            .catch((err) => console.error("Error creating payment intent", err));
+            .catch((err) => {
+                if (err.response && err.response.status === 401) {
+                    router.push("/login");
+                }
+                console.error("Error creating payment intent", err);
+            });
         }
-    }, [bill, products]);
+    }, [bill, products, router]);
 
     const appearance = {
         theme: 'stripe' as const,

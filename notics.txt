@@ -1,4 +1,1 @@
-1-  make test on url for filters for just be insure  
-2- try to handel side bar filters and page and and use helpers function for them
-3- build layout to include sections and categories .
-4- build anthor showResults for anthor sections after aerriving by categories to the lase clean code i can write .
+git commit -m 'pauses stripe untill all authentication  - should make auth now

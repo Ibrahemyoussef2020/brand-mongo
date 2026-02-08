@@ -30,3 +30,15 @@
         }
     }
 }
+
+.stripe-button{
+    width: 100%;
+    max-width: 390px;
+    margin: .5rem auto;
+    height: 40px;
+    background-color: $primary;
+    border: 2px solid $primary;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    color: #fff;
+}

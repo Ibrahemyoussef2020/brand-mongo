@@ -44,22 +44,7 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
         </div>
 
         <div className='navigations_mobile'>
-        <Link href='/cart' prefetch={false}>
-            <Image 
-              src='/images/icons/shopping.png'
-              width={20}
-              height={20}
-              alt=""
-            />
-          </Link>
-          <Link href='/profile' prefetch={false}>
-            <Image 
-              src='/images/icons/user.png'
-              width={16}
-              height={16}
-              alt=""
-              />
-          </Link>
+          <UserMenu />
         </div>
       </div>
 

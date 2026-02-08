@@ -1,4 +1,4 @@
-import { addToCart, removeFromCart, clearCart, handleProductsQuantity, handleBill , increaseQuantity ,decreaseQuantity, setCart, fetchCart } from "./handleCart";
+import { addToCart, removeFromCart, clearCart, handleProductsQuantity, handleBill , increaseQuantity ,decreaseQuantity, setCart, fetchCart, createOrder, fetchOrders } from "./handleCart";
 import {toggleSuggegtionsDrop} from './toggleSuggegtions';
 import { toggleAside } from "./toggleAside";
 import {toggleMobileFilterSuggegtionsDrop} from "./toggleMobileFilterSuggegtions"
@@ -13,4 +13,4 @@ export {default as suggegtionsMobileFilterReducer} from "./toggleMobileFilterSug
 export {default as LogReducer} from "./handleLog"
 export {default as asideFilterSlice} from './toggleMobileAsideFilter'
 export {default as FavReducer} from './handleFavStrore';
-export {addToCart, removeFromCart , clearCart , handleProductsQuantity , handleBill , toggleSuggegtionsDrop , increaseQuantity ,decreaseQuantity, toggleMobileFilterSuggegtionsDrop , toggleAside , logUp ,logOut,toggleMobileAsideFilter , addToFavStore , removeFromFavStore, setCart, fetchCart };
+export {addToCart, removeFromCart , clearCart , handleProductsQuantity , handleBill , toggleSuggegtionsDrop , increaseQuantity ,decreaseQuantity, toggleMobileFilterSuggegtionsDrop , toggleAside , logUp ,logOut,toggleMobileAsideFilter , addToFavStore , removeFromFavStore, setCart, fetchCart, createOrder, fetchOrders };

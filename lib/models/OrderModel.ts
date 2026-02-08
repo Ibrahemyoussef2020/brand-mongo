@@ -14,8 +14,9 @@ const OrderSchema = new mongoose.Schema(
             }
         ],
         totalBill: { type: Number, required: true },
-        status: { type: String, default: "Pending" }, // Pending, Processing, Delivered, Cancelled
+        status: { type: String, default: "Pending" }, // Pending, Paid, Processing, Delivered, Cancelled
         shippingAddress: { type: String, default: "" },
+        paymentIntentId: { type: String, default: null }, // Stripe payment intent ID
     },
     { timestamps: true }
 );

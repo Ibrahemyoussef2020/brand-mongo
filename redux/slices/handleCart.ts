@@ -52,6 +52,16 @@ export const handleProductsQuantity = createAsyncThunk("cart/handleProductsQuant
     return response.data;
 });
 
+export const createOrder = createAsyncThunk("cart/createOrder", async (paymentIntentId: string) => {
+    const response = await axios.post("/api/orders", { paymentIntentId });
+    return response.data;
+});
+
+export const fetchOrders = createAsyncThunk("cart/fetchOrders", async () => {
+    const response = await axios.get("/api/orders");
+    return response.data;
+});
+
 export const clearCart = createAsyncThunk("cart/clearCart", async () => {
     const response = await axios.delete("/api/cart", { data: {} }); 
     return response.data;
@@ -114,6 +124,29 @@ const cartSlice = createSlice({
             .addCase(addToCart.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || "Failed to add to cart";
+            })
+            .addCase(createOrder.fulfilled, (state, action) => {
+                // Move current products to purchases, then clear cart
+                state.purchases = state.products;
+                state.products = [];
+                state.bill = 0;
+                state.productCount = 0;
+                state.finalBill = 0;
+                state.status = 'succeeded';
+            })
+            .addCase(fetchOrders.fulfilled, (state, action) => {
+                // Flatten orders' items into purchases for display
+                const allItems = action.payload.flatMap((order: any) => 
+                    order.items.map((item: any) => ({
+                        ...item,
+                        _id: item.product || item._id,
+                        orderId: order._id,
+                        orderStatus: order.status,
+                        orderDate: order.createdAt
+                    }))
+                );
+                state.purchases = allItems;
+                state.status = 'succeeded';
             });
     }
 });

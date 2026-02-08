@@ -1,6 +1,47 @@
 
 .orders-page{
     margin-top: 20px;
+
+    .order-status-banner {
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        
+        &.processing {
+            background: #e3f2fd;
+            color: #1565c0;
+            
+            .processing {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .spinner {
+                width: 20px;
+                height: 20px;
+                border: 2px solid #1565c0;
+                border-top-color: transparent;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+        }
+        
+        &.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        &.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
     
     .orders-wrapper{
         display: flex;

@@ -9,7 +9,7 @@ import DiscountBanner from "../general/DiscountBanner"
 import SavedForLater from "../general/SavedForLater"
 import PaymentFeatures from "../general/PaymentFeatures"
 import { IRootState } from "@/redux/store"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import EmptyCart from "./EmptyCart"
 import { AppDispatch } from "@/redux/store"
 import Stripe from "../orders/Stripe"
@@ -20,6 +20,7 @@ const CartLarge = () => {
     const dispatch = useDispatch<AppDispatch>() 
     const {products, productCount, bill} = useSelector((state:IRootState) => state.combine.cart)
     const router = useRouter()
+    const [showCheckout, setShowCheckout] = useState(false)
 
     useEffect(() => {
         dispatch(fetchCart());
@@ -180,8 +181,11 @@ const CartLarge = () => {
                         <p>${bill}</p>
                     </div>
 
-                    {/* <button className="buy" onClick={handleByProcess}>Checkout</button> */}
-                    <Stripe />
+                    {showCheckout ? (
+                        <Stripe />
+                    ) : (
+                        <button className="buy" onClick={() => setShowCheckout(true)}>Checkout</button>
+                    )}
 
                     <div className="payment">
                         <Link href='#' className="not-allowed">

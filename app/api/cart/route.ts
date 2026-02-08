@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import CartModel from "@/lib/models/CartModel";
-
-// Dummy user for development until full auth is implemented
-const TEMP_USER_ID = "temp_user_123"; 
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
-    // In real app, get userId from session/token
-    const userId = TEMP_USER_ID; 
+    
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    
+    const userId = session.user.id;
 
     let cart = await CartModel.findOne({ user: userId });
     
@@ -27,7 +31,13 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     await dbConnect();
-    const userId = TEMP_USER_ID;
+    
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    
+    const userId = session.user.id;
     const body = await req.json();
     const { product, quantity, price, title, image, total, deliveryPrice } = body;
 
@@ -81,7 +91,13 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
     try {
         await dbConnect();
-        const userId = TEMP_USER_ID;
+        
+        const session = await getServerSession(authOptions);
+        if (!session || !session.user) {
+          return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+        
+        const userId = session.user.id;
         const body = await req.json();
         const { productId, action, value } = body; 
         // action: 'increase' | 'decrease' | 'set'
@@ -138,7 +154,13 @@ export async function PATCH(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
     try {
         await dbConnect();
-        const userId = TEMP_USER_ID; 
+        
+        const session = await getServerSession(authOptions);
+        if (!session || !session.user) {
+          return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+        
+        const userId = session.user.id;
         const { productId } = await req.json(); 
 
         if (productId) {

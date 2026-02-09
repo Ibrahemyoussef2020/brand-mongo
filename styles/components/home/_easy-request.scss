@@ -5,12 +5,12 @@
     margin-bottom: 20px;
 
     &:hover{
-        form{
+        .inquiry-form{
             transform: perspective(500px) translateZ(50px) !important;
         }
     }
 
-    &:has(form.visible){
+    &:has(.inquiry-form.visible){
         height: 285px;
     }
 
@@ -46,6 +46,7 @@
         max-width: 350px;
         padding: 0;
         transition: width .3s ease-in-out , padding .1s ease-in-out;
+        pointer-events: none;
 
         @include min-width($medium_size){
             margin-top: 10px;
@@ -54,6 +55,7 @@
         &.visible{
             width: 100%;
             max-width: 350px;
+            pointer-events: auto;
            @include min-max-width(0,$medium_size){
             padding: 25px 23px 34px;
            }
@@ -99,7 +101,7 @@
        /// form
        /// 
        
-       form{
+       .inquiry-form{
         overflow: hidden;
         width: 0;
         margin: .7rem 1rem;
@@ -112,8 +114,11 @@
         transition: transform .5s ease-in-out ;
 
         &.visible{
+            position: relative;
+            z-index: 10;
             width: 100%;
             max-width: 491px;
+            overflow: visible !important;
         }  
 
         h3{
@@ -149,6 +154,18 @@
                 &:first-child{
                     margin-bottom: .5rem;
                 }
+
+                &.error{
+                    border-color: #dc3545;
+                    background-color: #fff5f5;
+                }
+            }
+
+            .error-text{
+                display: block;
+                color: #dc3545;
+                font-size: 12px;
+                margin: 4px 0 8px 10px;
             }
 
             .selects{
@@ -169,6 +186,11 @@
                     border-radius: 6px;
                     width: 100%;
 
+                    &.error{
+                        border-color: #dc3545;
+                        background-color: #fff5f5;
+                    }
+
                     @include min-width($medium_size){
                         margin-bottom: 20px;
 
@@ -185,15 +207,33 @@
             }
 
         }
+
+        .form-actions{
+            display: flex;
+            gap: 10px;
+            padding: 0 1rem 1rem;
+        }
         
         button{
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             width: fit-content;
-            margin: 0 0 0 1.3rem;
             padding: 7px 10px;
             border-radius: 4px;
             background: $primary;
             color: #fff;
+            cursor: pointer;
+            transition: opacity 0.2s;
+
+            &:disabled{
+                opacity: 0.7;
+                cursor: not-allowed;
+            }
+
+            &.loading{
+                pointer-events: none;
+            }
 
             @include min-width($medium_size){
                 padding: 10px 1rem;
@@ -201,15 +241,96 @@
             }
         }
 
+        .back-btn{
+            background: transparent;
+            color: #555;
+            border: 1px solid #555;
+
+            &:hover{
+                background: #f0f0f0;
+            }
+        }
+
+        .spinner{
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
         //form
           @include min-width($medium_size){
             max-width: unset;
             width: 491px;
             min-width: 350px;
-            height: 346px;
+            height: auto;
+            min-height: 346px;
             padding: 22px 31px 20px 25px;
             overflow: visible;
           }
        }
+
+       // Success Message Screen
+       .success-message{
+            width: 0;
+            overflow: hidden;
+            max-width: 400px;
+            padding: 0;
+            text-align: center;
+            transition: width .3s ease-in-out, padding .1s ease-in-out;
+            pointer-events: none;
+            background-color: rgba($color: #000000, $alpha: 0.2);
+
+            &.visible{
+                width: 100%;
+                padding: 25px 23px 34px;
+                pointer-events: auto;
+
+                @include min-width($medium_size){
+                    padding: 40px;
+                }
+            }
+
+            .success-icon{
+                width: 60px;
+                height: 60px;
+                margin: 0 auto 20px;
+                background: #28a745;
+                color: #fff;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            h3{
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            p{
+                line-height: 1.5;
+                margin-bottom: 20px;
+                font-size: 14px;
+            }
+
+            .external-btn{
+                display: inline-block;
+                padding: 10px 20px;
+                border-radius: 4px;
+                background: $primary;
+                color: #fff;
+                cursor: pointer;
+            }
+       }
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
     }
 }

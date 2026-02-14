@@ -6,6 +6,7 @@ import ProductRating from "../general/ProductRating"
 import Link from "next/link"
 import BrowserProduct from "../general/BrowserProduct"
 import ToggleFav from "../general/ToggleFav"
+import ResultsSkelton from "@/skelton/showItems/ResultsSkelton"
 
 
 interface props{
@@ -13,9 +14,14 @@ interface props{
     section:string;
     maxCountProducts:number,
     handleFilter:(filterData:FilterProps|any, isAdded:boolean)=>boolean|void|any,
+    loading?: boolean;
 }
 
-const ResultsSection = ({products,section,maxCountProducts,handleFilter}:props) => {
+const ResultsSection = ({products,section,maxCountProducts,handleFilter,loading}:props) => {
+
+  if (loading) {
+    return <ResultsSkelton />
+  }
 
   return  <div className="product-results">
         {

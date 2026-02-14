@@ -95,9 +95,7 @@ const Searchbar = ({size = 'pc'}:prop) => {
               suggegtionsFromRedux && suggegtionsFromRedux.length ?
               suggegtionsFromRedux?.map((sug:ProductProps )=> (
                 <article key={sug._id + '' + sug.static_id}>
-       
-                  <h1>{sug._id}</h1>
-                  <a onClick={_=>handleSearchTitle(sug.static_id)}>
+                         <a onClick={_=>handleSearchTitle(sug.static_id)}>
                   {sug.title}
                   </a>
                 </article> 

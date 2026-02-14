@@ -5,12 +5,14 @@ import DetailsTopCenter from "./DetailsTopCenter"
 import DetailsTopLeft from "./DetailsTopLeft"
 import DetailsBottomNav from "./DetailsBottomNav"
 import DetailsBottomLeft from "./DetailsBottomLeft"
-import DetailsMayLik from "./DetailsMayLik"
+import DetailsMayLik from "../general/DetailsMayLik"
 import DetailsTopRight from "./DetailsTopRight"
 import DiscountBanner from "../general/DiscountBanner"
 import AnotherItems from "../general/AnotherItems"
 import ProgressNav from "../layout/ProgressNav"
 import { getProductsFromDB } from "@/lib/db/fetchProducts"
+import { Suspense } from "react"
+import MayLikeSkelton from "@/skelton/general/MayLike"
 
 interface props {
     product:ProductProps,
@@ -40,7 +42,9 @@ const LargeProductDetails = async ({product,category}:props) => {
     
             <div className="bottom">
                 <DetailsBottomLeft product={product} />
-                <DetailsMayLik />          
+                <Suspense fallback={<MayLikeSkelton />}>
+                    <DetailsMayLik />          
+                </Suspense>
             </div>
 
             <AnotherItems products={relatedProducts} category={category} title="Related products"/>

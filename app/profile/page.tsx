@@ -1,4 +1,4 @@
-import DetailsMayLik from "@/components/details/DetailsMayLik"
+import DetailsMayLik from "@/components/general/DetailsMayLik"
 import SavedForLater from "@/components/general/SavedForLater"
 import Header from "@/components/layout/Header"
 import ProgressNav from "@/components/layout/ProgressNav"

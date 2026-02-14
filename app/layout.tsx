@@ -6,6 +6,7 @@ import  Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProvidersWrapper from "@/components/layout/ProvidersWrapper";
 import MenuSidebar from "@/components/layout/menu-sidebar";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 

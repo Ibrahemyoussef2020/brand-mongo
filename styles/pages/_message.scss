@@ -1,0 +1,131 @@
+.message-page {
+
+    .form-container {
+        margin: 0 20px 1rem;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid $gray-300;
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1c1c1c;
+        }
+
+        .desc {
+            margin-bottom: 20px;
+            color: $gray-600;
+            line-height: 1.6;
+        }
+
+        .status-msg {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+
+            &.success {
+                background: #d1fae5;
+                color: #065f46;
+            }
+
+            &.error {
+                background: #fee2e2;
+                color: #991b1b;
+            }
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+
+            @include min-width($medium_size) {
+                grid-template-columns: 1fr 1fr;
+
+                .full-width {
+                    grid-column: span 2;
+                }
+            }
+
+            @include min-width($x-large_size) {
+                grid-template-columns: 1fr 1fr 1fr;
+
+                .full-width {
+                    grid-column: span 3;
+                }
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                label {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #374151;
+                }
+
+                input, textarea {
+                    width: 100%;
+                    padding: 12px;
+                    border: 1px solid $gray-400;
+                    border-radius: 4px;
+                    font-size: 16px;
+                    outline: none;
+                    transition: border-color 0.2s;
+
+                    &:focus {
+                        border-color: $primary;
+                    }
+                }
+
+                textarea {
+                    resize: vertical;
+                }
+            }
+
+            .subject-field {
+                @include min-width($medium_size) {
+                    grid-column: span 2;
+                }
+                @include min-width($x-large_size) {
+                    grid-column: span 1;
+                }
+            }
+
+            .submit-btn {
+                width: 100%;
+                background: $primary;
+                color: #fff;
+                padding: 14px;
+                border-radius: 4px;
+                font-size: 16px;
+                font-weight: 600;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.2s;
+
+                @include min-width($medium_size) {
+                    grid-column: span 2;
+                }
+
+                @include min-width($x-large_size) {
+                    grid-column: span 3;
+                }
+
+                &:hover {
+                    background-color: #0b5ed7;
+                }
+
+                &:disabled {
+                    opacity: 0.7;
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+}

@@ -58,6 +58,9 @@ const CheckoutForm = () => {
     )
 }
 
+import StripeSkelton from "@/skelton/orders/StripeSkelton";
+
+
 const Stripe = () => {
     const [clientSecret, setClientSecret] = useState("");
     const { products, bill } = useSelector((state: IRootState) => state.combine.cart);
@@ -101,7 +104,7 @@ const Stripe = () => {
                     <CheckoutForm />
                 </Elements>
             ) : (
-                <div>Loading Payment Details...</div>
+                <StripeSkelton />
             )}
         </div>
     );

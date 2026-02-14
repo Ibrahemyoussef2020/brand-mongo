@@ -43,6 +43,7 @@ export const useShowCategories = () => {
     const [sort,setSort] = useState<string>('');
 
     const [maxCountProducts,setMaxCountProducts] = useState<number>(100);
+    const [loading, setLoading] = useState<boolean>(true);
 
     // Update URL with filters, sort, and design
     const updateURL = useCallback((filters: FilterProps[], currentSort?: string, currentDesign?: string) => {
@@ -128,8 +129,10 @@ export const useShowCategories = () => {
 
         if (isCancelled) return;
         setProducts(displayProducts);
+        setLoading(false);
       };
 
+      setLoading(true);
       runSync();
       return () => { isCancelled = true; };
     }, [searchParams, category, section]);
@@ -178,6 +181,7 @@ export const useShowCategories = () => {
         setMaxCountProducts,
         handleFilter,
         handleSortStrategy,
-        updateURL
+        updateURL,
+        loading
     }
 }

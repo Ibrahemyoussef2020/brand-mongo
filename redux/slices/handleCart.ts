@@ -103,6 +103,9 @@ const cartSlice = createSlice({
         };
 
         builder
+            .addCase(fetchCart.pending, (state) => {
+                state.status = 'loading';
+            })
             .addCase(fetchCart.fulfilled, updateState)
             .addCase(addToCart.fulfilled, updateState)
             .addCase(removeFromCart.fulfilled, updateState)

@@ -20,23 +20,19 @@ const OrdersPageClient = ({ children }: Props) => {
         const paymentIntent = searchParams.get('payment_intent');
         const redirectStatus = searchParams.get('redirect_status');
 
-        // If coming from Stripe payment success
         if (paymentIntent && redirectStatus === 'succeeded') {
             setOrderStatus('processing');
             setMessage('Processing your order...');
 
-            // Create order from cart
             dispatch(createOrder(paymentIntent))
                 .unwrap()
                 .then((result) => {
                     setOrderStatus('success');
                     setMessage('Payment successful! Your order has been placed.');
-                    // Fetch updated orders
                     dispatch(fetchOrders());
                 })
                 .catch((error) => {
                     console.error('Error creating order:', error);
-                    // If order already exists, it's still a success for the user
                     if (error.message?.includes('already exists')) {
                         setOrderStatus('success');
                         setMessage('Order already processed.');
@@ -47,7 +43,6 @@ const OrdersPageClient = ({ children }: Props) => {
                     dispatch(fetchOrders());
                 });
         } else {
-            // Just fetch existing orders
             dispatch(fetchOrders());
         }
     }, [searchParams, dispatch]);

@@ -246,5 +246,62 @@
             }
             
         }
-    }   
+    }
+
+    @keyframes skelton-shimmer {
+        0% {
+            background-position: -200px 0;
+        }
+        100% {
+            background-position: 200px 0;
+        }
+    }
+
+    .skelton-shimmer {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 400px 100%;
+        animation: skelton-shimmer 1.5s ease-in-out infinite;
+        border-radius: 4px;
+    }
+
+    .skelton-list-item {
+        height: 20px;
+        width: 80%;
+        margin: 9px;
+    }
+
+    .skelton-cover {
+        border-radius: 6px;
+    }
+
+    .skelton-user {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+    }
+
+    .skelton-text-sm {
+        width: 100px;
+        height: 14px;
+        margin-bottom: 6px;
+    }
+
+    .skelton-text-xs {
+        width: 80px;
+        height: 12px;
+    }
+
+    .skelton-btn {
+        width: 100%;
+        height: 34px;
+        border-radius: 3px;
+        margin-bottom: 10px;
+    }
+
+    .skelton-offer {
+        width: 100%;
+        height: 80px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+    }
 }

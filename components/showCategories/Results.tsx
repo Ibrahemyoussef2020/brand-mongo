@@ -6,6 +6,7 @@ import ProductRating from "../general/ProductRating"
 import Link from "next/link"
 import BrowserProduct from "../general/BrowserProduct"
 import ToggleFav from "../general/ToggleFav"
+import ResultsSkelton from "@/skelton/showItems/ResultsSkelton"
 
 
 interface props{
@@ -13,9 +14,10 @@ interface props{
     category:string;
     maxCountProducts:number,
     handleFilter:(filterData:FilterProps|any, isAdded:boolean)=>boolean|void|any,
+    loading?: boolean;
 }
 
-const Results = ({products,category,maxCountProducts,handleFilter}:props) => {
+const Results = ({products,category,maxCountProducts,handleFilter,loading}:props) => {
 
 
     const handleClearFilters = ()=>{
@@ -29,6 +31,10 @@ const Results = ({products,category,maxCountProducts,handleFilter}:props) => {
         } , true)
       }
     
+
+  if (loading) {
+    return <ResultsSkelton />
+  }
 
   return  <div className="product-results">
         {

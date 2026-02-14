@@ -13,18 +13,23 @@ import React, { useEffect, useState } from "react"
 import EmptyCart from "./EmptyCart"
 import { AppDispatch } from "@/redux/store"
 import Stripe from "../orders/Stripe"
+import CartLargeSkelton from "@/skelton/cart/CartLarge"
 
 const CartLarge = () => {
     
     // Use AppDispatch if available or fallback to any
     const dispatch = useDispatch<AppDispatch>() 
-    const {products, productCount, bill} = useSelector((state:IRootState) => state.combine.cart)
+    const {products, productCount, bill, status} = useSelector((state:IRootState) => state.combine.cart)
     const router = useRouter()
     const [showCheckout, setShowCheckout] = useState(false)
 
     useEffect(() => {
         dispatch(fetchCart());
     }, [dispatch]);
+
+    if (status === 'loading' || status === 'idle') {
+        return <CartLargeSkelton />;
+    }
   
     const handleModifyQuantity = (e:React.ChangeEvent<HTMLSelectElement> ,id:string)=>{
         const newQuantity = {

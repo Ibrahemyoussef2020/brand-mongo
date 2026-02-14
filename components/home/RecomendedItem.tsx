@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import BrowserProduct from '../general/BrowserProduct';
+import RecomendedItemSkelton from '@/skelton/home/RecomendedItem';
 
 
 
@@ -14,7 +15,7 @@ const RecomendedItem = async () => {
 
 
     if (!recomendedItems?.data) {
-        return <h1>ddddddddddd</h1>
+        return <RecomendedItemSkelton />
     }
 
     return (

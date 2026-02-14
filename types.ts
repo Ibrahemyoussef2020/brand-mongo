@@ -85,7 +85,7 @@ export interface FilterSidebarProps{
     setFilterRemove:((filter:FilterInputProps)=> void),
     filterSelectedList:[]|FilterProps[],
     setFilterSelectedList:(filter:[]|FilterProps[])=>void,
-   
+    loading?: boolean,
 }
 
 export interface FilterNavprops {
@@ -102,6 +102,7 @@ export interface FilterNavprops {
     setFiltersClear:(filter:boolean)=>void,
     maxCountProducts:number,
     handleFilter:(filterData:FilterProps, isAdded:boolean)=>boolean|void,
+    loading?: boolean;
 }
 
 export interface FiltersSelectedProps{

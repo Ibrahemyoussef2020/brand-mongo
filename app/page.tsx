@@ -8,6 +8,7 @@ import HomeOuter from '@/components/home/HomeOuter'
 import Electronics from '@/components/home/Electronics'
 import EasyRrquest from '@/components/home/EasyRrquest'
 import RecomendedItem from '@/components/home/RecomendedItem';
+import RecomendedItemSkelton from '@/skelton/home/RecomendedItem';
 import ExtraServices from '@/components/home/ExtraServices';
 import Subscribe from '@/components/layout/Subscribe';
 import Suppliers from '@/components/home/Suppliers';
@@ -35,7 +36,7 @@ const Home = () => {
         <HomeOuter />
         <Electronics />
         <EasyRrquest />
-        <Suspense fallback={<div>Loading recommended items...</div>}>
+        <Suspense fallback={<RecomendedItemSkelton />}>
           <RecomendedItem />
         </Suspense>
         <ExtraServices />

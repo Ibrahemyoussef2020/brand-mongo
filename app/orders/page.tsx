@@ -1,10 +1,12 @@
-import DetailsMayLik from "@/components/details/DetailsMayLik"
+import DetailsMayLik from "@/components/general/DetailsMayLik"
 import SavedForLater from "@/components/general/SavedForLater"
 import Header from "@/components/layout/Header"
 import MenuSidebar from "@/components/layout/menu-sidebar"
 import OrderResult from "@/components/orders/OrderResult"
 import OrdersPageClient from "@/components/orders/OrdersPageClient"
 import { Suspense } from "react"
+
+import MayLikeSkelton from "@/skelton/general/MayLike"
 
 const page = () => {
 
@@ -18,7 +20,9 @@ const page = () => {
                     <div className="orders-wrapper">
                         <OrderResult />
                         <div className="may-like">
-                            <DetailsMayLik />
+                            <Suspense fallback={<MayLikeSkelton />}>
+                                <DetailsMayLik />
+                            </Suspense>
                         </div>
                     </div>
                 </div>

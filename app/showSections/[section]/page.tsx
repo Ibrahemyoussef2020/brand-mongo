@@ -37,7 +37,8 @@ const page = () => {
         setMaxCountProducts,
         handleFilter,
         handleSortStrategy,
-        updateURL
+        updateURL,
+        loading
     } = useShowCategories();
     
   return (
@@ -66,6 +67,7 @@ const page = () => {
                 setFilterRemove={setFilterRemove}
                 filterSelectedList={filterSelectedList}
                 setFilterSelectedList={setFilterSelectedList}
+                loading={loading}
             />
 
             <div className="main">
@@ -101,7 +103,7 @@ const page = () => {
               />
 
               
-              <ResultsSection products={products} section={category} maxCountProducts={maxCountProducts} handleFilter={handleFilter}/>
+              <ResultsSection products={products} section={category} maxCountProducts={maxCountProducts} handleFilter={handleFilter} loading={loading}/>
               <AnotherItems products={products} title='You may also like' category={category} />
               <Pagenations maxCountProducts={maxCountProducts} setMaxCountProducts={setMaxCountProducts} />
             </div>

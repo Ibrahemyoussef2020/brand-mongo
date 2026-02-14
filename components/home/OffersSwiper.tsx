@@ -12,17 +12,20 @@ import { ProductProps } from "@/types";
 import Image from "next/image";
 import BrowserProduct from "../general/BrowserProduct";
 import { fetchAllProducts } from "@/lib/services";
+import OffersSwiperSkelton from "@/skelton/home/OffersSwiper";
 
 
 
 const OffersSwiper = () => {
 
   const [products, setProducts] = useState<ProductProps[] | []>([]);
+  const [loading, setLoading] = useState(true);
 
 
   const fetchAllProductsFn = async () => {
     const data = await fetchAllProducts('deelOffers')
     setProducts(data.data)
+    setLoading(false)
   }
 
 
@@ -31,6 +34,9 @@ const OffersSwiper = () => {
   }, [])
 
 
+  if (loading) {
+    return <OffersSwiperSkelton />;
+  }
 
 
   return (

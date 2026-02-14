@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromFavStore } from "@/redux/slices";
 import AddRemoveCart from "./AddRemoveCart";
 import { IRootState, AppDispatch } from "@/redux/store";
+import SavedForLaterSkelton from "@/skelton/general/SavedForLater";
 
 
 interface props {
@@ -25,7 +26,22 @@ interface props {
 const SavedForLater = () => {
    
 const {favorites} = useSelector((state:IRootState) => state.combine.fav);
+const [loading, setLoading] = useState(true);
 const dispatch = useDispatch<AppDispatch>()
+
+useEffect(() => {
+    // Simulate loading data if favorites are present
+    if (favorites?.length) {
+        const timer = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timer);
+    } else {
+        setLoading(false);
+    }
+}, [favorites]);
+
+if (loading) {
+    return <SavedForLaterSkelton />
+}
 
 
 const handleAddToCart = (product:ProductProps)=>{

@@ -29,7 +29,7 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
         <Searchbar size="pc" />
         <div className='navigations_pc'>
           <UserMenu />
-          <Link href='#request' prefetch={false}>
+          <Link href='/message' prefetch={false}>
             <FontAwesomeIcon icon={faEnvelopeOpenText} width={19} color="gray" />
             <div>Message</div>
           </Link>
@@ -79,14 +79,14 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
             <li>
               English, USD
               <select>
-                    <option value="german"></option>
+                    <option value="english"></option>
               </select>
             </li>
             <li>
                 <span>Ship to</span>
                 <img src="/images/flags/german.png" alt="german" />
                 <select>
-                  <option value="german"></option>
+                  <option value="english"></option>
                 </select>
             </li>
           </ul>

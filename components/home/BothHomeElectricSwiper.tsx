@@ -12,6 +12,7 @@ import { ProductProps } from "@/types";
 import Image from "next/image";
 import BrowserProduct from "../general/BrowserProduct";
 import { fetchAllProducts } from "@/lib/services";
+import BothHomeElectricSwiperSkelton from "@/skelton/home/BothHomeElectricSwiper";
 
 interface prop{
     section:string,
@@ -20,10 +21,12 @@ interface prop{
 const BothHomeElectricSwiper = ({section}:prop) => {
 
     const [products,setProducts] = useState<[]|ProductProps[]>([]);
+    const [loading,setLoading] = useState(true);
 
         const fetchAllProductsFn = async()=>{
           const data = await fetchAllProducts(section)
-          setProducts(data.data)      
+          setProducts(data.data)
+            setLoading(false)
         }
         
     
@@ -32,6 +35,9 @@ const BothHomeElectricSwiper = ({section}:prop) => {
         },[])
 
 
+    if (loading) {
+        return <BothHomeElectricSwiperSkelton />;
+    }
     
   
   return (

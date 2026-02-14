@@ -16,14 +16,13 @@ import { customStringIncludes } from "@/utilities"
 import { IRootState } from "@/redux/store"
 import EmptyCart from "./EmptyCart"
 import { AppDispatch } from "@/redux/store"
+import CartSmallSkelton from "@/skelton/cart/CartSmall"
 
 const CartSmall = () => {
   const [moreList ,setMoreList] = useState<string[]|[]>([])
 
   const dispatch = useDispatch<AppDispatch>()
-  const {products} = useSelector((state:IRootState) => state.combine.cart)
-  const {bill} = useSelector((state:IRootState) => state.combine.cart)
-  const {productCount} = useSelector((state:IRootState) => state.combine.cart)
+  const {products, bill, productCount, status} = useSelector((state:IRootState) => state.combine.cart)
   
   
   const router = useRouter()
@@ -46,6 +45,10 @@ const toggleMoreButtons = (id:string)=>{
     setMoreList(newMoreList)
   }
 }
+
+  if (status === 'loading' || status === 'idle') {
+    return <CartSmallSkelton />;
+  }
 
   return (
     <div className="small-cart">

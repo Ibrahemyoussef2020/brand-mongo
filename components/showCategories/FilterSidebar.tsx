@@ -12,6 +12,7 @@ import FilterTrack from './sidebarfilters/FilterTrack';
 import FilterBoolean from './sidebarfilters/FilterBoolean';
 import FilterList from './sidebarfilters/FilterList';
 import FilterCustom from './sidebarfilters/FilterCustom';
+import FilterSidebarSkelton from '@/skelton/showItems/FilterSidebarSkelton';
 
 
 
@@ -69,6 +70,10 @@ const FilterSidebar = (props:FilterSidebarProps) => {
   } = useFilterSidebar(props);
 
  
+  if (props.loading) {
+    return <FilterSidebarSkelton />
+  }
+
     return (
       <aside className={`filter-aside ${isOppend ? 'open' : 'closed'}`}>
   

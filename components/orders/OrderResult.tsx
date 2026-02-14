@@ -11,7 +11,7 @@ import SavedForLater from "../../components/general/SavedForLater"
 import PaymentFeatures from '../../components/general/PaymentFeatures';
 import ProductRating from "@/components/general/ProductRating";
 import { selectDate } from "@/utilities";
-import DetailsMayLik from "@/components/details/DetailsMayLik";
+import DetailsMayLik from "@/components/general/DetailsMayLik";
 import { AppDispatch, IRootState } from "@/redux/store";
 import EmptyCart from "../cart/EmptyCart";
 
@@ -31,7 +31,7 @@ const OrderResult = () => {
         {
           purchases.length ?
             purchases?.map((product:ProductProps,index:number) => {
-                    return <article key={product._id}>
+                    return <article key={product._id + Math.random()}>
                     <div className="img-wrapper">
                         <Image
                         src={`/${product.image}.webp`}

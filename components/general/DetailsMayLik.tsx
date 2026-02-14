@@ -10,7 +10,6 @@ const DetailsMayLik = async () => {
   const products = result?.data;  
 
 
-  console.log("rrrrrrrrrrrrrrrrrrrrrjjjjrrrr" ,result);
   
   
   return (

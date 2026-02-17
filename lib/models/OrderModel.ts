@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 
+export type LocalizedString = {
+    en?: string;
+    ar?: string;
+};
+
+
 const OrderSchema = new mongoose.Schema(
     {
         user: { type: String, required: true },
@@ -8,7 +14,10 @@ const OrderSchema = new mongoose.Schema(
                 product: { type: String, required: true },
                 quantity: { type: Number, required: true },
                 price: { type: Number, required: true },
-                title: { type: String },
+                title: {
+                    en: { type: String },
+                    ar: { type: String }
+                },
                 image: { type: String },
                 total: { type: Number }
             }

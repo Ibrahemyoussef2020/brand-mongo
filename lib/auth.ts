@@ -39,7 +39,6 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async jwt({ token, user, account }: any) {
-      // Initial sign in
       if (user) {
          try {
            await dbConnect();

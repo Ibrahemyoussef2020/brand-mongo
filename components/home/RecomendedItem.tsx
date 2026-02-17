@@ -5,22 +5,38 @@ import Link from 'next/link';
 import React from 'react'
 import BrowserProduct from '../general/BrowserProduct';
 import RecomendedItemSkelton from '@/skelton/home/RecomendedItem';
+import { sTranslate } from '@/utilities/translate';
+
+import { Locale } from '@/types';
 
 
 
-const RecomendedItem = async () => {
 
+export const dynamic = 'force-dynamic';
 
+const RecomendedItem = async ({ locale }: { locale: Locale }) => {
     const recomendedItems = await getRecommendedItemsFromDB();
-
-
+    
     if (!recomendedItems?.data) {
-        return <RecomendedItemSkelton />
+        return <RecomendedItemSkelton />;
     }
+
+    const t = {
+        en: {
+            heading: "Recommended items",
+            perfectOffer: "it's perfect offer."
+        },
+        ar: {
+            heading: "العناصر الموصى بها",
+            perfectOffer: "إنه عرض مثالي."
+        }
+    };
+
+    const currentT = t[locale] || t.en;
 
     return (
         <section className='recomended-items'>
-            <h2>Recommended items</h2>
+            <h2>{currentT.heading}</h2>
             <div>
                 {
                     (recomendedItems?.data as unknown as ProductProps[])?.map((recomendedItem: ProductProps) => {
@@ -38,7 +54,8 @@ const RecomendedItem = async () => {
                                 <p>
                                     ${recomendedItem.price}
                                 </p>
-                                <h3>{recomendedItem.title}, it's perfect offer.</h3>
+                                <h3>{sTranslate(recomendedItem.title, locale)}, {currentT.perfectOffer}</h3>
+
                                 <BrowserProduct section='recommendedItems' productId='' />
                             </div>
                         </article>
@@ -46,7 +63,9 @@ const RecomendedItem = async () => {
                 }
             </div>
         </section>
-    )
+    );
 }
+
+
 
 export default RecomendedItem

@@ -1,5 +1,7 @@
 
+'use client'
 import { FilterProps, ProductProps } from "@/types"
+
 import Image from "next/image"
 import ProductRating from "../general/ProductRating"
 
@@ -7,6 +9,8 @@ import Link from "next/link"
 import BrowserProduct from "../general/BrowserProduct"
 import ToggleFav from "../general/ToggleFav"
 import ResultsSkelton from "@/skelton/showItems/ResultsSkelton"
+import { useLang } from "@/context/LangContext"
+
 
 
 interface props{
@@ -18,6 +22,8 @@ interface props{
 }
 
 const ResultsSection = ({products,section,maxCountProducts,handleFilter,loading}:props) => {
+  const { translate } = useLang();
+
 
   if (loading) {
     return <ResultsSkelton />
@@ -39,14 +45,16 @@ const ResultsSection = ({products,section,maxCountProducts,handleFilter,loading}
                     <div className="img-wrapper in-grid">
                         <Image
                         src={`/${product.image}.webp`}
-                        alt={product.title}
+                        alt={translate(product.title)}
+
                         height={202}
                         width={202}
                         />
                     </div>
                     <br className="in-list"/>
                     <div className="product__info">
-                        <p className="title-in-list in-list">{product.title} <span className="good-item">Very Good Item</span> ,</p>
+                        <p className="title-in-list in-list">{translate(product.title)} <span className="good-item">Very Good Item</span> ,</p>
+
                         <div className="top">
                             <div className="right">
                                 <div className="price">
@@ -78,18 +86,21 @@ const ResultsSection = ({products,section,maxCountProducts,handleFilter,loading}
                             
                         </div>
                         <p className="desc-in-list in-list">
-                            {product.description.slice(0,100)}
+                            {translate(product.description).slice(0,100)}
+
                             <span className="rest-desc">
                             quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                             </span>
                         </p>
                         
                         <p className="title_desc-in-grid in-grid">
-                            {product.title} {product.description.slice(0,10)}
+                            {translate(product.title)} {translate(product.description).slice(0,10)}
                         </p>
+
                         <p className="title_desc-in-grid in-grid">
-                            {product.section} - {product.color}
+                            {product.section} - {translate(product.color)}
                         </p>
+
 
                         <Link href={`/itemDetails/${section}/${product.static_id}`} className="details in-list">
                             View details       

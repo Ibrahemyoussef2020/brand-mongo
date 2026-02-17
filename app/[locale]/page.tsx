@@ -21,7 +21,9 @@ import { Suspense } from 'react';
 
 
 
-const Home = () => {
+const Home = ({ params }: { params: { locale: string } }) => {
+  const { locale } = params;
+
 
   return (
     <>
@@ -37,8 +39,9 @@ const Home = () => {
         <Electronics />
         <EasyRrquest />
         <Suspense fallback={<RecomendedItemSkelton />}>
-          <RecomendedItem />
+          <RecomendedItem locale={locale as any} />
         </Suspense>
+
         <ExtraServices />
         <Suppliers />
         <Subscribe />

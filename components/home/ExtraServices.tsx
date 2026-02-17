@@ -1,10 +1,33 @@
+'use client'
+import { useLang } from "@/context/LangContext"
 import Image from "next/image"
 
 
 const ExtraServices = () => {
+  const { lang } = useLang();
+
+  const t = {
+    en: {
+      heading: "Our extra services",
+      source: "Source from Industry Hubs",
+      customize: "Customize Your Products",
+      shipping: "Fast, reliable shipping by ocean or air",
+      monitoring: "Product monitoring and inspection"
+    },
+    ar: {
+      heading: "خدماتنا الإضافية",
+      source: "المصدر من مراكز الصناعة",
+      customize: "تخصيص منتجاتك",
+      shipping: "شحن سريع وموثوق عن طريق البحر أو الجو",
+      monitoring: "مراقبة وفحص المنتج"
+    }
+  };
+
+  const currentT = t[lang] || t.en;
+
   return (
     <section className='extra-services'>
-      <h2>Our extra services</h2>
+      <h2>{currentT.heading}</h2>
       <div className='services'>
         <article>
             <div className="cover img-wrapper">
@@ -25,7 +48,7 @@ const ExtraServices = () => {
               </div>
             </div>
             <div className="body">
-              <p>Source from <br/> Industry Hubs</p>
+              <p>{currentT.source}</p>
             </div>
         </article>
         <article>
@@ -47,7 +70,7 @@ const ExtraServices = () => {
               </div>
             </div>
             <div className="body">
-              <p>Customize Your <br/>  Products</p>
+              <p>{currentT.customize}</p>
             </div>
         </article>
         <article>
@@ -69,7 +92,7 @@ const ExtraServices = () => {
               </div>
             </div>
             <div className="body">
-              <p>Fast, reliable shipping <br/> by ocean or air</p>
+              <p>{currentT.shipping}</p>
             </div>
         </article>
         <article>
@@ -91,7 +114,7 @@ const ExtraServices = () => {
               </div>
             </div>
             <div className="body">
-              <p>Product monitoring <br/> and inspection</p>
+              <p>{currentT.monitoring}</p>
             </div>
         </article>
       </div>

@@ -11,11 +11,12 @@ export const GET = async (request: NextRequest) => {
     if (shouldSeed) {
         await DealOffersModel.deleteMany();
         await DealOffersModel.insertMany(data.dealOffers);
-    } else {
-        const count = await DealOffersModel.countDocuments();
-        if (count === 0) {
-            await DealOffersModel.insertMany(data.dealOffers);
-        }
+    }
+
+
+    const count = await DealOffersModel.countDocuments();
+    if (count === 0) {
+        await DealOffersModel.insertMany(data.dealOffers);
     }
 
     const dealOffers = await DealOffersModel.find({}).lean();
@@ -25,3 +26,4 @@ export const GET = async (request: NextRequest) => {
         data: dealOffers
     })
 }
+

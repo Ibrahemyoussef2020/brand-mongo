@@ -18,15 +18,17 @@ interface prop {
 }
 
 type ParamsProps = {
-  params: { category: string, item: string };
+  params: { category: string, item: string, locale: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 
 
 
+
 const page = async ({ params }: ParamsProps) => {
-  const { category, item } = params;
+  const { category, item, locale } = params;
+
 
   
 
@@ -47,11 +49,15 @@ const page = async ({ params }: ParamsProps) => {
           <LargeProductDetails
             product={product as unknown as ProductProps}
             category={category}
+            locale={locale as any}
           />
+
           <SmallProductDetails
             product={product as unknown as ProductProps}
             category={category}
+            locale={locale as any}
           />
+
         </div>
       </div>
     </>

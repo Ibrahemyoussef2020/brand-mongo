@@ -17,9 +17,13 @@ import { IRootState } from "@/redux/store"
 import EmptyCart from "./EmptyCart"
 import { AppDispatch } from "@/redux/store"
 import CartSmallSkelton from "@/skelton/cart/CartSmall"
+import { useLang } from "@/context/LangContext"
+
 
 const CartSmall = () => {
+  const { translate } = useLang();
   const [moreList ,setMoreList] = useState<string[]|[]>([])
+
 
   const dispatch = useDispatch<AppDispatch>()
   const {products, bill, productCount, status} = useSelector((state:IRootState) => state.combine.cart)
@@ -57,7 +61,8 @@ const toggleMoreButtons = (id:string)=>{
       
       products.length?
               products?.map((product:ProductProps) => {
-                  const details = `${product.title} ${product.description}`
+                  const details = `${translate(product.title)} ${translate(product.description)}`
+
 
                   return <article key={product._id + product.static_id + Math.random()} className={customStringIncludes(moreList,product._id) ? 'show-more' : ''}>
                       <div className="article-wrapper">
@@ -78,13 +83,15 @@ const toggleMoreButtons = (id:string)=>{
                                   </div>                             
                                   <div className="feature">
                                       <h3>Color: </h3>
-                                      <span> {product.color},</span>
+                                      <span> {translate(product.color)},</span>
                                   </div>         
+
                               </div>
                               <div className="feature">
                                   <h3>Seller: </h3>
-                                  <span>{product.brand} agent,</span>
+                                  <span>{translate(product.brand)} agent,</span>
                               </div>    
+
                           </div>
                           <div className="more">
                               <button className="list" onClick={_=>toggleMoreButtons(product._id.toString())}>

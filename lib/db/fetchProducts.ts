@@ -14,16 +14,16 @@ function buildProductQuery(searchParams: URLSearchParams | any) {
   const has = (key: string) => searchParams instanceof URLSearchParams ? searchParams.has(key) : key in searchParams;
 
   if (has("category")) {
-    query.category = { $in: getAll("category") };
+    query["category.en"] = { $in: getAll("category") };
   }
   if (has("type")) {
-    query.type = { $in: getAll("type") };
+    query["type.en"] = { $in: getAll("type") };
   }
   if (has("brand")) { 
-    query.brand = { $in: getAll("brand") };
+    query["brand.en"] = { $in: getAll("brand") };
   }
   if (has("color")) {
-    query.color = { $in: getAll("color") };
+    query["color.en"] = { $in: getAll("color") };
   }
   if (has("avgRating")) {
     query.avgRating = { $in: getAll("avgRating").map(Number) };
@@ -43,7 +43,10 @@ function buildProductQuery(searchParams: URLSearchParams | any) {
   }
 
   if (has("description")) {
-    query.description = { $regex: get("description"), $options: "i" };
+    query.$or = [
+      { "description.en": { $regex: get("description"), $options: "i" } },
+      { "description.ar": { $regex: get("description"), $options: "i" } }
+    ];
   }
   ["free_delivery", "to_home", "premium_offer", "verified"].forEach((field) => {
     if (has(field)) {
@@ -78,6 +81,14 @@ function getPaginationParams(searchParams: URLSearchParams | any) {
 export async function getProductsFromDB(searchParams: URLSearchParams | any) {
   await dbConnect();
 
+  const get = (key: string) => searchParams instanceof URLSearchParams ? searchParams.get(key) : searchParams[key];
+  const shouldSeed = get('seed') === 'true';
+
+  if (shouldSeed) {
+    await ProductModel.deleteMany({});
+    await ProductModel.insertMany(data.products);
+  }
+
   const query = buildProductQuery(searchParams);
   const { isPaginationEnabled, page, limit } = getPaginationParams(searchParams);
 
@@ -96,6 +107,7 @@ export async function getProductsFromDB(searchParams: URLSearchParams | any) {
 
     totalProducts = products.length;
   }
+
 
   return {
     total: totalProducts,

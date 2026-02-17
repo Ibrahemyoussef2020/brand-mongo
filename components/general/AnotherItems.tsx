@@ -9,6 +9,8 @@ import Link from "next/link";
 import { ProductProps } from "@/types";
 import Image from "next/image";
 import BrowserProduct from "../general/BrowserProduct";
+import { useLang } from "@/context/LangContext";
+
 
 interface props {
     products: ProductProps[],
@@ -18,6 +20,8 @@ interface props {
 
 
 const AnotherItems = ({products, title, category='consumer-sections'}:props) => {
+    const { translate } = useLang();
+
  if (products?.length) {
   return (
     <section className="another-items"> 
@@ -49,8 +53,9 @@ const AnotherItems = ({products, title, category='consumer-sections'}:props) => 
                         />
                         <div className="text">
                             <p className="price">${product.price}</p>
-                            <p className="title-desc">{product.title.slice(0,15)} {product.description.slice(0,20)}</p>
+                            <p className="title-desc">{translate(product.title).slice(0,15)} {translate(product.description).slice(0,20)}</p>
                         </div>
+
                     </Link>
                     </SwiperSlide>
                     )

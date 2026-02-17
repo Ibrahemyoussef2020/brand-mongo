@@ -3,13 +3,20 @@ import ProductRating from "../general/ProductRating"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck } from "@fortawesome/free-solid-svg-icons"
 import Image from "next/image"
+import { sTranslate } from "@/utilities/translate"
+
+import { Locale } from "@/types"
+
 
 interface props {
-    product: ProductProps
+    product: ProductProps,
+    locale: Locale
 }
 
 
-const DetailsTopCenter = ({ product }: props) => {
+
+const DetailsTopCenter = ({ product, locale }: props) => {
+
 
 
     console.log(product)
@@ -21,9 +28,10 @@ const DetailsTopCenter = ({ product }: props) => {
                 In stock
             </div>
             <h2 className="title">
-                {product?.title.slice(0, 20)}
-                {product?.description.slice(0, 30)}
+                {sTranslate(product?.title, locale).slice(0, 20)}
+                {sTranslate(product?.description, locale).slice(0, 30)}
             </h2>
+
             <div className="verified">
                 <div className="rating">
                     <div className="rating__stars">
@@ -83,8 +91,9 @@ const DetailsTopCenter = ({ product }: props) => {
                     <div className="row">
                         <div className="info">
                             <span>Type: </span>
-                            <p>Classic  shoes</p>
+                            <p>{sTranslate(product?.type, locale)}</p>
                         </div>
+
                         <div className="info">
                             <span>Material: </span>
                             <p>Plastic material</p>

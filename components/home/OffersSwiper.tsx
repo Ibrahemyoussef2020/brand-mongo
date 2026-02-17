@@ -13,6 +13,8 @@ import Image from "next/image";
 import BrowserProduct from "../general/BrowserProduct";
 import { fetchAllProducts } from "@/lib/services";
 import OffersSwiperSkelton from "@/skelton/home/OffersSwiper";
+import { useLang } from "@/context/LangContext";
+
 
 
 
@@ -22,11 +24,15 @@ const OffersSwiper = () => {
   const [loading, setLoading] = useState(true);
 
 
+const { lang, translate } = useLang();
+
   const fetchAllProductsFn = async () => {
     const data = await fetchAllProducts('deelOffers')
     setProducts(data.data)
     setLoading(false)
   }
+
+
 
 
   useEffect(() => {
@@ -68,10 +74,11 @@ const OffersSwiper = () => {
                     width={98}
                     alt=""
                   />
-                  <p>{product.title}</p>
+                  <p>{translate(product.title)}</p>
                   <div>
-                    <span>{product.discount}</span>
+                    {product.discount && <span className="discount">{product.discount as any}</span>}
                   </div>
+
                   <BrowserProduct section='deelOffers' productId={product.static_id} /> 
                 </div>
               </SwiperSlide>

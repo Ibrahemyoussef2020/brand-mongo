@@ -14,10 +14,13 @@ import EmptyCart from "./EmptyCart"
 import { AppDispatch } from "@/redux/store"
 import Stripe from "../orders/Stripe"
 import CartLargeSkelton from "@/skelton/cart/CartLarge"
+import { useLang } from "@/context/LangContext"
+
 
 const CartLarge = () => {
-    
+    const { translate } = useLang();
     // Use AppDispatch if available or fallback to any
+
     const dispatch = useDispatch<AppDispatch>() 
     const {products, productCount, bill, status} = useSelector((state:IRootState) => state.combine.cart)
     const router = useRouter()
@@ -78,7 +81,8 @@ const CartLarge = () => {
                     products.length ?
                     
                     products?.map((product:ProductProps) => {
-                        const details = `${product.title}`
+                        const details = `${translate(product.title)}`
+
 
                         return <article key={product._id + Math.random()}>
                             <div className="left">
@@ -99,8 +103,9 @@ const CartLarge = () => {
                                         </div>                             
                                         <div className="feature">
                                             <h3>Color: </h3>
-                                            <span> {product.color},</span>
+                                            <span> {translate(product.color)},</span>
                                         </div>
+
                                         <div className="feature">
                                             <h3>Category: </h3>
                                             <span> {product.section},</span>
@@ -108,8 +113,9 @@ const CartLarge = () => {
                                     </div>
                                     <div className="feature">
                                         <h3>Seller: </h3>
-                                        <span>{product.brand} agent,</span>
+                                        <span>{translate(product.brand)} agent,</span>
                                     </div>
+
                                     <div className="buttons">
                                         <button className="remove" onClick={_=>handleRemoveItem(product._id)}>Remove</button>
                                         <button className="add-fav" onClick={_=>handleSaveForLater(product)}>Save for later</button>

@@ -1,19 +1,24 @@
+'use client'
 import Image from 'next/image'
+
 import Link from 'next/link'
 import React from 'react'
 import BothHomeElectricSwiper from './BothHomeElectricSwiper'
+import { useLang } from '@/context/LangContext'
 
 const Electronics = () => {
+  const { lang } = useLang();
+  
   return (
     <section className='outer-electric' id="electric">
         <div className='intro'>
             <div className='external-heading'>
-                <h2>Consumer electronics</h2>
+                <h2>{lang === 'ar' ? 'إلكترونيات استهلاكية' : 'Consumer electronics'}</h2>
             </div>
             <div className='img-wrapper'>
                 <div className='text'>
-                    <h2>Consumer<br/> electronics</h2>
-                    <Link className='source' href='/showSections/homeConsumer'>Source now</Link>  
+                    <h2>{lang === 'ar' ? <><br/>إلكترونيات<br/> استهلاكية</> : <>Consumer<br/> electronics</>}</h2>
+                    <Link className='source' href='/showSections/homeConsumer'>{lang === 'ar' ? 'تصفح الآن' : 'Source now'}</Link>  
                 </div>
                 <Image
                     src='/images/consumer-electronics.webp'
@@ -29,5 +34,6 @@ const Electronics = () => {
     </section>
   )
 }
+
 
 export default Electronics

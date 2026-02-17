@@ -6,9 +6,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import HomeCoverSkelton from '@/skelton/home/HomeCover'
+import { useLang } from '@/context/LangContext'
 
 const HomeCover = () => {
   const [loading, setLoading] = useState(true)
+  const { lang } = useLang();
 
   useEffect(() => {
     const img = new window.Image()
@@ -25,15 +27,15 @@ const HomeCover = () => {
     <section className='cover-wrapper'>
     <div className='lists'> 
       <ul>
-        <li><Link href={`showCategories/mobiles`}>Automobiles</Link></li>
-        <li><Link href={`showCategories/fashion`}>Clothes and wear</Link></li>
-        <li><Link href={`showCategories/kitchen-tools`}>Home interiors</Link></li>
-        <li><Link href={`showCategories/computers`}>Computer and tech</Link></li>
-        <li><Link href={`showCategories/kitchen-tools`}>Tools, equipments</Link></li>
-        <li><Link href={`showCategories/sports`}>Sports and outdoor</Link></li>
-        <li><Link href={`showCategories/pets`}>Animal and pets</Link></li>
-        <li><Link href={`showCategories/chairs`}>Office furniture</Link></li>
-        <li><Link href={`showCategories/headphones`}>More category</Link></li>
+        <li><Link href={`showCategories/mobiles`}>{lang === 'ar' ? 'سيارات' : 'Automobiles'}</Link></li>
+        <li><Link href={`showCategories/fashion`}>{lang === 'ar' ? 'ملابس وأزياء' : 'Clothes and wear'}</Link></li>
+        <li><Link href={`showCategories/kitchen-tools`}>{lang === 'ar' ? 'ديكورات منزلية' : 'Home interiors'}</Link></li>
+        <li><Link href={`showCategories/computers`}>{lang === 'ar' ? 'كمبيوتر وتكنولوجيا' : 'Computer and tech'}</Link></li>
+        <li><Link href={`showCategories/kitchen-tools`}>{lang === 'ar' ? 'أدوات ومعدات' : 'Tools, equipments'}</Link></li>
+        <li><Link href={`showCategories/sports`}>{lang === 'ar' ? 'رياضة وخارجية' : 'Sports and outdoor'}</Link></li>
+        <li><Link href={`showCategories/pets`}>{lang === 'ar' ? 'حيوانات أليفة' : 'Animal and pets'}</Link></li>
+        <li><Link href={`showCategories/chairs`}>{lang === 'ar' ? 'أثاث مكتبي' : 'Office furniture'}</Link></li>
+        <li><Link href={`showCategories/headphones`}>{lang === 'ar' ? 'المزيد' : 'More category'}</Link></li>
       </ul>
     </div>
 
@@ -46,9 +48,9 @@ const HomeCover = () => {
         alt=''
       />
       <div className="text">
-        <h2 className='text__heading'>Latest trending</h2>
-        <h3 className='text__sub-heading'>Electronic items</h3>
-        <Link className='learn' href="#electric">Learn more</Link>
+        <h2 className='text__heading'>{lang === 'ar' ? 'أحدث الصيحات' : 'Latest trending'}</h2>
+        <h3 className='text__sub-heading'>{lang === 'ar' ? 'أدوات إلكترونية' : 'Electronic items'}</h3>
+        <Link className='learn' href="#electric">{lang === 'ar' ? 'تعلم المزيد' : 'Learn more'}</Link>
       </div>
     </div>
 
@@ -58,21 +60,21 @@ const HomeCover = () => {
             <FontAwesomeIcon icon={faUser}/>
           </div>
           <div className='intro__desc'>
-              <p>Hi, user</p>
-              <p>let's get stated</p>
+              <p>{lang === 'ar' ? 'أهلاً بك' : 'Hi, user'}</p>
+              <p>{lang === 'ar' ? 'لنبدأ الآن' : "let's get started"}</p>
           </div>
           <div className="log">
-            <button className='join'>Join now</button>
-            <button className='login'>Log in</button>
+            <button className='join'>{lang === 'ar' ? 'انضم الآن' : 'Join now'}</button>
+            <button className='login'>{lang === 'ar' ? 'تسجيل الدخول' : 'Log in'}</button>
           </div>
         </div>
 
         <article className='offer orange'>
-          Get US $10 off <br/> with a new <br/>  supplier
+          {lang === 'ar' ? <>احصل على خصم 10$ <br/> مع مورد <br/> جديد</> : <>Get US $10 off <br/> with a new <br/> supplier</>}
         </article>
 
         <article className='offer green'>
-         Send quotes with <br/>  supplier <br/>  preferences
+         {lang === 'ar' ? <>أرسل استفساراتك <br/> وفق تفضيلات <br/> الموردين</> : <>Send quotes with <br/> supplier <br/> preferences</>}
         </article>
 
       </div>

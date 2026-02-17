@@ -3,13 +3,17 @@
 import { ProductProps } from '@/types'
 import Image from 'next/image'
 import React, { useState } from 'react'
+import { useLang } from '@/context/LangContext'
+
 
 interface props {
     product:ProductProps
 }
 
 const DetailsTopRight = ({product}:props) => {
+    const { translate } = useLang();
     const [img,setImg] = useState('frist-img');
+
   return (
     <div className="right">
         <div className='track'>
@@ -17,7 +21,8 @@ const DetailsTopRight = ({product}:props) => {
                 <div className="slide">
                     <Image
                         src={`/${product?.image}.webp`}
-                        alt={`img for ${product?.title}`}
+                        alt={`img for ${translate(product?.title)}`}
+
                         width={345}
                         height={345}
                     />
@@ -25,7 +30,8 @@ const DetailsTopRight = ({product}:props) => {
                 <div className="slide">
                     <Image
                         src={`/${product?.image}.webp`}
-                        alt={`img for${product?.title}`}
+                        alt={`img for${translate(product?.title)}`}
+
                         width={345}
                         height={345}
                     />
@@ -33,7 +39,8 @@ const DetailsTopRight = ({product}:props) => {
                 <div className="slide">
                     <Image
                         src={`/${product?.image}.webp`}
-                        alt={`img for${product?.title}`}
+                        alt={`img for${translate(product?.title)}`}
+
                         width={345}
                         height={345}
                     />
@@ -41,7 +48,8 @@ const DetailsTopRight = ({product}:props) => {
                 <div className="slide">
                     <Image
                         src={`/${product?.image}.webp`}
-                        alt={`img for${product?.title}`}
+                        alt={`img for${translate(product?.title)}`}
+
                         width={345}
                         height={345}
                     />
@@ -49,7 +57,8 @@ const DetailsTopRight = ({product}:props) => {
                 <div className="slide">
                     <Image
                         src={`/${product?.image}.webp`}
-                        alt={`img for${product?.title}`}
+                        alt={`img for${translate(product?.title)}`}
+
                         width={345}
                         height={345}
                     />
@@ -60,7 +69,8 @@ const DetailsTopRight = ({product}:props) => {
             <button onClick={_=>setImg('frist-img')}>
             <Image
                 src={`/${product?.image}.webp`}
-                alt={`img for${product?.title}`}
+                alt={`img for${translate(product?.title)}`}
+
                 width={56}
                 height={56}
             />
@@ -68,7 +78,8 @@ const DetailsTopRight = ({product}:props) => {
             <button onClick={_=>setImg('second-img')}>
             <Image
                 src={`/${product?.image}.webp`}
-                alt={`img for${product?.title}`}
+                alt={`img for${translate(product?.title)}`}
+
                 width={56}
                 height={56}
             />
@@ -76,7 +87,8 @@ const DetailsTopRight = ({product}:props) => {
             <button onClick={_=>setImg('third-img')}>
             <Image
                 src={`/${product?.image}.webp`}
-                alt={`img for${product?.title}`}
+                alt={`img for${translate(product?.title)}`}
+
                 width={56}
                 height={56}
             />
@@ -84,7 +96,8 @@ const DetailsTopRight = ({product}:props) => {
             <button onClick={_=>setImg('forth-img')}>
             <Image
                 src={`/${product?.image}.webp`}
-                alt={`img for${product?.title}`}
+                alt={`img for${translate(product?.title)}`}
+
                 width={56}
                 height={56}
             />
@@ -92,7 +105,8 @@ const DetailsTopRight = ({product}:props) => {
             <button onClick={_=>setImg('fifth-img')}>
             <Image
                 src={`/${product?.image}.webp`}
-                alt={`img for${product?.title}`}
+                alt={`img for${translate(product?.title)}`}
+
                 width={56}
                 height={56}
             />

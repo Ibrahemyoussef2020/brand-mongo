@@ -16,6 +16,8 @@ import { addToCart, removeFromFavStore } from "@/redux/slices";
 import AddRemoveCart from "./AddRemoveCart";
 import { IRootState, AppDispatch } from "@/redux/store";
 import SavedForLaterSkelton from "@/skelton/general/SavedForLater";
+import { useLang } from "@/context/LangContext";
+
 
 
 interface props {
@@ -24,6 +26,8 @@ interface props {
 }
 
 const SavedForLater = () => {
+   const { translate } = useLang();
+
    
 const {favorites} = useSelector((state:IRootState) => state.combine.fav);
 const [loading, setLoading] = useState(true);
@@ -69,7 +73,8 @@ const handleAddToCart = (product:ProductProps)=>{
       <div className="products">
           {
               favorites.map((product:ProductProps) => {
-                const details = `${product.title} ${product.description}`
+                const details = `${translate(product.title)} ${translate(product.description)}`
+
 
                 return <SwiperSlide
                 key={product._id}
@@ -88,8 +93,9 @@ const handleAddToCart = (product:ProductProps)=>{
                     <p className="title-desc">{details?.slice(0,37)}...</p>
                     <div className="type-color">
                       <span>{product.section} -</span>
-                      <span> {product.color?.slice(0,10)}</span>
+                      <span> {translate(product.color)?.slice(0,10)}</span>
                     </div>
+
                 </div>
                 <AddRemoveCart product={product} process="add-from-fav-lg" />
             </article>

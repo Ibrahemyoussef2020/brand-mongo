@@ -13,12 +13,16 @@ import Image from "next/image";
 import BrowserProduct from "../general/BrowserProduct";
 import { fetchAllProducts } from "@/lib/services";
 import BothHomeElectricSwiperSkelton from "@/skelton/home/BothHomeElectricSwiper";
+import { useLang } from "@/context/LangContext";
+
 
 interface prop{
     section:string,
 }
 
 const BothHomeElectricSwiper = ({section}:prop) => {
+    const { translate, lang } = useLang();
+
 
     const [products,setProducts] = useState<[]|ProductProps[]>([]);
     const [loading,setLoading] = useState(true);
@@ -73,9 +77,10 @@ const BothHomeElectricSwiper = ({section}:prop) => {
                     />
                   </div> 
                   <div className="text-wrapper">
-                    <h3>{product.title.slice(0,10)}</h3>
-                    <p>From USD 19</p>  
+                    <h3>{translate(product.title).slice(0,10)}</h3>
+                    <p>{lang === 'ar' ? 'تبدأ من 19 دولار' : 'From USD 19'}</p>  
                   </div>
+
 
                   <BrowserProduct section={section} productId={product.static_id} />
 
@@ -89,12 +94,13 @@ const BothHomeElectricSwiper = ({section}:prop) => {
 
     <div className="src">
       <Link href={`/showCategories/${section}`}>
-        Source now
+        {lang === 'ar' ? 'تصفح الآن' : 'Source now'}
         <img src="/images/home-arrow.webp" alt="->" />
       </Link>
     </div>
     </>
   )
 }
+
 
 export default BothHomeElectricSwiper

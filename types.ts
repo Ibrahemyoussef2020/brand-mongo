@@ -1,23 +1,33 @@
+export type Locale = 'en' | 'ar';
+
 export interface ChildrenProps  { 
-    children: React.ReactNode
+    children: React.ReactNode;
+    locale?: Locale;
 }
+
+export type LocalizedString = {
+    en?: string;
+    ar?: string;
+} | string;
+
 
 export interface ProductProps {
             _id: string,
             static_id:string,
-            title: string,
-            type: string,
+            title: LocalizedString,
+            type: LocalizedString,
             section: string,
             image: string,
-            brand: string,
-            description: string,
+            brand: LocalizedString,
+            description: LocalizedString,
             avgRating: number,
             ratings: number,
             price: number,
             oldPrice: number,
-            badge: string,
+            badge: LocalizedString,
             free_delivery: boolean,
-            color: string,
+            color: LocalizedString,
+
             to_home: boolean,
             premium_offer: boolean,
             has_discount: boolean,

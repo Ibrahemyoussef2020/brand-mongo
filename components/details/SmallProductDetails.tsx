@@ -10,13 +10,20 @@ import ToggleFav from "../general/ToggleFav";
 import AddRemoveCart from "../general/AddRemoveCart";
 import ProgressNav from "../layout/ProgressNav";
 import { getProductsFromDB } from "@/lib/db/fetchProducts";
+import { sTranslate } from "@/utilities/translate";
+
+import { Locale } from "@/types";
+
 
 interface props {
     product:ProductProps,
-    category:string
+    category:string,
+    locale: Locale
 }
 
-const SmallProductDetails = async ({product,category}:props) => {
+
+const SmallProductDetails = async ({product,category,locale}:props) => {
+
     // Fetch similar products for AnotherItems
     const similarResult = await getProductsFromDB({ category });
     const similarProducts = similarResult?.data as unknown as ProductProps[] || [];
@@ -24,7 +31,7 @@ const SmallProductDetails = async ({product,category}:props) => {
   if (product != null) {
     return (
       <div className="mobile-details">
-        <ProgressNav page="details" category={category} item={product.title} /> 
+        <ProgressNav page="details" category={category} item={sTranslate(product.title, locale)} /> 
         <div className="images">
            <DetailsSmallSlider product={product} />
         </div>
@@ -113,7 +120,8 @@ const SmallProductDetails = async ({product,category}:props) => {
 
 
             <div className="desc">
-              <p>Info about edu item is an ideal companion for anyone engaged in learning. The drone provides precise and ...</p>
+              <p>{sTranslate(product?.description, locale)}</p>
+
               <details>
                 <summary></summary>
                 <p>

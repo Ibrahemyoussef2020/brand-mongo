@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image"
 import Searchbar from "./Searchbar"
 
@@ -9,15 +10,27 @@ import Link from "next/link"
 import NavBtn from "./NavBtn"
 import HeaderTopLeft from "./HeaderTopLeft"
 import UserMenu from "./UserMenu"
+import { useLang } from "@/context/LangContext"
 
+
+import { useRouter, usePathname } from "next/navigation"
 
 interface props {
   page:string,
   heading:string
 }
-
 const Header = ({page='results',heading='Show Categories'}:props) => {
+  const { lang, setLang } = useLang(); 
+  const router = useRouter();
+  const pathname = usePathname();
 
+  const handleLangChange = (newLang: string) => {
+    const segments = pathname.split('/');
+    segments[1] = newLang;
+    const newPathname = segments.join('/') || `/${newLang}`;
+    router.push(newPathname);
+    setLang(newLang as any);
+  };
 
   return (
     <header className='header'>
@@ -77,9 +90,10 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
 
           <ul className="left">
             <li>
-              English, USD
-              <select>
-                    <option value="english"></option>
+              {lang === 'en' ? 'English, USD' : 'العربية، دولار'}
+              <select value={lang} onChange={(e) => handleLangChange(e.target.value)}>
+                    <option value="en">English</option>
+                    <option value="ar">Arabic</option>
               </select>
             </li>
             <li>

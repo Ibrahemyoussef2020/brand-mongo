@@ -14,8 +14,12 @@ import { selectDate } from "@/utilities";
 import DetailsMayLik from "@/components/general/DetailsMayLik";
 import { AppDispatch, IRootState } from "@/redux/store";
 import EmptyCart from "../cart/EmptyCart";
+import { useLang } from "@/context/LangContext";
+
 
 const OrderResult = () => {
+    const { translate } = useLang();
+
 
   const dispatch =useDispatch<AppDispatch>()
   const {purchases} = useSelector((state:IRootState) => state.combine.cart)
@@ -35,14 +39,16 @@ const OrderResult = () => {
                     <div className="img-wrapper">
                         <Image
                         src={`/${product.image}.webp`}
-                        alt={product.title}
+                        alt={translate(product.title)}
                         height={200}
                         width={210}
                         />
+
                     </div>
                     <br/>
                     <div className="product__info">
-                        <p className="title">{product.title} <span className="good-item">Very Good Item</span> ,</p>
+                        <p className="title">{translate(product.title)} <span className="good-item">Very Good Item</span> ,</p>
+
                         <div className="top">
                             <div className="right">                    
                               <div className="ratings-else">
@@ -54,8 +60,9 @@ const OrderResult = () => {
                             </div>                        
                         </div>
                         <div className="item-info">
-                            <h4>Seller</h4><p>{product.brand} Brand</p>
+                            <h4>Seller</h4><p>{translate(product.brand)} Brand</p>
                         </div>
+
                         <div className="item-info">
                             <h4>Date order</h4><p> {selectDate(1)}</p>
                         </div>

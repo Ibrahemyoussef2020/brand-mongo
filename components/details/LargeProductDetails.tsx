@@ -13,13 +13,20 @@ import ProgressNav from "../layout/ProgressNav"
 import { getProductsFromDB } from "@/lib/db/fetchProducts"
 import { Suspense } from "react"
 import MayLikeSkelton from "@/skelton/general/MayLike"
+import { sTranslate } from "@/utilities/translate"
+
+import { Locale } from "@/types"
+
 
 interface props {
     product:ProductProps,
-    category:string
+    category:string,
+    locale: Locale
 }
 
-const LargeProductDetails = async ({product,category}:props) => {
+
+const LargeProductDetails = async ({product,category,locale}:props) => {
+
     // Fetch related products for AnotherItems
     const relatedResult = await getProductsFromDB({ category });
     const relatedProducts = relatedResult?.data as unknown as ProductProps[] || [];
@@ -28,12 +35,13 @@ const LargeProductDetails = async ({product,category}:props) => {
     return (
         <div className="pc-details">
 
-            <ProgressNav page="details" category={category} item={product.title} /> 
+            <ProgressNav page="details" category={category} item={sTranslate(product.title, locale)} /> 
             
             <div className="top">  
                 <DetailsTopRight product={product}  />
     
-                <DetailsTopCenter product={product} />
+                <DetailsTopCenter product={product} locale={locale} />
+
              
                 <DetailsTopLeft product={product}  />
 
@@ -43,8 +51,9 @@ const LargeProductDetails = async ({product,category}:props) => {
             <div className="bottom">
                 <DetailsBottomLeft product={product} />
                 <Suspense fallback={<MayLikeSkelton />}>
-                    <DetailsMayLik />          
+                    <DetailsMayLik locale={locale} />          
                 </Suspense>
+
             </div>
 
             <AnotherItems products={relatedProducts} category={category} title="Related products"/>

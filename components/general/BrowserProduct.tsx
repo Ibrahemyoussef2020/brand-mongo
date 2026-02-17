@@ -1,6 +1,8 @@
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { useLang } from '@/context/LangContext'
 
 interface prop {
   section: string,
@@ -10,13 +12,13 @@ interface prop {
 
 const BrowserProduct = (prop: prop) => {
   const { section, productId , base="showSections" } = prop;
+  const { lang } = useLang();
   
-
   return (
     <Link
       href={!productId ? `/${base}/${section}` : `/itemDetails/${section}/${productId}`}
       className='browser-product'>
-      <span>Details</span>
+      <span>{lang === 'ar' ? 'التفاصيل' : 'Details'}</span>
       <Image
         src='/images/details.webp'
         alt='->'

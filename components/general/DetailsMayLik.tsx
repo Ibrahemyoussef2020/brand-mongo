@@ -2,9 +2,14 @@ import {  getRecommendedItemsFromDB } from "@/lib/db/fetchProducts"
 import { ProductProps } from "@/types"
 import Image from "next/image"
 import Link from "next/link";
+import { sTranslate } from "@/utilities/translate";
+
+import { Locale } from "@/types";
 
 
-const DetailsMayLik = async () => {
+
+const DetailsMayLik = async ({ locale }: { locale: Locale }) => {
+
   
   const result = await getRecommendedItemsFromDB();
   const products = result?.data;  
@@ -18,7 +23,8 @@ const DetailsMayLik = async () => {
     <div className="products-wrapper">
         {
             (products as unknown as ProductProps[])?.map((product:ProductProps,index:number) =>{
-                const  heading = `${product.title} ${product.description}`
+                const heading = `${sTranslate(product.title, locale)} ${sTranslate(product.description, locale)}`
+
                  if (index < 5) {
                     return <Link href={`/itemDetails/home-sections/${product._id}`} key={product._id}>
                     <div className="img-wrapper">

@@ -15,8 +15,39 @@
         article{
             flex: 1;
             height: 100%;
-            max-width: 600px;
+            max-width: 500px;
+            min-width: 270px !important;
             cursor: pointer;
+
+            &:has(.cover:hover){
+                .body {
+                    display: none !important;
+                }
+
+                .cover .icon-container h3{
+                    display: inline-block !important;
+                }
+
+                 .icon-container{
+                    width: 100%;
+                    right: 0;
+                    border-radius: 0;
+                    bottom: 0px;
+                    justify-content: start;
+                    padding-left: 10px;
+                   
+                }
+
+               .body{
+                    br{
+                        display: none;
+                    }
+
+                    p{
+                        text-align: center;
+                    }
+               }
+            }
             
             .cover{
                 position: relative;
@@ -24,21 +55,7 @@
                 min-width: 125px;
                 height: 120px;
 
-                @include min-width(430px){
-                     min-width: 200px;
-                 }
-                @include min-width(690px){
-                    min-width: 220px;
-                }
-                @include min-width($medium_size){
-                    min-width: 280px;
-                }
-                @include min-width($large_size){
-                    min-width: 310px;
-                }
-                @include min-width($x-large_size){
-                    min-width: 280px;
-                }
+              
 
                 .icon-container{
                     position: absolute;
@@ -52,13 +69,21 @@
                     background: #fff;
                     border: 2px solid #eee;
                     border-radius: 50%;
-
                     transition: all .3s ease-in-out;
 
                     @include min-width($small_size){
                         bottom: -25px;
                         right: 25px;
                     }
+
+                    h3{
+                        display:none;
+                        font-size: 14px !important;
+                        margin: 0;
+                        padding-block: 0;
+                        padding-inline: .5rem;
+                    }
+
 
                 }
 
@@ -74,29 +99,11 @@
                     text-overflow: ellipsis;
                     overflow: hidden;
                     white-space: nowrap;
+                    max-width: 250px;
                 }
             }
 
-            &:hover{
-                .icon-container{
-                    width: 100%;
-                    right: 0;
-                    border-radius: 0;
-                    bottom: 0px;
-                    justify-content: start;
-                    padding-left: 10px;
-                }
-
-               .body{
-                    br{
-                        display: none;
-                    }
-
-                    p{
-                        text-align: center;
-                    }
-               }
-            }
+           
         }
     }
 }

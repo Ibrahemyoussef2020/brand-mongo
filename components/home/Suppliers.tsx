@@ -3,12 +3,14 @@ import Image from 'next/image'
 import React from 'react'
 import { useLang } from '@/context/LangContext'
 
+import { dictionaries } from '@/lib/dictionaries'
+
 const Suppliers = () => {
-  const { lang } = useLang();
+  const { translate } = useLang();
   
   return (
     <section className='suppliers'>
-        <h2>{lang === 'ar' ? 'الموردون حسب المنطقة' : 'Suppliers by region'}</h2>
+        <h2>{translate(dictionaries.suppliers.heading)}</h2>
         <div className='contries'>
             <article>
                 <Image
@@ -18,7 +20,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'الدنمارك' : 'Denmark'}</h3>
+                    <h3>{translate(dictionaries.suppliers.denmark)}</h3>
                     <p>denmark.com.dk</p>
                 </div>
             </article>
@@ -30,7 +32,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'أستراليا' : 'Australia'}</h3>
+                    <h3>{translate(dictionaries.suppliers.australia)}</h3>
                     <p>Australia.com.dk</p>
                 </div>
             </article>
@@ -42,7 +44,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'فرنسا' : 'France'}</h3>
+                    <h3>{translate(dictionaries.suppliers.france)}</h3>
                     <p>France.com.dk</p>
                 </div>
             </article>
@@ -54,7 +56,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'الولايات المتحدة' : 'United States'}</h3>
+                    <h3>{translate(dictionaries.suppliers.unitedStates)}</h3>
                     <p>States.com.dk</p>
                 </div>
             </article>
@@ -66,7 +68,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'روسيا' : 'Russia'}</h3>
+                    <h3>{translate(dictionaries.suppliers.russia)}</h3>
                     <p>Russia.com.dk</p>
                 </div>
             </article>
@@ -78,7 +80,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'الصين' : 'China'}</h3>
+                    <h3>{translate(dictionaries.suppliers.china)}</h3>
                     <p>China.com.dk</p>
                 </div>
             </article>
@@ -90,7 +92,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'إيطاليا' : 'Italy'}</h3>
+                    <h3>{translate(dictionaries.suppliers.italy)}</h3>
                     <p>Italy.com.dk</p>
                 </div>
             </article>
@@ -102,7 +104,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'بريطانيا العظمى' : 'Great Britain'}</h3>
+                    <h3>{translate(dictionaries.suppliers.greatBritain)}</h3>
                     <p>Britain.com.dk</p>
                 </div>
             </article>
@@ -114,7 +116,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'ألمانيا' : 'German'}</h3>
+                    <h3>{translate(dictionaries.suppliers.german)}</h3>
                     <p>German.com.dk</p>
                 </div>
             </article>
@@ -126,7 +128,7 @@ const Suppliers = () => {
                     height={25}
                 />
                 <div>
-                    <h3>{lang === 'ar' ? 'حلفاء إيطاليا' : 'Italy Alies'}</h3>
+                    <h3>{translate(dictionaries.suppliers.italyAlies)}</h3>
                     <p>Italy-a.com.dk</p>
                 </div>
             </article>

@@ -4,32 +4,34 @@ import React from 'react'
 import OffersSwiper from './OffersSwiper'
 import { useLang } from '@/context/LangContext'
 
+import { dictionaries } from '@/lib/dictionaries'
+
 const HomeOffers = () => {
-  const { lang } = useLang();
+  const { translate } = useLang();
   
   return (
     <section className='home-offers'>
         <div className='intro'>
             <div className='text'>
-                <h2>{lang === 'ar' ? 'العروض والخصومات' : 'Deals and offers'}</h2>
-                <p>{lang === 'ar' ? 'معدات النظافة' : 'Hygiene equipments'}</p>
+                <h2>{translate(dictionaries.homeOffers.dealsAndOffers)}</h2>
+                <p>{translate(dictionaries.homeOffers.hygieneEquipments)}</p>
             </div>
             <div className='time'>
                 <article className='days'>
                     <p>04</p>
-                    <h3>{lang === 'ar' ? 'أيام' : 'Days'}</h3>
+                    <h3>{translate(dictionaries.homeOffers.days)}</h3>
                 </article>
                 <article>
                     <p>13</p>
-                    <h3>{lang === 'ar' ? 'ساعة' : 'Hour'}</h3>
+                    <h3>{translate(dictionaries.homeOffers.hour)}</h3>
                 </article>
                 <article>
                     <p>34</p>
-                    <h3>{lang === 'ar' ? 'دقيقة' : 'Min'}</h3>
+                    <h3>{translate(dictionaries.homeOffers.min)}</h3>
                 </article>
                 <article>
                     <p>56</p>
-                    <h3>{lang === 'ar' ? 'ثانية' : 'Sec'}</h3>
+                    <h3>{translate(dictionaries.homeOffers.sec)}</h3>
                 </article>
             </div>
         </div>

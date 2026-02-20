@@ -1,122 +1,64 @@
-'use client'
+'use client';
+
+import { dictionaries } from "@/lib/dictionaries"
 import { useLang } from "@/context/LangContext"
 import Image from "next/image"
 
-
 const ExtraServices = () => {
-  const { lang } = useLang();
+  const { translate } = useLang();
 
-  const t = {
-    en: {
-      heading: "Our extra services",
-      source: "Source from Industry Hubs",
-      customize: "Customize Your Products",
-      shipping: "Fast, reliable shipping by ocean or air",
-      monitoring: "Product monitoring and inspection"
+  const services = [
+    {
+      image: '/images/extra-servieces/containers.webp',
+      icon: '/images/icons/search.png',
+      textKey: dictionaries.extraServices.source
     },
-    ar: {
-      heading: "خدماتنا الإضافية",
-      source: "المصدر من مراكز الصناعة",
-      customize: "تخصيص منتجاتك",
-      shipping: "شحن سريع وموثوق عن طريق البحر أو الجو",
-      monitoring: "مراقبة وفحص المنتج"
+    {
+      image: '/images/extra-servieces/colors.webp',
+      icon: '/images/icons/inventory.png',
+      textKey: dictionaries.extraServices.customize
+    },
+    {
+      image: '/images/extra-servieces/plane.webp',
+      icon: '/images/icons/send.png',
+      textKey: dictionaries.extraServices.shipping
+    },
+    {
+      image: '/images/extra-servieces/man.webp',
+      icon: '/images/icons/security.png',
+      textKey: dictionaries.extraServices.monitoring
     }
-  };
-
-  const currentT = t[lang] || t.en;
+  ];
 
   return (
     <section className='extra-services'>
-      <h2>{currentT.heading}</h2>
+      <h2>{translate(dictionaries.extraServices.heading)}</h2>
       <div className='services'>
-        <article>
+        {services.map((service, index) => (
+          <article key={index}>
             <div className="cover img-wrapper">
               <Image
-                src='/images/extra-servieces/containers.webp'
+                src={service.image}
                 alt="global"
-                style={{objectFit:'fill'}}
+                style={{ objectFit: 'fill' }}
                 fill
                 sizes="100%"
               />
               <div className="icon-container">
                 <Image
-                  src='/images/icons/search.png'
+                  src={service.icon}
                   alt="global"
                   width={24}
                   height={24}
                 />
+                <h3>{translate(service.textKey)}</h3>
               </div>
             </div>
             <div className="body">
-              <p>{currentT.source}</p> 
+              <p>{translate(service.textKey)}</p>
             </div>
-        </article>
-        <article>
-            <div className="cover img-wrapper">
-              <Image
-                src='/images/extra-servieces/colors.webp'
-                alt="global"
-                style={{objectFit:'fill'}}
-                fill
-                sizes="100%"
-              />
-              <div className="icon-container">
-                <Image
-                  src='/images/icons/inventory.png'
-                  alt="global"
-                  width={24}
-                  height={24}
-                />
-              </div>
-            </div>
-            <div className="body">
-              <p>{currentT.customize}</p>
-            </div>
-        </article>
-        <article>
-            <div className="cover img-wrapper">
-              <Image
-                src='/images/extra-servieces/plane.webp'
-                alt="global"
-                style={{objectFit:'fill'}}
-                fill
-                sizes="100%"
-              />
-              <div className="icon-container">
-                <Image
-                  src='/images/icons/send.png'
-                  alt="global"
-                  width={24}
-                  height={24}
-                />
-              </div>
-            </div>
-            <div className="body">
-              <p>{currentT.shipping}</p>
-            </div>
-        </article>
-        <article>
-            <div className="cover img-wrapper">
-              <Image
-                src='/images/extra-servieces/man.webp'
-                alt="global"
-                style={{objectFit:'fill'}}
-                fill
-                sizes="100%"
-              />
-              <div className="icon-container">
-                <Image
-                  src='/images/icons/security.png'
-                  alt="global"
-                  width={24}
-                  height={24}
-                />
-              </div>
-            </div>
-            <div className="body">
-              <p>{currentT.monitoring}</p>
-            </div>
-        </article>
+          </article>
+        ))}
       </div>
     </section>
   )

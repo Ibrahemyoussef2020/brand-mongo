@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { showProducts } from "@/app/apis";
+import { showProducts } from "@/app/apis"; 
 import { ProductProps } from "@/types";
 import Image from "next/image";
 import BrowserProduct from "../general/BrowserProduct";
@@ -20,8 +20,10 @@ interface prop{
     section:string,
 }
 
+import { dictionaries } from "@/lib/dictionaries";
+
 const BothHomeElectricSwiper = ({section}:prop) => {
-    const { translate, lang } = useLang();
+    const { translate } = useLang();
 
 
     const [products,setProducts] = useState<[]|ProductProps[]>([]);
@@ -78,7 +80,7 @@ const BothHomeElectricSwiper = ({section}:prop) => {
                   </div> 
                   <div className="text-wrapper">
                     <h3>{translate(product.title).slice(0,10)}</h3>
-                    <p>{lang === 'ar' ? 'تبدأ من 19 دولار' : 'From USD 19'}</p>  
+                    <p>{translate(dictionaries.bothHomeElectricSwiper.fromUSD)}</p>  
                   </div>
 
 
@@ -94,7 +96,7 @@ const BothHomeElectricSwiper = ({section}:prop) => {
 
     <div className="src">
       <Link href={`/showCategories/${section}`}>
-        {lang === 'ar' ? 'تصفح الآن' : 'Source now'}
+        {translate(dictionaries.common.sourceNow)}
         <img src="/images/home-arrow.webp" alt="->" />
       </Link>
     </div>

@@ -6,19 +6,21 @@ import React from 'react'
 import BothHomeElectricSwiper from './BothHomeElectricSwiper'
 import { useLang } from '@/context/LangContext'
 
+import { dictionaries } from '@/lib/dictionaries'
+
 const Electronics = () => {
-  const { lang } = useLang();
+  const { translate } = useLang();
   
   return (
     <section className='outer-electric' id="electric">
         <div className='intro'>
             <div className='external-heading'>
-                <h2>{lang === 'ar' ? 'إلكترونيات استهلاكية' : 'Consumer electronics'}</h2>
+                <h2>{translate(dictionaries.electronics.heading)}</h2>
             </div>
             <div className='img-wrapper'>
                 <div className='text'>
-                    <h2>{lang === 'ar' ? <><br/>إلكترونيات<br/> استهلاكية</> : <>Consumer<br/> electronics</>}</h2>
-                    <Link className='source' href='/showSections/homeConsumer'>{lang === 'ar' ? 'تصفح الآن' : 'Source now'}</Link>  
+                    <h2>{translate(dictionaries.electronics.heading)}</h2>
+                    <Link className='source' href='/showSections/homeConsumer'>{translate(dictionaries.common.sourceNow)}</Link>  
                 </div>
                 <Image
                     src='/images/consumer-electronics.webp'

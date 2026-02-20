@@ -10,15 +10,17 @@ interface prop {
   base?:string
 }
 
+import { dictionaries } from '@/lib/dictionaries'
+
 const BrowserProduct = (prop: prop) => {
   const { section, productId , base="showSections" } = prop;
-  const { lang } = useLang();
+  const { translate } = useLang();
   
   return (
     <Link
       href={!productId ? `/${base}/${section}` : `/itemDetails/${section}/${productId}`}
       className='browser-product'>
-      <span>{lang === 'ar' ? 'التفاصيل' : 'Details'}</span>
+      <span>{translate(dictionaries.browserProduct.details)}</span>
     </Link>
   )
 }

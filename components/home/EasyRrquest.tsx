@@ -10,10 +10,12 @@ interface FormData {
   unit: string;
 }
 
+import { dictionaries } from '@/lib/dictionaries';
+
 const EasyRrquest = () => {
   const [fullWidth, setFullWidth] = useState('intro');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { lang } = useLang();
+  const { lang, translate } = useLang();
 
   const [formData, setFormData] = useState<FormData>({
     item: '',
@@ -27,13 +29,13 @@ const EasyRrquest = () => {
     const newErrors: Partial<FormData> = {};
     
     if (!formData.item.trim()) {
-      newErrors.item = lang === 'ar' ? 'يرجى إدخال العنصر الذي تحتاجه' : 'Please enter what item you need';
+      newErrors.item = translate(dictionaries.easyRequest.errors.item);
     }
     if (!formData.quantity || formData.quantity === 'how_many') {
-      newErrors.quantity = lang === 'ar' ? 'يرجى اختيار الكمية' : 'Please select quantity';
+      newErrors.quantity = translate(dictionaries.easyRequest.errors.quantity);
     }
     if (!formData.unit || formData.unit === 'how_much') {
-      newErrors.unit = lang === 'ar' ? 'يرجى اختيار الوحدة' : 'Please select unit';
+      newErrors.unit = translate(dictionaries.easyRequest.errors.unit);
     }
     
     setErrors(newErrors);
@@ -75,7 +77,7 @@ const EasyRrquest = () => {
       
     } catch (error) {
       console.error('Error sending inquiry:', error);
-      alert(lang === 'ar' ? 'فشل إرسال الاستفسار. يرجى المحاولة مرة أخرى.' : 'Failed to send inquiry. Please try again.');
+      alert(translate(dictionaries.easyRequest.errors.failed));
     } finally {
       setIsSubmitting(false);
     }
@@ -105,13 +107,13 @@ const EasyRrquest = () => {
             {/* Intro Screen */}
             <div className={`intro ${fullWidth === 'intro' ? 'visible' : ''}`}>
                 <h2>
-                    {lang === 'ar' ? 'طريقة سهلة لإرسال الطلبات لجميع الموردين' : 'An easy way to send requests to all suppliers'}
+                    {translate(dictionaries.easyRequest.title)}
                 </h2>
                 <p>
-                  {lang === 'ar' ? 'احصل على عروض أسعار من عدة موردين معتمدين لاحتياجات عملك. وفر الوقت وجد أفضل الصفقات باستفسار واحد فقط.' : 'Get quotes from multiple verified suppliers for your business needs. Save time and find the best deals with just one inquiry.'}
+                  {translate(dictionaries.easyRequest.desc)}
                 </p>
                 <button className='external-btn' onClick={() => showForm('form')}>
-                    {lang === 'ar' ? 'إرسال استفسار' : 'Send inquiry'}
+                    {translate(dictionaries.easyRequest.sendInquiry)}
                 </button>
             </div>
 
@@ -119,7 +121,7 @@ const EasyRrquest = () => {
             <div 
               className={`inquiry-form ${fullWidth === 'form' ? 'visible' : ''}`} 
             >
-                <h3>{lang === 'ar' ? 'إرسال عرض سعر للموردين' : 'Send quote to suppliers'}</h3>
+                <h3>{translate(dictionaries.easyRequest.formTitle)}</h3>
                 <div className="form__body">
                   <div>
                     <input 
@@ -128,7 +130,7 @@ const EasyRrquest = () => {
                       name="item"
                       value={formData.item}
                       onChange={handleInputChange}
-                      placeholder={lang === 'ar' ? 'ما هو العنصر الذي تحتاجه؟ مثال: هاتف محمول' : 'What item you need? For example: mobile phone'}
+                      placeholder={translate(dictionaries.easyRequest.itemPlaceholder)}
                     />
                     {errors.item && <span className="error-text">{errors.item}</span>}
                     
@@ -137,7 +139,7 @@ const EasyRrquest = () => {
                       name="details"
                       value={formData.details}
                       onChange={handleInputChange}
-                      placeholder={lang === 'ar' ? 'اكتب المزيد من التفاصيل. مثال: اللون، الحجم، المادة، إلخ.' : 'Type more details. For example: color, size, material, etc.'}
+                      placeholder={translate(dictionaries.easyRequest.detailsPlaceholder)}
                     />
                   </div>  
 
@@ -148,7 +150,7 @@ const EasyRrquest = () => {
                       onChange={handleInputChange}
                       className={errors.quantity ? 'error' : ''}
                     >
-                      <option value="">{lang === 'ar' ? 'الكمية' : 'How many'}</option>
+                      <option value="">{translate(dictionaries.easyRequest.quantity)}</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -167,15 +169,15 @@ const EasyRrquest = () => {
                       onChange={handleInputChange}
                       className={errors.unit ? 'error' : ''}
                     >
-                      <option value="">{lang === 'ar' ? 'نوع الوحدة' : 'Unit type'}</option>
-                      <option value="pcs">{lang === 'ar' ? 'قطعة' : 'Pieces'}</option>
-                      <option value="kg">{lang === 'ar' ? 'كيلوجرام' : 'Kilograms'}</option>
-                      <option value="ton">{lang === 'ar' ? 'طن' : 'Tons'}</option>
-                      <option value="box">{lang === 'ar' ? 'صندوق' : 'Boxes'}</option>
-                      <option value="set">{lang === 'ar' ? 'مجموعة' : 'Sets'}</option>
-                      <option value="pair">{lang === 'ar' ? 'زوج' : 'Pairs'}</option>
-                      <option value="liter">{lang === 'ar' ? 'لتر' : 'Liters'}</option>
-                      <option value="meter">{lang === 'ar' ? 'متر' : 'Meters'}</option>
+                      <option value="">{translate(dictionaries.easyRequest.unitType)}</option>
+                      <option value="pcs">{translate(dictionaries.easyRequest.pieces)}</option>
+                      <option value="kg">{translate(dictionaries.easyRequest.kilograms)}</option>
+                      <option value="ton">{translate(dictionaries.easyRequest.tons)}</option>
+                      <option value="box">{translate(dictionaries.easyRequest.boxes)}</option>
+                      <option value="set">{translate(dictionaries.easyRequest.sets)}</option>
+                      <option value="pair">{translate(dictionaries.easyRequest.pairs)}</option>
+                      <option value="liter">{translate(dictionaries.easyRequest.liters)}</option>
+                      <option value="meter">{translate(dictionaries.easyRequest.meters)}</option>
                     </select>
                   </div>
                 </div>  
@@ -187,7 +189,7 @@ const EasyRrquest = () => {
                     onClick={resetToIntro}
                     disabled={isSubmitting}
                   >
-                    {lang === 'ar' ? '← رجوع' : '← Back'}
+                    {translate(dictionaries.common.back)}
                   </button>
                   <button 
                     type='button'
@@ -198,10 +200,10 @@ const EasyRrquest = () => {
                     {isSubmitting ? (
                       <>
                         <span className="spinner"></span>
-                        {lang === 'ar' ? 'جارٍ الإرسال...' : 'Sending...'}
+                        {translate(dictionaries.easyRequest.sending)}
                       </>
                     ) : (
-                      lang === 'ar' ? 'إرسال استفسار' : 'Send inquiry'
+                      translate(dictionaries.easyRequest.sendInquiry)
                     )}
                   </button>
                 </div>
@@ -210,12 +212,12 @@ const EasyRrquest = () => {
             {/* Success Screen */}
             <div style={{display: 'none !important'}} className={`success-message ${fullWidth === 'success' ? 'visible' : ''}`}>
                 <div className="success-icon">✓</div>
-                <h3>{lang === 'ar' ? 'تم إرسال الاستفسار بنجاح!' : 'Inquiry Sent Successfully!'}</h3>
+                <h3>{translate(dictionaries.easyRequest.successTitle)}</h3>
                 <p>
-                  {lang === 'ar' ? 'تم إرسال طلبك إلى شبكتنا من الموردين المعتمدين. ستتلقى عروض الأسعار خلال 24-48 ساعة.' : "Your request has been sent to our network of verified suppliers. You'll receive quotes within 24-48 hours."}
+                  {translate(dictionaries.easyRequest.successDesc)}
                 </p>
                 <button className='external-btn' onClick={resetToIntro}>
-                    {lang === 'ar' ? 'إرسال استفسار آخر' : 'Send another inquiry'}
+                    {translate(dictionaries.easyRequest.sendAnother)}
                 </button>
             </div>
         </div>

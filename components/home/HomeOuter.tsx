@@ -6,19 +6,21 @@ import React from 'react'
 import BothHomeElectricSwiper from './BothHomeElectricSwiper'
 import { useLang } from '@/context/LangContext'
 
+import { dictionaries } from '@/lib/dictionaries'
+
 const HomeOuter = () => {
-  const { lang } = useLang();
+  const { translate } = useLang();
   
   return (
     <section className='outer-electric'>
         <div className='intro'>
             <div className='external-heading'>
-                <h2>{lang === 'ar' ? 'المنزل والأماكن الخارجية' : 'Home and outdoor'}</h2>
+                <h2>{translate(dictionaries.homeOuter.heading)}</h2>
             </div>
             <div className='img-wrapper'>
                 <div className='text'>
-                    <h2>{lang === 'ar' ? <>المنزل و <br/> الأماكن الخارجية</> : <>Home and <br/> outdoor</>}</h2>
-                    <Link className='source' href='/showSections/homeOutdoor'>{lang === 'ar' ? 'تصفح الآن' : 'Source now'}</Link>  
+                    <h2>{translate(dictionaries.homeOuter.heading)}</h2>
+                    <Link className='source' href='/showSections/homeOutdoor'>{translate(dictionaries.common.sourceNow)}</Link>  
                 </div>
                 <Image
                     src='/images/home-outer.webp'

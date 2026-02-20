@@ -37,7 +37,7 @@ const ResultsSection = ({products,section,maxCountProducts,handleFilter,loading}
                     <div className="img-wrapper in-list">
                         <Image
                         src={`/${product.image}.webp`}
-                        alt={product.title}
+                        alt={translate(product.title)}
                         height={164}
                         width={308}
                         />

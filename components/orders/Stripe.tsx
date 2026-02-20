@@ -46,7 +46,7 @@ const CheckoutForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="stripe-form">
+        <form onSubmit={handleSubmit} className="stripe-form"> 
             <PaymentElement id="payment-element" options={{layout: "tabs"}} />
             <button disabled={isLoading || !stripe || !elements} id="submit" className="stripe-button">
                 <span id="button-text">

@@ -54,11 +54,11 @@ const RecomendedItem = async ({ locale }: { locale: Locale }) => {
                                 <p>
                                     ${recomendedItem.price}
                                 </p>
-                                <h3>{sTranslate(recomendedItem.title, locale)}, {currentT.perfectOffer}</h3>
+                                <h3>{sTranslate(recomendedItem.title, locale).slice(0, 20)}, {currentT.perfectOffer}</h3>
 
                                 <BrowserProduct section='recommendedItems' productId='' />
                             </div>
-                        </article>
+                        </article> 
                     })
                 }
             </div>

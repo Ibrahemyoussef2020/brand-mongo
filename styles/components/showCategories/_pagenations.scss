@@ -50,7 +50,7 @@
         }
 
         button:not(.right){
-            border-right: 1px solid $gray_300;
+            border-inline-end: 1px solid $gray_300;
         }
     }
 }

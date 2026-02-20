@@ -7,6 +7,7 @@ import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import HomeCoverSkelton from '@/skelton/home/HomeCover'
 import { useLang } from '@/context/LangContext'
+import { spawn } from 'child_process'
 
 const HomeCover = () => {
   const [loading, setLoading] = useState(true)
@@ -70,11 +71,28 @@ const HomeCover = () => {
         </div>
 
         <article className='offer orange'>
-          {lang === 'ar' ? <>احصل على خصم 10$ <br/> مع مورد <br/> جديد</> : <>Get US $10 off <br/> with a new <br/> supplier</>}
+          {lang === 'ar' ? 
+          <span>
+          احصل على خصم 10$ مع   <br/> مورد جديد
+          </span> 
+          
+          : 
+          <span>
+          Get US $10 off <br/> with a new supplier
+          </span>
+          }
         </article>
 
         <article className='offer green'>
-         {lang === 'ar' ? <>أرسل استفساراتك <br/> وفق تفضيلات <br/> الموردين</> : <>Send quotes with <br/> supplier <br/> preferences</>}
+         {lang === 'ar' ? 
+         <span>
+          أرسل استفساراتك وفق <br/> تفضيلات الموردين
+         </span>
+         : 
+         <span>
+          Send quotes with <br/> supplier preferences
+         </span>
+         }
         </article>
 
       </div>

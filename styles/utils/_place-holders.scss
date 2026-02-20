@@ -75,7 +75,7 @@
         width: 145px;
         border: none;
         outline: none;
-        border-left: 1px solid $primary;
+        border-inline-start: 1px solid $primary;
         display: none;
         @include min-width($large_size){
             display: inline;

@@ -1,23 +1,24 @@
 .home-offers{
     background: #fff;
     margin-bottom: 10px;
- //   overflow: hidden;
+   overflow: hidden;
+   border-inline: 1px solid $gray-350;
 
     @include min-width($medium_size){
         display: flex;
-        padding-top: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 20px; 
     }
 
     .intro{
         display: flex;
         justify-content: space-between;
+
     
         @include min-width($medium_size){
             display: block;
             border: 1px solid $gray-350;
-            border-right: none;
-            padding-right: 63px;
+            border-inline-start: none;
+            padding-inline-end: 20px;
         }
 
         &:hover{
@@ -62,9 +63,9 @@
             
 
             article{
-                width: 45px;
-                height: 50px;
-                padding:8px;
+                width: 60px;
+                height: 60px;
+                padding:4px;
                 background-color:$gray-200;
                 border-radius: 6px;
                 color:$gray-500;
@@ -86,11 +87,14 @@
 
                 h3{
                     font-size: 11px;
+                    margin: 0;
+                    padding: 0;
+
                 }
 
                 @include min-width($medium_size){
-                    width: 50px;
-                    height: 50px;
+                    width: 60px;
+                    height: 60px;
                     color: #fff;
                     background: #606060;
 
@@ -109,7 +113,7 @@
     /// 
     
     .product{
-        border-left: 1px solid $gray-350;
+        border-inline-start: 1px solid $gray-350;
         overflow: hidden;
 
         .offers-swiper{
@@ -119,7 +123,7 @@
                 margin: 0 !important;
                 font-size: 15px;
                 border: 1px solid $gray-350;
-                border-left: none;
+                border-inline-end: none;
 
                 @include min-width($medium_size){
                     width: 179px !important;

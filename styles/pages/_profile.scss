@@ -123,7 +123,7 @@
     .right{
         flex: 1;
         padding:0 10px;
-        border-left: 1px solid $gray_500; 
+        border-inline-start: 1px solid $gray_500; 
 
         .concate{
             &:hover{
@@ -143,7 +143,7 @@
 
             form input , form textarea {
                 border:1px solid $primary !important;
-                border-left: 0 !important;
+                border-inline-start: 0 !important;
             }
         }
 

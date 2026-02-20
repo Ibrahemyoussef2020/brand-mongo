@@ -11,8 +11,11 @@
     /// intro
     /// 
     .intro{
+        height: 258px !important;
+        border-bottom: 1px solid $gray-350 !important; 
        .external-heading{
             padding: 14px 16px 15px;
+         
 
             @include min-width($medium_size){
                 display: none;
@@ -83,7 +86,7 @@
             margin: 0 !important;
             font-size: 15px;
             border: 1px solid #ccc;
-            border-left: none;
+            border-inline-start: none;
 
             
          @include min-width($medium_size){

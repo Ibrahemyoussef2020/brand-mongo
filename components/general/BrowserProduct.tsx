@@ -19,12 +19,6 @@ const BrowserProduct = (prop: prop) => {
       href={!productId ? `/${base}/${section}` : `/itemDetails/${section}/${productId}`}
       className='browser-product'>
       <span>{lang === 'ar' ? 'التفاصيل' : 'Details'}</span>
-      <Image
-        src='/images/details.webp'
-        alt='->'
-        height={30}
-        width={25}
-      />
     </Link>
   )
 }

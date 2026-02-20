@@ -13,7 +13,7 @@
 
   .search_input_wrapper {
     @include min-width($large_size) {
-      border-right: 1px solid $gray-300 !important;
+      border-inline-end: 1px solid $gray-300 !important;
     }
   }
 

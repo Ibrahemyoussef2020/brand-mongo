@@ -42,18 +42,22 @@
         max-width: 390px;
         margin: auto;
 
+        border-radius: 7px;
+        overflow: hidden;
+        border: 2px solid #777;
+
+
         .input-wrapper{
             flex-grow: 1;
             height: 100%;
             min-height: 40px;
             display: flex;
             align-items: center;
-            border: 2px solid #777;
-            border-right: none;
+            flex-direction: row;
+            border-inline-end: none;
             background: #fff;
             padding: 9px;
-            border-top-left-radius: 7px;
-            border-bottom-left-radius: 7px;
+          
             transition: transform .3s ease-in-out;
 
             &:hover{
@@ -63,7 +67,7 @@
             input{
                 flex: 1;
                 display: block;
-                padding-left: 6px;
+                padding-inline-start: 6px;
                 height:100%;
                 border: none;
                 outline: none;
@@ -76,9 +80,7 @@
             height: 100%;
             background-color: $primary;
             border: 2px solid $primary;
-            border-left: none;
-            border-top-right-radius: 7px;
-            border-bottom-right-radius: 7px;
+            border-inline-start: none;
             color: #fff;
         }
     }

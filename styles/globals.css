@@ -71,7 +71,7 @@
   width: 145px;
   border: none;
   outline: none;
-  border-left: 1px solid #0D6EFD;
+  border-inline-start: 1px solid #0D6EFD;
   display: none;
 }
 @media (min-width: 1024px) {
@@ -276,7 +276,7 @@ select {
   width: 7px;
   height: 7px;
   border-top: 1.5px solid #8b96a5;
-  border-right: 1.5px solid #8b96a5;
+  border-inline-end: 1.5px solid #8b96a5;
   z-index: 0;
 }
 
@@ -959,7 +959,7 @@ select {
   .home-offers .intro {
     display: block;
     border: 1px solid #ccc;
-    border-right: none;
+    border-inline-end: none;
     padding-right: 63px;
   }
 }
@@ -1036,7 +1036,7 @@ select {
   }
 }
 .home-offers .product {
-  border-left: 1px solid #ccc;
+  border-inline-start: 1px solid #ccc;
   overflow: hidden;
 }
 .home-offers .product .offers-swiper .swiper-slide {
@@ -1045,7 +1045,7 @@ select {
   margin: 0 !important;
   font-size: 15px;
   border: 1px solid #ccc;
-  border-left: none;
+  border-inline-start: none;
 }
 @media (min-width: 767px) {
   .home-offers .product .offers-swiper .swiper-slide {
@@ -1150,7 +1150,7 @@ select {
   margin: 0 !important;
   font-size: 15px;
   border: 1px solid #ccc;
-  border-left: none;
+  border-inline-start: none;
 }
 @media (min-width: 767px) {
   .outer-electric .swiper-wrapper .swiper-slide {
@@ -1729,7 +1729,7 @@ select {
   .filter-aside {
     transition: transform 0.3s ease-in-out;
     transform-origin: center left;
-    border-right: 1px solid #eff2f4;
+    border-inline-end: 1px solid #eff2f4;
     padding: 40px 20px 0;
   }
   .filter-aside .filter-section:first-of-type {
@@ -2395,7 +2395,7 @@ select {
   background-color: #eff2f4;
 }
 .result-pagenations .pags-control-wrapper button:not(.right) {
-  border-right: 1px solid #dee2e7;
+  border-inline-end: 1px solid #dee2e7;
 }
 
 .mobile-filter-center {
@@ -2764,7 +2764,7 @@ footer .copyright .container div select {
   display: flex;
   align-items: center;
   border: 2px solid #777;
-  border-right: none;
+  border-inline-end: none;
   background: #fff;
   padding: 9px;
   border-top-left-radius: 7px;
@@ -2788,7 +2788,7 @@ footer .copyright .container div select {
   height: 100%;
   background-color: #0D6EFD;
   border: 2px solid #0D6EFD;
-  border-left: none;
+  border-inline-start: none;
   border-top-right-radius: 7px;
   border-bottom-right-radius: 7px;
   color: #fff;

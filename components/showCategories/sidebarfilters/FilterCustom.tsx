@@ -1,5 +1,7 @@
 import React, { MutableRefObject } from 'react';
 import { customStringIncludes } from '@/utilities';
+import { useLang } from '@/context/LangContext';
+import { LocalizedString } from '@/types';
 import DropArrow from '../../general/DropArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +14,7 @@ interface FilterCustomProps {
   handleRemoveFilter: (filter: string) => void;
   handleRadioValues: (e: React.ChangeEvent<HTMLInputElement>) => void;
   selectedValue?: string; // For category
-  productsData?: string[]; // Types or Colors
+  productsData?: LocalizedString[]; // Types or Colors
   checkedValue: string; // typeValue or colorValue
   refs: MutableRefObject<HTMLInputElement[]>;
 }
@@ -28,6 +30,7 @@ const FilterCustom: React.FC<FilterCustomProps> = ({
   checkedValue,
   refs,
 }) => {
+  const { lang, translate } = useLang();
   const isCategory = section === 'category';
   const title = isCategory ? 'Category' : 'Color';
   const filterName = isCategory ? 'type' : 'color'; // name attribute for input
@@ -58,18 +61,21 @@ const FilterCustom: React.FC<FilterCustomProps> = ({
         
         <div className={!isCategory ? "less-items" : ""}>
         {productsData && productsData.length > 0 ? (
-          productsData.map((item, index) => {
+          productsData.map((itemObj, index) => {
+            const itemName = typeof itemObj === 'string' ? itemObj : itemObj?.en || '';
+            const translatedItem = translate(itemObj);
+
             return (
-              <label key={item + '' + index} className={`${index <= 5 ? 'less-than-5' : 'more-than-5'}`}>
+              <label key={itemName + '' + index} className={`${index <= 5 ? 'less-than-5' : 'more-than-5'}`}>
                 <input
                   onChange={handleRadioValues}
                   type="radio"
                   name={filterName}
-                  value={item}
-                  checked={checkedValue === item}
+                  value={itemName}
+                  checked={checkedValue === itemName}
                   ref={(el: HTMLInputElement) => (refs.current[index] = el)}
                 />
-                <span>{isCategory ? `${selectedValue.slice(0, -1)} a ${item}` : item}</span>
+                <span>{isCategory ? `${selectedValue.slice(0, -1)} a ${translatedItem}` : translatedItem}</span>
               </label>
             );
           })

@@ -1,7 +1,9 @@
+'use client';
 
-
-import Image from 'next/image'
 import Link from 'next/link'
+import Image from 'next/image'
+import { useLang } from '@/context/LangContext'
+import { dictionaries } from '@/lib/dictionaries';
 
 interface props{
     page:string,
@@ -10,12 +12,13 @@ interface props{
 }
 
 const ProgressNav = ({page='home',category='',item=''}:props) => {
+    const { lang, translate } = useLang();
       
     if (page === 'home') {
       return  <section className='progress-nav'>
             <ul>
                 <li>
-                    <Link href='/'>Home</Link>
+                    <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                     <span>
                         <Image
                             height={15}
@@ -33,7 +36,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
       return  <section className='progress-nav'>
         <ul>
             <li>
-                <Link href='/'>Home</Link>
+                    <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
                     <Image
                         height={15}
@@ -44,7 +47,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
                 </span>
             </li>
             <li>
-                <Link href={`/showCategories/${category}`}>{category}</Link>
+                <Link href={`/${lang}/showCategories/${category}`}>{category}</Link>
                 <span>
                     <Image
                         height={15}
@@ -62,7 +65,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
        return <section className='progress-nav'>
         <ul>
             <li>
-                <Link href='/'>Home</Link>
+                    <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
                     <Image
                         height={15}
@@ -73,7 +76,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
                 </span>
             </li>
             <li>
-                <Link href={`/showCategories/${category}`}>{category}</Link>
+                <Link href={`/${lang}/showCategories/${category}`}>{category}</Link>
                 <span>
                     <Image
                         height={15}
@@ -84,7 +87,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
                 </span>
             </li>
             <li>
-                <Link href={`/itemDetails/${category}/${item}`}>{item}</Link>
+                <Link href={`/${lang}/itemDetails/${category}/${item}`}>{item}</Link>
                 <span>
                     <Image
                         height={15}
@@ -102,7 +105,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
         return  <section className='progress-nav'>
         <ul>
             <li>
-                <Link href='/'>Home</Link>
+                    <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
                     <Image
                         height={15}
@@ -113,7 +116,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
                 </span>
             </li>
             <li>
-                <Link href={`/cart`}>Cart</Link>
+                <Link href={`/${lang}/cart`}>{translate(dictionaries.userMenu.myCart)}</Link>
                 <span>
                     <Image
                         height={15}
@@ -131,7 +134,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
         return  <section className='progress-nav'>
         <ul>
             <li>
-                <Link href='/'>Home</Link>
+                    <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
                     <Image
                         height={15}
@@ -142,7 +145,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
                 </span>
             </li>
             <li>
-                <Link href={`/profile`}>Profile</Link>
+                <Link href={`/${lang}/profile`}>{translate(dictionaries.userMenu.myProfile)}</Link>
                 <span>
                     <Image
                         height={15}
@@ -160,7 +163,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
         return  <section className='progress-nav'>
         <ul>
             <li>
-                <Link href='/'>Home</Link>
+                <Link href={`/${lang}`}>Home</Link>
                 <span>
                     <Image
                         height={15}
@@ -171,7 +174,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
                 </span>
             </li>
             <li>
-                <Link href={`/orders`}>Orders</Link>
+                <Link href={`/${lang}/orders`}>{translate(dictionaries.header.orders)}</Link>
                 <span>
                     <Image
                         height={15}

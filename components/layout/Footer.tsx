@@ -1,7 +1,13 @@
+'use client';
+
 import Image from "next/image"
 import Link from "next/link"
+import { useLang } from "@/context/LangContext"
+import { dictionaries } from "@/lib/dictionaries"
 
 const Footer = () => {
+  const { translate, lang ,setLang } = useLang();
+
   return (
     <footer>
       <div className="website-info">
@@ -14,13 +20,13 @@ const Footer = () => {
               width={150}
             />
             <p>
-              Best information about the company gies here but now lorem ipsum is
+              {translate(dictionaries.footer.intro)}
             </p>
             <div className="social">
               <a href="#">
                 <Image
                   src='/images/icons/footer-facebook.webp'
-                  alt="Facebook"
+                  alt={translate(dictionaries.footer.social.facebook)}
                   height={32}
                   width={32}
                 />
@@ -28,7 +34,7 @@ const Footer = () => {
               <a href="#">
                 <Image
                   src='/images/icons/footer-twitter.webp'
-                  alt="Twitter"
+                  alt={translate(dictionaries.footer.social.twitter)}
                   height={32}
                   width={32}
                 />
@@ -36,7 +42,7 @@ const Footer = () => {
               <a href="#">
                 <Image
                   src='/images/icons/footer-linkedin.webp'
-                  alt="LinkedIn"
+                  alt={translate(dictionaries.footer.social.linkedin)}
                   height={32}
                   width={32}
                 />
@@ -44,7 +50,7 @@ const Footer = () => {
               <a href="#">
                 <Image
                   src='/images/icons/footer-insta.webp'
-                  alt="Instagram"
+                  alt={translate(dictionaries.footer.social.instagram)}
                   height={32}
                   width={32}
                 />
@@ -52,7 +58,7 @@ const Footer = () => {
               <a href="#">
                 <Image
                   src='/images/icons/footer-youtube.webp'
-                  alt="Youtube"
+                  alt={translate(dictionaries.footer.social.youtube)}
                   height={32}
                   width={32}
                 />
@@ -61,46 +67,46 @@ const Footer = () => {
           </div>
           <div className="lists">
             <article>
-              <h3>About</h3>
+              <h3>{translate(dictionaries.footer.about.title)}</h3>
               <ul>
-                <li><Link href='#'>About Us</Link></li>
-                <li><Link href='#'>Find store</Link></li>
-                <li><Link href='#'>Categories</Link></li>
-                <li><Link href='#'>About Us</Link></li>
-                <li><Link href='#'>Blogs</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.aboutUs)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.findStore)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.categories)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.aboutUs)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.blogs)}</Link></li>
               </ul>
             </article>
             <article>
-              <h3>Partnership</h3>
+              <h3>{translate(dictionaries.footer.partnership.title)}</h3>
               <ul>
-                <li><Link href='#'>About Us</Link></li>
-                <li><Link href='#'>Find store</Link></li>
-                <li><Link href='#'>Categories</Link></li>
-                <li><Link href='#'>About Us</Link></li>
-                <li><Link href='#'>Blogs</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.aboutUs)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.findStore)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.categories)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.aboutUs)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.blogs)}</Link></li>
               </ul>
             </article>
             <article>
-              <h3>Information</h3>
+              <h3>{translate(dictionaries.footer.information.title)}</h3>
               <ul>
-                <li><Link href='#'>Help Center</Link></li>
-                <li><Link href='#'>Money Refund</Link></li>
-                <li><Link href='#'>Shipping</Link></li>
-                <li><Link href='#'>Contact us</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.information.helpCenter)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.information.moneyRefund)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.information.shipping)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.information.contactUs)}</Link></li>
               </ul>
             </article>
             <article>
-              <h3>Partnership</h3>
+              <h3>{translate(dictionaries.footer.partnership.title)}</h3>
               <ul>
-                <li><Link href='#'>About Us</Link></li>
-                <li><Link href='#'>Find store</Link></li>
-                <li><Link href='#'>Categories</Link></li>
-                <li><Link href='#'>About Us</Link></li>
-                <li><Link href='#'>Blogs</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.aboutUs)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.findStore)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.categories)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.aboutUs)}</Link></li>
+                <li><Link href='#'>{translate(dictionaries.footer.about.blogs)}</Link></li>
               </ul>
             </article>
             <article className="app">
-              <h3>Get app</h3>
+              <h3>{translate(dictionaries.footer.getApp)}</h3>
               <div>
                 <a href="#">
                   <Image
@@ -125,19 +131,18 @@ const Footer = () => {
       </div>
       <div className="copyright">
         <div className="container"> 
-          <p>© 2023 Ecommerce.</p>
+          <p>{translate(dictionaries.footer.copyright)}</p>
           <div className='not-allowed'>
             <Image
-              src="/images/flags/4.webp"
-              alt="german"
+              src={`/images/flags/${lang === 'en' ? 4 : 10}.webp`}
+              alt={translate(lang === 'en' ? dictionaries.languages.english : dictionaries.languages.arabic)}
               height={17}
               width={24} 
             />
-            <span>English</span>
-            <select>
-              <option value="#"></option>
-              <option value="english">English</option>
-              <option value="frensh">Frensh</option>
+            <span>{translate(lang === 'en' ? dictionaries.languages.english : dictionaries.languages.arabic)}</span>
+            <select value={lang} onChange={(e) => setLang(e.target.value as 'en' | 'ar')}>
+              <option value="en">{translate(dictionaries.languages.english)}</option>
+              <option value="ar">{translate(dictionaries.languages.arabic)}</option>
             </select>
           </div>
         </div>

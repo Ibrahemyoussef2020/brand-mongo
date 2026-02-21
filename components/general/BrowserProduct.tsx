@@ -14,11 +14,11 @@ import { dictionaries } from '@/lib/dictionaries'
 
 const BrowserProduct = (prop: prop) => {
   const { section, productId , base="showSections" } = prop;
-  const { translate } = useLang();
+  const { translate, lang } = useLang();
   
   return (
     <Link
-      href={!productId ? `/${base}/${section}` : `/itemDetails/${section}/${productId}`}
+      href={!productId ? `/${lang}/${section}` : `/${lang}/itemDetails/${section}/${productId}`}
       className='browser-product'>
       <span>{translate(dictionaries.browserProduct.details)}</span>
     </Link>

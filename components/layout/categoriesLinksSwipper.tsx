@@ -6,6 +6,8 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
+import { useLang } from "@/context/LangContext";
+import { dictionaries } from "@/lib/dictionaries";
 
 const categories = [
 "mobiles",
@@ -23,6 +25,7 @@ const categories = [
 ]
 
 const CategoriesLinksSwipper = () => {
+  const { lang, translate } = useLang();
   
   return (
     <div className="categories-links-swipper">
@@ -46,10 +49,10 @@ const CategoriesLinksSwipper = () => {
                 className="py-4 !flex items-center min-w-[300px]  h-[100%]"
               >
                 <Link
-                  href={`/showCategories/${category}`}
+                  href={`/${lang}/showCategories/${category}`}
                   className="block !m-auto"
                 >
-                  {category}
+                  {translate(dictionaries.homeCover.categories[category as keyof typeof dictionaries.homeCover.categories] || category)}
                 </Link>
               </SwiperSlide>
             );

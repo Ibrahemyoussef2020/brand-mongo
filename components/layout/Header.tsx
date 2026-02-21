@@ -15,14 +15,32 @@ import { useLang } from "@/context/LangContext"
 
 import { useRouter, usePathname } from "next/navigation"
 
+import { dictionaries } from "@/lib/dictionaries"
+import { useState } from "react"
+
 interface props {
   page:string,
   heading:string
 }
 const Header = ({page='results',heading='Show Categories'}:props) => {
-  const { lang, setLang } = useLang(); 
+  const { lang, setLang, translate } = useLang(); 
   const router = useRouter();
   const pathname = usePathname();
+  const [country, setCountry] = useState<string>('1');
+
+
+  const countries = [
+  { id: 1, name: "Danmark" },
+  { id: 2, name: "Australia" },
+  { id: 3, name: "France" },
+  { id: 4, name: "United States" },
+  { id: 5, name: "Россия" },
+  { id: 6, name: "中国" },
+  { id: 7, name: "Italia" },
+  { id: 8, name: "United Kingdom" },
+  { id: 9, name: "Deutschland" },
+  { id: 10, name: "جمهورية مصر" }, 
+];
 
   const handleLangChange = (newLang: string) => {
     const segments = pathname.split('/');
@@ -42,17 +60,17 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
         <Searchbar size="pc" />
         <div className='navigations_pc'>
           <UserMenu />
-          <Link href='/message' prefetch={false}>
+          <Link href={`/${lang}/message`} prefetch={false}>
             <FontAwesomeIcon icon={faEnvelopeOpenText} width={19} color="gray" />
-            <div>Message</div>
+            <div>{translate(dictionaries.header.message)}</div>
           </Link>
-          <Link href='/orders' prefetch={false}>
+          <Link href={`/${lang}/orders`} prefetch={false}>
             <FontAwesomeIcon icon={faHeart} width={19} color="gray"  />
-            <div>Orders</div>
+            <div>{translate(dictionaries.header.orders)}</div>
           </Link>
-          <Link href='/cart' prefetch={false}>
+          <Link href={`/${lang}/cart`} prefetch={false}>
             <FontAwesomeIcon icon={faCartShopping} width={19} color="gray" />
-            <div>My cart</div>
+            <div>{translate(dictionaries.header.myCart)}</div>
           </Link>
         </div>
 
@@ -69,19 +87,19 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
       <div className={` container`}>
           <ul className="right">
             <li>
-                <button>Hot offers</button>
+                <button>{translate(dictionaries.header.hotOffers)}</button>
             </li>
             <li>
-                <Link href='#' prefetch={false}>Gift boxes</Link>
+                <Link href='#' prefetch={false}>{translate(dictionaries.header.giftBoxes)}</Link>
             </li>
             <li>
-                <Link href='#' prefetch={false}>Projects</Link>
+                <Link href='#' prefetch={false}>{translate(dictionaries.header.projects)}</Link>
             </li>
             <li>
-                <Link href='#' prefetch={false}>Menu item</Link>
+                <Link href='#' prefetch={false}>{translate(dictionaries.header.menuItem)}</Link>
             </li>
             <li>
-              help
+              {translate(dictionaries.header.help)}
               <select>
                     <option value="settings"></option>
               </select>
@@ -90,17 +108,20 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
 
           <ul className="left">
             <li>
-              {lang === 'en' ? 'English, USD' : 'العربية، دولار'}
               <select value={lang} onChange={(e) => handleLangChange(e.target.value)}>
                     <option value="en">English</option>
-                    <option value="ar">Arabic</option>
+                    <option value="ar">اللغة العربية</option>
               </select>
             </li>
             <li>
-                <span>Ship to</span>
-                <img src="/images/flags/german.png" alt="german" />
-                <select>
-                  <option value="english"></option>
+                <span style={{paddingInline:'5px'}}> {translate(dictionaries.header.shipTo )} </span>
+                <img src={`/images/flags/${country}.webp`}  alt={country} />
+                <select  onChange={(e)=>setCountry(e.target.value)}>
+                  {countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.name}
+                    </option>
+                  ))}
                 </select>
             </li>
           </ul>

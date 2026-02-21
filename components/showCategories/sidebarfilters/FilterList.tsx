@@ -1,5 +1,7 @@
 import React, { MutableRefObject } from 'react';
 import { customStringIncludes } from '@/utilities';
+import { useLang } from '@/context/LangContext';
+import { LocalizedString } from '@/types';
 import DropArrow from '../../general/DropArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan, faStar } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +14,7 @@ interface FilterListProps {
   handleRemoveFilter: (filter: string) => void;
   handleFilter: (e: React.ChangeEvent<HTMLInputElement>) => void;
   values: string[];
-  productsData?: string[]; // For brand
+  productsData?: LocalizedString[]; // For brand
   refs: MutableRefObject<HTMLInputElement[]>;
 }
 
@@ -26,6 +28,7 @@ const FilterList: React.FC<FilterListProps> = ({
   productsData,
   refs,
 }) => {
+  const { lang, translate } = useLang();
   const isBrand = section === 'brand';
   const isRating = section === 'rating';
   
@@ -52,18 +55,21 @@ const FilterList: React.FC<FilterListProps> = ({
           <span>remove filter</span>
         </button>
         {isBrand && productsData && productsData.length > 0 &&
-          productsData.map((brand, index) => {
+          productsData.map((brandObj, index) => {
+            const brandName = typeof brandObj === 'string' ? brandObj : brandObj?.en || '';
+            const displayName = translate(brandObj);
+
             return (
-              <label key={brand + '' + index} className={`${index <= 5 ? 'less-than-5' : 'more-than-5'}`}>
+              <label key={brandName + '' + index} className={`${index <= 5 ? 'less-than-5' : 'more-than-5'}`}>
                 <input
                   onChange={handleFilter}
                   type="checkbox"
                   name="brand"
-                  value={brand}
-                  checked={values.includes(brand)}
+                  value={brandName}
+                  checked={values.includes(brandName)}
                   ref={(el: HTMLInputElement) => (refs.current[index] = el)}
                 />
-                <span>{brand[0].toUpperCase()}{brand.slice(1)}</span>
+                <span>{displayName ? (displayName[0].toUpperCase() + displayName.slice(1)) : ''}</span>
               </label>
             );
           })

@@ -4,9 +4,9 @@
 %search-bar{
     width: 665px;
     height: 40px;
-    border: 2px solid $primary;
+    border: 2px solid $primary !important;
     border-radius: 7px;
-    display: flex;
+    display: flex; 
     margin: 0 1.5rem 0 .5rem;
     @include min-width($large_size){
         margin: 0 2.5rem 0 .5rem;
@@ -16,14 +16,16 @@
         flex: 1;
         position: relative;
         z-index: 1;
+        padding-inline: 30px !important;
 
         input{
             width: 100%;
             height: 100%;
             outline: none;
             border: none;
-            padding-left: .5rem;
+            padding-inline-start: .5rem;
             border-radius: 10px;
+            font-weight: 600;
             @include min-width($large_size){
                 border-radius: 0;
                 border-top-left-radius:10px;
@@ -34,7 +36,7 @@
         .search_close{
             position: absolute;
             top: 5px;
-            right: 1rem;
+            inset-inline-start: 1rem;
             z-index: 1000;
             font-size: 1.5rem;
             color: $gray-500;

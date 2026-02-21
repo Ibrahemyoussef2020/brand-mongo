@@ -108,5 +108,74 @@ export const dictionaries = {
     customize: { en: 'Customize Your Products', ar: 'تخصيص منتجاتك' },
     shipping: { en: 'Shipping by ocean or air', ar: 'شحن برا وجوا وبحرا' },
     monitoring: { en: 'Product monitoring and inspection', ar: 'مراقبة وفحص المنتج' },
+  },
+  header: {
+    home: {
+      en: 'Home',
+      ar: 'الرئيسية'
+    },
+    message: { en: 'Message', ar: 'الرسائل' },
+    orders: { en: 'Orders', ar: 'الطلبات' },
+    myCart: { en: 'My cart', ar: 'سلة المشتريات' },
+    hotOffers: { en: 'Hot offers', ar: 'عروض ساخنة' },
+    giftBoxes: { en: 'Gift boxes', ar: 'صناديق هدايا' },
+    projects: { en: 'Projects', ar: 'مشاريع' },
+    menuItem: { en: 'Menu item', ar: 'عنصر القائمة' },
+    help: { en: 'help', ar: 'مساعدة' },
+    shipTo: { en: 'Ship to', ar: 'الشحن إلى' },
+    langCurrency: { en: 'English, USD', ar: 'العربية، دولار' },
+  },
+  searchbar: {
+    placeholder: { en: 'Search', ar: 'بحث' },
+    searchBtn: { en: 'Search', ar: 'بحث' },
+    allCategory: { en: 'All category', ar: 'كل الفئات' },
+  },
+  userMenu: {
+    account: { en: 'Account', ar: 'الحساب' },
+    myProfile: { en: 'My Profile', ar: 'ملفي الشخصي' },
+    myCart: { en: 'My Cart', ar: 'سلة المشتريات' },
+    logout: { en: 'Logout', ar: 'تسجيل الخروج' },
+    welcome: { en: 'Welcome!', ar: 'أهلاً بك!' },
+    signInWithGoogle: { en: 'Sign in with Google', ar: 'تسجيل الدخول باستخدام جوجل' },
+    guest: { en: 'User', ar: 'مستخدم' },
+  },
+  languages: {
+    english: { en: 'English', ar: 'الإنجليزية' },
+    arabic: { en: 'Arabic', ar: 'العربية' },
+    french: { en: 'French', ar: 'الفرنسية' },
+  },
+  footer: {
+    intro: { 
+      en: 'Best information about the company gies here but now lorem ipsum is', 
+      ar: 'أفضل المعلومات عن الشركة تجدها هنا، ولكن الآن هذه مجرد نصوص تجريبية' 
+    },
+    social: {
+      facebook: { en: 'Facebook', ar: 'فيسبوك' },
+      twitter: { en: 'Twitter', ar: 'تويتر' },
+      linkedin: { en: 'LinkedIn', ar: 'لينكد إن' },
+      instagram: { en: 'Instagram', ar: 'إنستجرام' },
+      youtube: { en: 'YouTube', ar: 'يوتيوب' },
+    },
+    about: {
+      title: { en: 'About', ar: 'عن الشركة' },
+      aboutUs: { en: 'About Us', ar: 'اعرف عنا' },
+      findStore: { en: 'Find store', ar: 'البحث عن متجر' },
+      categories: { en: 'Categories', ar: 'الفئات' },
+      blogs: { en: 'Blogs', ar: 'المدونات' },
+    },
+    partnership: {
+      title: { en: 'Partnership', ar: 'الشراكة' },
+    },
+    information: {
+      title: { en: 'Information', ar: 'معلومات' },
+      helpCenter: { en: 'Help Center', ar: 'مركز المساعدة' },
+      moneyRefund: { en: 'Money Refund', ar: 'استرداد الأموال' },
+      shipping: { en: 'Shipping', ar: 'الشحن' },
+      contactUs: { en: 'Contact us', ar: 'اتصل بنا' },
+      userAgreement: { en: 'User agreement', ar: 'اتفاقية المستخدم' },
+      privacyPolicy: { en: 'Privacy policy', ar: 'سياسة الخصوصية' },
+    },
+    getApp: { en: 'Get app', ar: 'احصل على التطبيق' },
+    copyright: { en: '© 2023 Ecommerce.', ar: '© 2023 متجر إلكتروني.' },
   }
 };

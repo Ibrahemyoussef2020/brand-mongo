@@ -5,6 +5,8 @@ import NavBtn from './NavBtn'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from "next/navigation"
+import { dictionaries } from '@/lib/dictionaries'
+import { useLang } from '@/context/LangContext'
 
 interface props {
     page:string,
@@ -13,9 +15,10 @@ interface props {
 
 const HeaderTopLeft = ({page,heading = ''}:props) => {
     const navigate = useRouter(); 
+    const {translate, lang} = useLang();
 
     const takeAstepBack = ()=>{
-        navigate.push('/')
+        navigate.push(`/${lang}`)
     }
   return (
     <div className={`header-top-left ${page}`}>
@@ -24,7 +27,7 @@ const HeaderTopLeft = ({page,heading = ''}:props) => {
             page === 'home' ? 
 
             <div className='flex'>
-                <Link href='/'>
+                <Link href={`/${lang}`}>
                     <picture>
                         <source media="(min-width:767px)" srcSet="/images/pc-logo.webp" height={46} width={151} />
                         <Image
@@ -37,10 +40,10 @@ const HeaderTopLeft = ({page,heading = ''}:props) => {
                 </Link>
             </div>
 
-            : page === 'results' || page === 'cart' || page === 'details' || 'profile' ?
+            : page === 'results' || page === 'cart' || page === 'details' || page === 'profile' ?
 
             <div className='flex'>
-                <Link href='/'>
+                <Link href={`/${lang}`}>
                     <picture>
                         <source media="(min-width:767px)" srcSet="/images/pc-logo.webp" height={46} width={151} />
                         <Image
@@ -64,7 +67,7 @@ const HeaderTopLeft = ({page,heading = ''}:props) => {
 
                 <div className='flex'>
                     <NavBtn />
-                    <Link href='/'>
+                    <Link href={`/${lang}`}>
                         <picture>
                             <source media="(min-width:767px)" srcSet="/images/pc-logo.webp" height={46} width={151} />
                             <Image
@@ -84,7 +87,7 @@ const HeaderTopLeft = ({page,heading = ''}:props) => {
                             src='/images/back-step.png'
                             width={16}
                             height={16}
-                            alt='back'
+                            alt={translate(dictionaries.common.back)}
                         />
                     </button>
                     <h2 className='heading'>{heading}</h2>
@@ -97,7 +100,7 @@ const HeaderTopLeft = ({page,heading = ''}:props) => {
                         src='/images/back-step.png'
                         width={16}
                         height={16}
-                        alt='back'
+                        alt={translate(dictionaries.common.back)}
                     />
                 </button>
             :null}

@@ -9,7 +9,7 @@ import { useLang } from '@/context/LangContext'
 import { dictionaries } from '@/lib/dictionaries'
 
 const HomeOuter = () => {
-  const { translate } = useLang();
+  const { translate, lang } = useLang();
   
   return (
     <section className='outer-electric'>
@@ -20,7 +20,7 @@ const HomeOuter = () => {
             <div className='img-wrapper'>
                 <div className='text'>
                     <h2>{translate(dictionaries.homeOuter.heading)}</h2>
-                    <Link className='source' href='/showSections/homeOutdoor'>{translate(dictionaries.common.sourceNow)}</Link>  
+                    <Link className='source' href={`/${lang}/homeOutdoor`}>{translate(dictionaries.common.sourceNow)}</Link>  
                 </div>
                 <Image
                     src='/images/home-outer.webp'

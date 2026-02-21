@@ -5,11 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSignOutAlt, faCartShopping, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
+import { dictionaries } from "@/lib/dictionaries";
+import { useLang } from "@/context/LangContext";
 
 export default function UserMenu() {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { translate, lang } = useLang();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -32,7 +35,7 @@ export default function UserMenu() {
         {session?.user?.image ? (
           <Image 
             src={session.user.image} 
-            alt={session.user.name || "User"} 
+            alt={session.user.name || translate(dictionaries.userMenu.account)} 
             width={32} 
             height={32} 
             className="user-avatar"
@@ -41,7 +44,7 @@ export default function UserMenu() {
           <FontAwesomeIcon icon={faUser} width={20} color="gray" />
         )}
         <span className="user-name">
-          {session ? session.user?.name?.split(' ')[0] || 'Account' : 'Account'}
+          {session ? session.user?.name?.split(' ')[0] || translate(dictionaries.userMenu.account) : translate(dictionaries.userMenu.account)}
         </span>
         <FontAwesomeIcon icon={faChevronDown} width={12} className={`chevron ${isOpen ? 'open' : ''}`} />
       </button>
@@ -55,7 +58,7 @@ export default function UserMenu() {
                 {session.user?.image ? (
                   <Image 
                     src={session.user.image} 
-                    alt={session.user.name || "User"} 
+                    alt={session.user.name || translate(dictionaries.userMenu.account)} 
                     width={48} 
                     height={48} 
                     className="user-avatar-large"
@@ -66,7 +69,7 @@ export default function UserMenu() {
                   </div>
                 )}
                 <div className="user-details">
-                  <div className="user-full-name">{session.user?.name || 'User'}</div>
+                  <div className="user-full-name">{session.user?.name || translate(dictionaries.userMenu.guest)}</div>
                   <div className="user-email">{session.user?.email}</div>
                 </div>
               </div>
@@ -74,14 +77,14 @@ export default function UserMenu() {
               <div className="menu-divider"></div>
 
               {/* Menu Items */}
-              <Link href="/profile" className="menu-item" onClick={() => setIsOpen(false)}>
+              <Link href={`/${lang}/profile`} className="menu-item" onClick={() => setIsOpen(false)}>
                 <FontAwesomeIcon icon={faUser} width={16} />
-                <span>My Profile</span>
+                <span>{translate(dictionaries.userMenu.myProfile)}</span>
               </Link>
 
-              <Link href="/cart" className="menu-item" onClick={() => setIsOpen(false)}>
+              <Link href={`/${lang}/cart`} className="menu-item" onClick={() => setIsOpen(false)}>
                 <FontAwesomeIcon icon={faCartShopping} width={16} />
-                <span>My Cart</span>
+                <span>{translate(dictionaries.userMenu.myCart)}</span>
               </Link>
 
               <div className="menu-divider"></div>
@@ -91,7 +94,7 @@ export default function UserMenu() {
                 onClick={() => signOut()}
               >
                 <FontAwesomeIcon icon={faSignOutAlt} width={16} />
-                <span>Logout</span>
+                <span>{translate(dictionaries.userMenu.logout)}</span>
               </button>
             </>
           ) : (
@@ -101,21 +104,21 @@ export default function UserMenu() {
                 <div className="guest-avatar">
                   <FontAwesomeIcon icon={faUser} width={24} />
                 </div>
-                <div className="guest-text">Welcome!</div>
+                <div className="guest-text">{translate(dictionaries.userMenu.welcome)}</div>
               </div>
 
               <div className="menu-divider"></div>
 
-              <Link href="/cart" className="menu-item" onClick={() => setIsOpen(false)}>
+              <Link href={`/${lang}/cart`} className="menu-item" onClick={() => setIsOpen(false)}>
                 <FontAwesomeIcon icon={faCartShopping} width={16} />
-                <span>My Cart</span>
+                <span>{translate(dictionaries.userMenu.myCart)}</span>
               </Link>
 
               <div className="menu-divider"></div>
 
               <button 
                 className="menu-item login-btn"
-                onClick={() => signIn("google", { callbackUrl: "/" })}
+                onClick={() => signIn("google", { callbackUrl: `/${lang}` })}
               >
                 <Image 
                   src="/images/icons/google.svg" 
@@ -123,7 +126,7 @@ export default function UserMenu() {
                   width={16} 
                   height={16}
                 />
-                <span>Sign in with Google</span>
+                <span>{translate(dictionaries.userMenu.signInWithGoogle)}</span>
               </button>
             </>
           )}

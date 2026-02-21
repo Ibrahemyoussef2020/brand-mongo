@@ -32,12 +32,12 @@ const HomeCover = () => {
     <section className='cover-wrapper'>
     <div className='lists'> 
       <ul>
-        <li><Link href={`showCategories/mobiles`}>{translate(categories.automobiles)}</Link></li>
-        <li><Link href={`showCategories/fashion`}>{translate(categories.clothes)}</Link></li>
-        <li><Link href={`showCategories/kitchen-tools`}>{translate(categories.homeInteriors)}</Link></li>
-        <li><Link href={`showCategories/computers`}>{translate(categories.computerTech)}</Link></li>
-        <li><Link href={`showCategories/kitchen-tools`}>{translate(categories.toolsEquipments)}</Link></li>
-        <li><Link href={`showCategories/sports`}>{translate(categories.sportsOutdoor)}</Link></li>
+        <li><Link href={`/${lang}/showCategories/mobiles`}>{translate(categories.automobiles)}</Link></li>
+        <li><Link href={`/${lang}/showCategories/fashion`}>{translate(categories.clothes)}</Link></li>
+        <li><Link href={`/${lang}/showCategories/kitchen-tools`}>{translate(categories.homeInteriors)}</Link></li>
+        <li><Link href={`/${lang}/showCategories/computers`}>{translate(categories.computerTech)}</Link></li>
+        <li><Link href={`/${lang}/showCategories/kitchen-tools`}>{translate(categories.toolsEquipments)}</Link></li>
+        <li><Link href={`/${lang}/showCategories/sports`}>{translate(categories.sportsOutdoor)}</Link></li>
         <li><Link href={`showCategories/pets`}>{translate(categories.animalPets)}</Link></li>
         <li><Link href={`showCategories/chairs`}>{translate(categories.officeFurniture)}</Link></li>
         <li><Link href={`showCategories/headphones`}>{translate(categories.moreCategory)}</Link></li>

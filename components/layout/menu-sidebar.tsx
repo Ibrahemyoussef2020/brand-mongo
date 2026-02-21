@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleAside } from "@/redux/slices";
 import { AppDispatch, IRootState } from "@/redux/store";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useLang } from "@/context/LangContext";
+import { dictionaries } from "@/lib/dictionaries";
 
 
 const MenuSidebar = () => {
@@ -15,6 +17,7 @@ const MenuSidebar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isOppend } = useSelector((state: IRootState) => state.combine.aside)
   const { data: session } = useSession();
+  const { lang, translate } = useLang();
 
   const handleClose = () => {
     dispatch(toggleAside(false));
@@ -56,25 +59,25 @@ const MenuSidebar = () => {
               <FontAwesomeIcon icon={faUser} />
             </span>
             <div className="in-up">
-              <button onClick={() => signIn("google", { callbackUrl: "/" })}>Sign in</button>
+              <button onClick={() => signIn("google", { callbackUrl: `/${lang}` })}>{translate(dictionaries.userMenu.signInWithGoogle)}</button>
             </div>
           </>
         )}
       </div>
 
       <div className="navigates">
-        <Link href='/' className="home" onClick={handleClose}>
+        <Link href={`/${lang}`} className="home" onClick={handleClose}>
           <Image
             src="/images/icons/home.png"
             alt=""
             width={30}
             height={30}
           />
-          <span>Home</span>
+          <span>{translate(dictionaries.header.home)}</span>
         </Link>
-        <Link href='/cart' onClick={handleClose}>
+        <Link href={`/${lang}/cart`} onClick={handleClose}>
           <FontAwesomeIcon icon={faCartShopping} width={24} />
-          <span>My Cart</span>
+          <span>{translate(dictionaries.header.myCart)}</span>
         </Link>
         <button className="not-allowed">
           <Image
@@ -83,25 +86,25 @@ const MenuSidebar = () => {
             width={24}
             height={24}
           />
-          <span>Categories</span>
+          <span>{translate(dictionaries.searchbar.allCategory)}</span>
         </button>
-        <Link href='/profile' onClick={handleClose}>
+        <Link href={`/${lang}/profile`} onClick={handleClose}>
           <Image
             src="/images/icons/favorite_border.png"
             alt=""
             width={24}
             height={24}
           />
-          <span>Favorites</span>
+          <span>{translate(dictionaries.userMenu.myProfile)}</span>
         </Link>
-        <Link href='/orders' onClick={handleClose}>
+        <Link href={`/${lang}/orders`} onClick={handleClose}>
           <Image
             src="/images/icons/inventory_2.png"
             alt=""
             width={24}
             height={24}
           />
-          <span>My orders</span>
+          <span>{translate(dictionaries.header.orders)}</span>
         </Link>
       </div>
 
@@ -113,7 +116,7 @@ const MenuSidebar = () => {
             width={24}
             height={24}
           />
-          <span>English | USD</span>
+          <span>{translate(dictionaries.header.langCurrency)}</span>
         </button>
         <Link href='#' className="not-allowed">
           <Image
@@ -122,7 +125,7 @@ const MenuSidebar = () => {
             width={24}
             height={24}
           />
-          <span>Contact us</span>
+          <span>{translate(dictionaries.footer.information.contactUs)}</span>
         </Link>
         <Link href='#' className="not-allowed">
           <Image
@@ -131,21 +134,21 @@ const MenuSidebar = () => {
             width={24}
             height={24}
           />
-          <span>About</span>
+          <span>{translate(dictionaries.footer.about.title)}</span>
         </Link>
 
         {session && (
           <button className="logout-btn" onClick={() => signOut()}>
             <FontAwesomeIcon icon={faSignOutAlt} width={24} />
-            <span>Logout</span>
+            <span>{translate(dictionaries.userMenu.logout)}</span>
           </button>
         )}
       </div>
 
       <div className="more not-allowed">
-        <Link href='#'>User agreement</Link>
-        <Link href='#'>Partnership</Link>
-        <Link href='#'>Privacy policy</Link>
+        <Link href='#'>{translate(dictionaries.footer.information.userAgreement)}</Link>
+        <Link href='#'>{translate(dictionaries.footer.partnership.title)}</Link>
+        <Link href='#'>{translate(dictionaries.footer.information.privacyPolicy)}</Link>
       </div>
     </div>
   )

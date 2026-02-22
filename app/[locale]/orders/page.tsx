@@ -8,7 +8,9 @@ import { Suspense } from "react"
 
 import MayLikeSkelton from "@/skelton/general/MayLike"
 
-const page = () => {
+import { Locale } from "@/types"
+
+const page = ({ params: { locale } }: { params: { locale: Locale } }) => {
 
     return <>
     <Header page='details' heading='My Orders' /> 
@@ -21,7 +23,7 @@ const page = () => {
                         <OrderResult />
                         <div className="may-like">
                             <Suspense fallback={<MayLikeSkelton />}>
-                                <DetailsMayLik />
+                                <DetailsMayLik locale={locale} />
                             </Suspense>
                         </div>
                     </div>

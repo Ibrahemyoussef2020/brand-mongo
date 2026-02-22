@@ -16,6 +16,7 @@ export interface ProductProps {
             static_id:string,
             title: LocalizedString,
             type: LocalizedString,
+            category: LocalizedString,
             section: string,
             image: string,
             brand: LocalizedString,

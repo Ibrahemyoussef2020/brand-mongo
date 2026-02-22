@@ -26,7 +26,7 @@ const DetailsMayLik = async ({ locale }: { locale: Locale }) => {
                 const heading = `${sTranslate(product.title, locale)} ${sTranslate(product.description, locale)}`
 
                  if (index < 5) {
-                    return <Link href={`/itemDetails/home-sections/${product._id}`} key={product._id}>
+                    return <Link href={`/${locale}/itemDetails/home-sections/${product.static_id || product._id}`} key={product._id}>
                     <div className="img-wrapper">
                         <Image
                             src={`/${product.image}.webp`}

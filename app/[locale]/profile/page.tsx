@@ -6,7 +6,9 @@ import MenuSidebar from "@/components/layout/menu-sidebar"
 import OrderResult from "@/components/orders/OrderResult"
 import ProfileInfo from "@/components/profile/profileInfo"
 
-const Profile = () => {
+import { Locale } from "@/types"
+
+const Profile = ({ params: { locale } }: { params: { locale: Locale } }) => {
   return (
     <>
       <Header page='profile' heading='Profile info' /> 
@@ -18,7 +20,7 @@ const Profile = () => {
           <div className="orders-wrapper">
             <OrderResult />
             <div className="may-like">
-              <DetailsMayLik />
+              <DetailsMayLik locale={locale} />
             </div>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { ProductProps } from "@/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { IRootState } from "../store";
+import { toast } from "react-toastify";
 
 // Helper for type safety if needed, but existing code was loose.
 
@@ -15,12 +17,23 @@ const initialState = {
 };
 
 // Async Thunks
-export const fetchCart = createAsyncThunk("cart/fetchCart", async () => {
+export const fetchCart = createAsyncThunk("cart/fetchCart", async (_, { getState, rejectWithValue }) => {
+    const state = getState() as IRootState;
+    if (!state.combine.log.isLogged) {
+        toast.error("You should login first");
+        return rejectWithValue("Not logged in");
+    }
     const response = await axios.get("/api/cart");
     return response.data;
 });
 
-export const addToCart = createAsyncThunk("cart/addToCart", async (product: any) => {
+export const addToCart = createAsyncThunk("cart/addToCart", async (product: any, { getState, rejectWithValue }) => {
+    const state = getState() as IRootState;
+    if (!state.combine.log.isLogged) {
+        toast.error("You should login first");
+        return rejectWithValue("Not logged in");
+    }
+    
     // product payload should match structure expected by API
     // Mapping _id to product if needed
     const payload = { ...product };
@@ -32,37 +45,72 @@ export const addToCart = createAsyncThunk("cart/addToCart", async (product: any)
     return response.data;
 });
 
-export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (productId: string) => {
+export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (productId: string, { getState, rejectWithValue }) => {
+    const state = getState() as IRootState;
+    if (!state.combine.log.isLogged) {
+        toast.error("You should login first");
+        return rejectWithValue("Not logged in");
+    }
     const response = await axios.delete("/api/cart", { data: { productId } }); 
     return response.data;
 });
 
-export const increaseQuantity = createAsyncThunk("cart/increaseQuantity", async (productId: string) => {
+export const increaseQuantity = createAsyncThunk("cart/increaseQuantity", async (productId: string, { getState, rejectWithValue }) => {
+    const state = getState() as IRootState;
+    if (!state.combine.log.isLogged) {
+        toast.error("You should login first");
+        return rejectWithValue("Not logged in");
+    }
     const response = await axios.patch("/api/cart", { productId, action: 'increase' });
     return response.data;
 });
 
-export const decreaseQuantity = createAsyncThunk("cart/decreaseQuantity", async (productId: string) => {
+export const decreaseQuantity = createAsyncThunk("cart/decreaseQuantity", async (productId: string, { getState, rejectWithValue }) => {
+    const state = getState() as IRootState;
+    if (!state.combine.log.isLogged) {
+        toast.error("You should login first");
+        return rejectWithValue("Not logged in");
+    }
     const response = await axios.patch("/api/cart", { productId, action: 'decrease' });
     return response.data;
 });
 
-export const handleProductsQuantity = createAsyncThunk("cart/handleProductsQuantity", async (payload: { id: string, value: number }) => {
+export const handleProductsQuantity = createAsyncThunk("cart/handleProductsQuantity", async (payload: { id: string, value: number }, { getState, rejectWithValue }) => {
+    const state = getState() as IRootState;
+    if (!state.combine.log.isLogged) {
+        toast.error("You should login first");
+        return rejectWithValue("Not logged in");
+    }
     const response = await axios.patch("/api/cart", { productId: payload.id, action: 'set', value: payload.value });
     return response.data;
 });
 
-export const createOrder = createAsyncThunk("cart/createOrder", async (paymentIntentId: string) => {
+export const createOrder = createAsyncThunk("cart/createOrder", async (paymentIntentId: string, { getState, rejectWithValue }) => {
+    const state = getState() as IRootState;
+    if (!state.combine.log.isLogged) {
+        toast.error("You should login first");
+        return rejectWithValue("Not logged in");
+    }
     const response = await axios.post("/api/orders", { paymentIntentId });
     return response.data;
 });
 
-export const fetchOrders = createAsyncThunk("cart/fetchOrders", async () => {
+export const fetchOrders = createAsyncThunk("cart/fetchOrders", async (_, { getState, rejectWithValue }) => {
+    const state = getState() as IRootState;
+    if (!state.combine.log.isLogged) {
+        toast.error("You should login first");
+        return rejectWithValue("Not logged in");
+    }
     const response = await axios.get("/api/orders");
     return response.data;
 });
 
-export const clearCart = createAsyncThunk("cart/clearCart", async () => {
+export const clearCart = createAsyncThunk("cart/clearCart", async (_, { getState, rejectWithValue }) => {
+    const state = getState() as IRootState;
+    if (!state.combine.log.isLogged) {
+        toast.error("You should login first");
+        return rejectWithValue("Not logged in");
+    }
     const response = await axios.delete("/api/cart", { data: {} }); 
     return response.data;
 });

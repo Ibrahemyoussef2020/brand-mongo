@@ -177,5 +177,20 @@ export const dictionaries = {
     },
     getApp: { en: 'Get app', ar: 'احصل على التطبيق' },
     copyright: { en: '© 2023 Ecommerce.', ar: '© 2023 متجر إلكتروني.' },
+  },
+  productTabs: {
+    description: { en: 'Description', ar: 'الوصف' },
+    reviews: { en: 'Reviews', ar: 'التقييمات' },
+    shipping: { en: 'Shipping', ar: 'الشحن' },
+    aboutSeller: { en: 'About seller', ar: 'عن البائع' },
+    noReviews: { en: 'No reviews yet for this product.', ar: 'لا توجد تقييمات لهذا المنتج بعد.' },
+    shippingInfo: { 
+      en: 'Fast shipping within 3-5 business days. Free shipping for verified orders.', 
+      ar: 'شحن سريع خلال 3-5 أيام عمل. شحن مجاني للطلبات المؤكدة.' 
+    },
+    sellerInfo: { 
+      en: 'Reliable supplier with high quality products and verified background.', 
+      ar: 'مورد موثوق بمنتجات عالية الجودة وخلفية مؤكدة.' 
+    },
   }
 };

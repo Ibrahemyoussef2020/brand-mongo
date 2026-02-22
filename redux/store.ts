@@ -71,7 +71,18 @@ const store = configureStore({
           PAUSE,
           PERSIST,
           REGISTER,
-          PURGE],
+          PURGE,
+          'cart/addToCart/pending',
+          'cart/addToCart/fulfilled',
+          'cart/addToCart/rejected',
+          'Fav/addToFavStore/pending',
+          'Fav/addToFavStore/fulfilled',
+          'Fav/addToFavStore/rejected',
+          'Fav/removeFromFavStore/pending',
+          'Fav/removeFromFavStore/fulfilled',
+          'Fav/removeFromFavStore/rejected'
+        ],
+        ignoredPaths: ['combine.fav.favorites'],
       }
     })
   },

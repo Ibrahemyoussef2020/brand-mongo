@@ -14,18 +14,19 @@ interface props{
 
 
 const AddRemoveCart = ({product,process='add' }:props) => {
+
+  
     const dispatch = useDispatch<AppDispatch>()
-    const {products} = useSelector((state:IRootState) => state.combine.cart)
+    const {products} = useSelector((state:IRootState) => state.combine.cart);
+    
 
     const addToCartProduct = ()=>{
 
-        const storedProduct = products.find((item:ProductProps) => item._id === product._id)
-
         const addedProduct = {
             ...product,
-            quantity:storedProduct ? storedProduct.quantity : 1,
+            quantity: 1,
             deliveryPrice: product.free_delivery ? 0 : 50, 
-            total:storedProduct ? +storedProduct.quantity * +storedProduct.price : product.price * 1
+            total: product.price
         } 
 
         dispatch(addToCart(addedProduct))

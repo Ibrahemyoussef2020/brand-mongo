@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import dbConnect from "@/lib/dbConnect";
 import ProductModel from "@/lib/models/ProductModel";
 import RecommendedItemsModal from "@/lib/models/RecommendedItemsModel";
@@ -16,6 +17,7 @@ export const SECTION_MODEL_MAP: Record<string, any> = {
   'dealOffers': DealOffersModel,
   'homeConsumer': HomeConsumerModel,
   'recommendedItems': RecommendedItemsModal,
+  'home-sections': RecommendedItemsModal,
 };
 
 // --- Helpers for Products ---
@@ -134,6 +136,11 @@ export async function getSingleProductFromDB(static_id: string, section?: string
   const Model = section && SECTION_MODEL_MAP[section] ? SECTION_MODEL_MAP[section] : ProductModel;
   
   let product = await Model.findOne({ static_id }).lean();
+  
+  // Fallback to _id if not found by static_id and it's a valid ObjectId
+  if (!product && mongoose.Types.ObjectId.isValid(static_id)) {
+      product = await Model.findById(static_id).lean();
+  }
   
   // If not found in DB, try to find in seed data and add to DB
   if (!product) {

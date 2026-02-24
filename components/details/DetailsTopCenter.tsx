@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck } from "@fortawesome/free-solid-svg-icons"
 import Image from "next/image"
 import { sTranslate } from "@/utilities/translate"
+import { dictionaries } from "@/lib/dictionaries"
 
 import { Locale } from "@/types"
 
@@ -25,7 +26,7 @@ const DetailsTopCenter = ({ product, locale }: props) => {
         <div className="center">
             <div className="stock">
                 <FontAwesomeIcon icon={faCheck} />
-                In stock
+                {sTranslate(dictionaries.productDetails.inStock, locale)}
             </div>
             <h2 className="title">
                 {sTranslate(product?.title, locale).slice(0, 20)}
@@ -48,7 +49,7 @@ const DetailsTopCenter = ({ product, locale }: props) => {
                     />
                     <div>
                         <span>{product?.ratings.toString().slice(0, 3)}</span>
-                        <span> reviews</span>
+                        <span> {sTranslate(dictionaries.productDetails.reviews, locale)}</span>
                     </div>
                 </div>
                 <div className="sold review-sold">
@@ -60,7 +61,7 @@ const DetailsTopCenter = ({ product, locale }: props) => {
                     />
                     <div>
                         <span>{product?.ratings.toString().slice(1, 4)}</span>
-                        <span> sold</span>
+                        <span> {sTranslate(dictionaries.productDetails.sold, locale)}</span>
                     </div>
                 </div>
             </div>
@@ -69,52 +70,52 @@ const DetailsTopCenter = ({ product, locale }: props) => {
                 <div className="tabel__header">
                     <div>
                         <p className="price red">{product?.price}.00</p>
-                        <p className="pcs">50-100 pcs</p>
+                        <p className="pcs">50-100 {sTranslate(dictionaries.productDetails.pcs, locale)}</p>
                     </div>
                     <div>
                         <p className="price">{product?.price + 10}.00</p>
-                        <p className="pcs">100-700 pcs</p>
+                        <p className="pcs">100-700 {sTranslate(dictionaries.productDetails.pcs, locale)}</p>
                     </div>
                     <div>
                         <p className="price">{product?.price + 5}.00</p>
-                        <p className="pcs">700+ pcs</p>
+                        <p className="pcs">700+ {sTranslate(dictionaries.productDetails.pcs, locale)}</p>
                     </div>
                 </div>
 
                 <div className="tabel__body">
                     <div className="row">
                         <div className="info">
-                            <span>Price: </span>
-                            <p>Negotiable</p>
+                            <span>{sTranslate(dictionaries.productDetails.priceLabel, locale)} </span>
+                            <p>{sTranslate(dictionaries.productDetails.negotiable, locale)}</p>
                         </div>
                     </div>
                     <div className="row">
                         <div className="info">
-                            <span>Type: </span>
+                            <span>{sTranslate(dictionaries.productDetails.typeLabel, locale)} </span>
                             <p>{sTranslate(product?.type, locale)}</p>
                         </div>
 
                         <div className="info">
-                            <span>Material: </span>
-                            <p>Plastic material</p>
+                            <span>{sTranslate(dictionaries.productDetails.materialLabel, locale)} </span>
+                            <p>{sTranslate(dictionaries.productDetails.plasticMaterial, locale)}</p>
                         </div>
                         <div className="info">
-                            <span>Design: </span>
-                            <p>Modern nice</p>
+                            <span>{sTranslate(dictionaries.productDetails.designLabel, locale)} </span>
+                            <p>{sTranslate(dictionaries.productDetails.modernNice, locale)}</p>
                         </div>
                     </div>
                     <div className="row">
                         <div className="info">
-                            <span>Customization: </span>
-                            <p>Customized logo and design custom packages</p>
+                            <span>{sTranslate(dictionaries.productDetails.customizationLabel, locale)} </span>
+                            <p>{sTranslate(dictionaries.productDetails.customizationDesc, locale)}</p>
                         </div>
                         <div className="info">
-                            <span>Protection:  </span>
-                            <p>Refund Policy</p>
+                            <span>{sTranslate(dictionaries.productDetails.protectionLabel, locale)}  </span>
+                            <p>{sTranslate(dictionaries.productDetails.refundPolicy, locale)}</p>
                         </div>
                         <div className="info">
-                            <span>Warranty:  </span>
-                            <p>2 years full warranty </p>
+                            <span>{sTranslate(dictionaries.productDetails.warrantyLabel, locale)}  </span>
+                            <p>{sTranslate(dictionaries.productDetails.warrantyDesc, locale)} </p>
                         </div>
                     </div>
                 </div>

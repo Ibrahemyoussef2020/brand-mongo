@@ -12,10 +12,13 @@ import Subscribe from "@/components/layout/Subscribe";
 import AnotherItems from "@/components/general/AnotherItems";
 import CategoriesLinksSwipper from "@/components/layout/categoriesLinksSwipper";
 import { useShowCategories } from "@/hooks/useShowCategories";
+import { useLang } from "@/context/LangContext";
+import { dictionaries } from "@/lib/dictionaries";
 
 
 
 const page = () => {
+    const { translate } = useLang();
     
     const {
         category = '',
@@ -104,7 +107,7 @@ const page = () => {
 
               
               <ResultsSection products={products} section={category} maxCountProducts={maxCountProducts} handleFilter={handleFilter} loading={loading}/>
-              <AnotherItems products={products} title='You may also like' category={category} />
+              <AnotherItems products={products} title={translate(dictionaries.productDetails.youMayAlsoLike)} category={category} />
               <Pagenations maxCountProducts={maxCountProducts} setMaxCountProducts={setMaxCountProducts} />
             </div>
           </div>

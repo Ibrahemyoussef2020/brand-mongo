@@ -1,7 +1,12 @@
+'use client';
+import { useLang } from '@/context/LangContext'
+import { dictionaries } from '@/lib/dictionaries'
 import Image from 'next/image'
 import React from 'react'
 
 const PaymentFeatures = () => {
+    const { translate } = useLang();
+
   return (
     <section className='payment-features'>
       <article>
@@ -12,8 +17,8 @@ const PaymentFeatures = () => {
           height={48}
         />
         <div className='text'>
-          <h3>Secure payment</h3>
-          <p>Have you ever finally just</p>
+          <h3>{translate(dictionaries.cart.securePayment)}</h3>
+          <p>{translate(dictionaries.cart.placeholderText)}</p>
         </div>
       </article>
 
@@ -25,8 +30,8 @@ const PaymentFeatures = () => {
           height={48}
         />
         <div className='text'>
-          <h3>Customer support</h3>
-          <p>Have you ever finally just</p>
+          <h3>{translate(dictionaries.cart.customerSupport)}</h3>
+          <p>{translate(dictionaries.cart.placeholderText)}</p>
         </div>
       </article>
 
@@ -38,8 +43,8 @@ const PaymentFeatures = () => {
           height={48}
         />
         <div className='text'>
-          <h3>Secure payment</h3>
-          <p>Have you ever finally just </p>
+          <h3>{translate(dictionaries.cart.securePayment)}</h3>
+          <p>{translate(dictionaries.cart.placeholderText)} </p>
         </div>
       </article>
     </section>

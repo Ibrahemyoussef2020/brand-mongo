@@ -112,12 +112,23 @@
         padding-bottom: 10px;
         border-bottom: 1px solid $gray-350;
 
-        a , button{
+        a , button, .lang-select{
             display: flex;
             align-items: center;
             gap: 1rem;
             font-size: 1rem;
             padding: 13px;
+        }
+
+        .lang-select {
+            select {
+                border: none;
+                background: transparent;
+                font-size: 1rem;
+                outline: none;
+                cursor: pointer;
+                color: inherit;
+            }
         }
 
         .home{

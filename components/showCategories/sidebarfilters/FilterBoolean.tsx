@@ -3,6 +3,8 @@ import { customStringIncludes } from '@/utilities';
 import DropArrow from '../../general/DropArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { useLang } from '@/context/LangContext';
+import { dictionaries } from '@/lib/dictionaries';
 
 interface FilterBooleanProps {
   visibleSection: string[];
@@ -29,6 +31,8 @@ const FilterBoolean: React.FC<FilterBooleanProps> = ({
   ref_free_delivery,
   ref_to_home,
 }) => {
+  const { translate } = useLang();
+
   return (
     <article
       className={`features filter-section 
@@ -36,7 +40,7 @@ const FilterBoolean: React.FC<FilterBooleanProps> = ({
         `}
     >
       <div className='filter-header'>
-        <h3>Features</h3>
+        <h3>{translate(dictionaries.filters.features)}</h3>
         <button onClick={() => toggleArrowDrop('features')}>
           <DropArrow list={visibleSection} item='features' />
         </button>
@@ -52,7 +56,7 @@ const FilterBoolean: React.FC<FilterBooleanProps> = ({
           }}
         >
           <FontAwesomeIcon icon={faTrashCan} />
-          <span>remove filter</span>
+          <span>{translate(dictionaries.filters.removeFilter)}</span>
         </button>
 
         <label>
@@ -65,7 +69,7 @@ const FilterBoolean: React.FC<FilterBooleanProps> = ({
             checked={isPremium}
             ref={(el: HTMLInputElement) => (ref_premium_offer.current[0] = el)}
           />
-          <span className={`label__sub-title ml-1`}>Enabled in Premium</span>
+          <span className={`label__sub-title ml-1`}>{translate(dictionaries.filters.enabledInPremium)}</span>
         </label>
 
         <label>
@@ -78,7 +82,7 @@ const FilterBoolean: React.FC<FilterBooleanProps> = ({
             checked={isFreeDelivery}
             ref={(el: HTMLInputElement) => (ref_free_delivery.current[0] = el)}
           />
-          <span className={`label__sub-title ml-2`}>Free delivery</span>
+          <span className={`label__sub-title ml-2`}>{translate(dictionaries.filters.freeDelivery)}</span>
         </label>
         <label>
           <input
@@ -90,7 +94,7 @@ const FilterBoolean: React.FC<FilterBooleanProps> = ({
             checked={isToHome}
             ref={(el: HTMLInputElement) => (ref_to_home.current[0] = el)}
           />
-          <span className={`label__sub-title ml-2`}>Git it to Home</span>
+          <span className={`label__sub-title ml-2`}>{translate(dictionaries.filters.gitItToHome)}</span>
         </label>
       </div>
 

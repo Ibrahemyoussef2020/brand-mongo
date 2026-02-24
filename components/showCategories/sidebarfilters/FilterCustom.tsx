@@ -2,6 +2,7 @@ import React, { MutableRefObject } from 'react';
 import { customStringIncludes } from '@/utilities';
 import { useLang } from '@/context/LangContext';
 import { LocalizedString } from '@/types';
+import { dictionaries } from '@/lib/dictionaries';
 import DropArrow from '../../general/DropArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -32,7 +33,7 @@ const FilterCustom: React.FC<FilterCustomProps> = ({
 }) => {
   const { lang, translate } = useLang();
   const isCategory = section === 'category';
-  const title = isCategory ? 'Category' : 'Color';
+  const title = isCategory ? translate(dictionaries.filters.category) : translate(dictionaries.productDetails.color);
   const filterName = isCategory ? 'type' : 'color'; // name attribute for input
 
   return (
@@ -56,7 +57,7 @@ const FilterCustom: React.FC<FilterCustomProps> = ({
         )}
         <button className={`clear ${!isCategory ? 'pt-1 mb-1 ml-3' : ''}`} onClick={_ => handleRemoveFilter(filterName)}>
           <FontAwesomeIcon icon={faTrashCan} />
-          <span>remove filter</span>
+          <span>{translate(dictionaries.filters.removeFilter)}</span>
         </button>
         
         <div className={!isCategory ? "less-items" : ""}>
@@ -75,7 +76,7 @@ const FilterCustom: React.FC<FilterCustomProps> = ({
                   checked={checkedValue === itemName}
                   ref={(el: HTMLInputElement) => (refs.current[index] = el)}
                 />
-                <span>{isCategory ? `${selectedValue.slice(0, -1)} a ${translatedItem}` : translatedItem}</span>
+                <span>{isCategory ? `${selectedValue.slice(0, -1)} - ${translatedItem}` : translatedItem}</span>
               </label>
             );
           })
@@ -85,7 +86,7 @@ const FilterCustom: React.FC<FilterCustomProps> = ({
 
       <div className='filter-footer'>
         <Link href='#' className='not-allowed'>
-          See all
+          {translate(dictionaries.filters.seeAll)}
         </Link>
       </div>
     </article>

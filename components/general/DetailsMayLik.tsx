@@ -5,6 +5,7 @@ import Link from "next/link";
 import { sTranslate } from "@/utilities/translate";
 
 import { Locale } from "@/types";
+import { dictionaries } from "@/lib/dictionaries";
 
 
 
@@ -19,7 +20,7 @@ const DetailsMayLik = async ({ locale }: { locale: Locale }) => {
   
   return (
     <div className="may-like right">
-    <h2>You may like</h2>
+    <h2>{sTranslate(dictionaries.productDetails.youMayLike, locale)}</h2>
     <div className="products-wrapper">
         {
             (products as unknown as ProductProps[])?.map((product:ProductProps,index:number) =>{

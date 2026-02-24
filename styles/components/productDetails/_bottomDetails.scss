@@ -24,23 +24,23 @@
                     height: 2px;
                     width: 135px;
                     background: $primary;
-                    transition: left .3s linear , width .3s linear;
+                    transition: inset-inline-start .3s linear , width .3s linear;
                 }
 
                 &.desc-wrapper:after{
-                    left:10px;
+                    inset-inline-start:10px;
                     width: 103px;
                 }
                 &.reviews-wrapper:after{
-                    left:120px;
+                    inset-inline-start:120px;
                     width: 103px;
-                }
+                } 
                 &.shipping-wrapper:after{
-                    left:223px;
+                    inset-inline-start:223px;
                     width: 103px;
                 }
                 &.seller-wrapper:after{
-                    sta:346px;
+                    inset-inline-start:346px;
                     width: 120px;
                 }
     
@@ -68,8 +68,7 @@
 
             .component{
                 background: #fff;
-                padding-top: 20px;
-                padding-left: 20px;
+                padding: 20px;
             }
 
             /// not ready pages

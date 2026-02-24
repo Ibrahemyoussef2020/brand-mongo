@@ -3,6 +3,8 @@ import dbConnect from "@/lib/dbConnect";
 import CartModel from "@/lib/models/CartModel";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import Subscriber from "@/lib/models/SubscriberModel";
+import ProductModel from "@/lib/models/ProductModel";
 
 export async function GET(req: NextRequest) {
   try {
@@ -38,14 +40,25 @@ export async function POST(req: NextRequest) {
     }
     
     const userId = session.user.id;
+    const userEmail = session.user.email;
     const body = await req.json();
-    const { product, quantity, price, title, image, total, deliveryPrice } = body;
+    const { product, quantity, price, title, image, deliveryPrice } = body;
 
     // Validate required fields
     if (!product || quantity === undefined || price === undefined) {
          console.error("Missing required fields in POST /api/cart", body);
          return NextResponse.json({success: false , message: "Missing required fields (product, quantity, price)" }, { status: 400 });
     }
+
+    const subscriber = await Subscriber.findOne({ email: userEmail });
+    const productData = await ProductModel.findOne({ static_id: product });
+    
+    let appliedPrice = price;
+    if (subscriber && productData?.premium_offer) {
+        appliedPrice = price * 0.8;
+    }
+
+    const calculatedTotal = (appliedPrice * quantity);
 
     let cart = await CartModel.findOne({ user: userId });
 
@@ -57,24 +70,13 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Find existing item by product ID (which is passed as 'product' in body, or 'id' mapped to 'product')
     const existingItemIndex = cart.items.findIndex((item: any) => item.product === product);
 
     if (existingItemIndex > -1) {
-      // Update existing item
-      const currentItem = cart.items[existingItemIndex];
-      
       cart.items[existingItemIndex].quantity += quantity;
-      
-      // Logic: current total + new total - deliveryPrice (to avoid double delivery charge if delivery is per item type or per order?)
-      // The user said "add deleveryPrice and don't presist that".
-      // We assume body.deliveryPrice is the delivery associated with THIS product.
-      cart.items[existingItemIndex].total = (currentItem.total + total) - (deliveryPrice || 0); 
-
+      cart.items[existingItemIndex].total = cart.items[existingItemIndex].quantity * appliedPrice; 
     } else {
-      // Add new item
-      // We do NOT store deliveryPrice in the item object in DB
-      cart.items.push({ product, quantity, price, title, image, total });
+      cart.items.push({ product, quantity, price: appliedPrice, title, image, total: calculatedTotal });
     }
 
     // Recalculate bill
@@ -98,9 +100,9 @@ export async function PATCH(req: NextRequest) {
         }
         
         const userId = session.user.id;
+        const userEmail = session.user.email;
         const body = await req.json();
         const { productId, action, value } = body; 
-        // action: 'increase' | 'decrease' | 'set'
 
         let cart = await CartModel.findOne({ user: userId });
         if (!cart) {
@@ -111,35 +113,40 @@ export async function PATCH(req: NextRequest) {
 
         if (itemIndex > -1) {
             const item = cart.items[itemIndex];
-            let quantityDifference = 0;
             let newQuantity = item.quantity;
             
-            // Ensure price is available. Item from DB has price.
-            const price = item.price;
-
             if (action === 'increase') {
-                quantityDifference = 1;
                 newQuantity = item.quantity + 1;
-            } else if (action === 'decrease') {
-                if (item.quantity > 1) {
-                    quantityDifference = -1;
-                    newQuantity = item.quantity - 1;
-                } else {
-                     return NextResponse.json({success: false , message: "Item not found" , status: 404 }); // No change
-                }
+            } else if (action === 'decrease' && item.quantity > 1) {
+                newQuantity = item.quantity - 1;
             } else if (action === 'set' && typeof value === 'number') {
                 newQuantity = value;
-                quantityDifference = newQuantity - item.quantity;
             }
 
-            if (quantityDifference !== 0) {
-                cart.items[itemIndex].quantity = newQuantity;
-                cart.items[itemIndex].total += quantityDifference * price;
-                
-                // Recalculate bill
-                cart.bill = cart.items.reduce((acc: number, cur: any) => acc + cur.total, 0);
-                await cart.save();
+            const subscriber = await Subscriber.findOne({ email: userEmail });
+            const productData = await ProductModel.findOne({ static_id: productId });
+            
+            let appliedPrice = item.price; // Start with persisted price
+            // If it's a premium offer and user is subscriber, ensure price is discounted (if not already)
+            // Note: price is already persisted in item. So if they sub after adding, we might need to update.
+            if (subscriber && productData?.premium_offer) {
+                // If the persisted price is the original price, discount it.
+                // Assuming productData.price is the original price.
+                if (appliedPrice === productData.price) {
+                     appliedPrice = productData.price * 0.8;
+                }
+            } else if (!subscriber && productData?.premium_offer) {
+                // If they unsubscribed, restore original price
+                appliedPrice = productData.price || item.price;
             }
+
+            cart.items[itemIndex].quantity = newQuantity;
+            cart.items[itemIndex].price = appliedPrice;
+            cart.items[itemIndex].total = newQuantity * appliedPrice;
+            
+            // Recalculate bill
+            cart.bill = cart.items.reduce((acc: number, cur: any) => acc + cur.total, 0);
+            await cart.save();
 
             return NextResponse.json({success: true , message: "Item updated successfully" , cart , status: 201 });
         }

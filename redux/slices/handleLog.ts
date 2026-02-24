@@ -11,6 +11,7 @@ const storageUserInfo =  {
 
 const initialState = {
     isLogged:storageIsLogged,
+    isSubscriber: false,
     userInfo:{
         userName:storageUserInfo.userName,
         userEmail:storageUserInfo.userEmail,
@@ -30,13 +31,17 @@ const LogSlice = createSlice({
         },
         logOut:(state)=>{
             state.isLogged = false
+            state.isSubscriber = false
             state.userInfo = {userName:'',userEmail:'',userPassword:''}
             localStorage.setItem('isLogged' , JSON.stringify(state.isLogged))
             localStorage.setItem('user' , JSON.stringify(state.userInfo))
+        },
+        setSubscriberStatus: (state, action) => {
+            state.isSubscriber = action.payload;
         }
     }
 })
 
-export const {logUp,logOut} = LogSlice.actions
+export const {logUp,logOut, setSubscriberStatus} = LogSlice.actions
 
 export default LogSlice.reducer

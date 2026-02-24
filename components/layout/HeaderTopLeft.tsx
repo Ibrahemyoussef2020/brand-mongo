@@ -40,7 +40,7 @@ const HeaderTopLeft = ({page,heading = ''}:props) => {
                 </Link>
             </div>
 
-            : page === 'results' || page === 'cart' || page === 'details' || page === 'profile' ?
+            : page === 'results' || page === 'cart' || page === 'details' || page === 'profile' || page === 'message' ?
 
             <div className='flex'>
                 <Link href={`/${lang}`}>
@@ -79,7 +79,7 @@ const HeaderTopLeft = ({page,heading = ''}:props) => {
                         </picture>
                     </Link>
                 </div>
-                : page === 'results' || page === 'cart' || page === 'profile' ?
+                : page === 'results' || page === 'cart' || page === 'profile' || page === 'message' ?
 
                 <div className='back-heading'>
                     <button className='back'  onClick={takeAstepBack}>

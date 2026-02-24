@@ -10,6 +10,8 @@ import { AppDispatch, IRootState } from "@/redux/store";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useLang } from "@/context/LangContext";
 import { dictionaries } from "@/lib/dictionaries";
+import { useRouter, usePathname } from "next/navigation";
+import { useState } from "react";
 
 
 const MenuSidebar = () => {
@@ -17,7 +19,18 @@ const MenuSidebar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isOppend } = useSelector((state: IRootState) => state.combine.aside)
   const { data: session } = useSession();
-  const { lang, translate } = useLang();
+  const { lang, setLang, translate } = useLang();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleLangChange = (newLang: string) => {
+    const segments = pathname.split('/');
+    segments[1] = newLang;
+    const newPathname = segments.join('/') || `/${newLang}`;
+    router.push(newPathname);
+    setLang(newLang as any);
+    handleClose();
+  };
 
   const handleClose = () => {
     dispatch(toggleAside(false));
@@ -109,16 +122,19 @@ const MenuSidebar = () => {
       </div>
 
       <div className="settings">
-        <button className="not-allowed">
+        <div className="lang-select">
           <Image
             src="/images/icons/language.png"
             alt=""
             width={24}
             height={24}
           />
-          <span>{translate(dictionaries.header.langCurrency)}</span>
-        </button>
-        <Link href='#' className="not-allowed">
+          <select value={lang} onChange={(e) => handleLangChange(e.target.value)}>
+              <option value="en">English</option>
+              <option value="ar">اللغة العربية</option>
+          </select>
+        </div>
+        <Link href={`/${lang}/message`}  onClick={handleClose}>
           <Image
             src="/images/icons/headset_mic.png"
             alt=""

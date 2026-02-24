@@ -3,6 +3,8 @@ import { customStringIncludes } from '@/utilities';
 import DropArrow from '../../general/DropArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { useLang } from '@/context/LangContext';
+import { dictionaries } from '@/lib/dictionaries';
 
 interface FilterTrackProps {
   visibleSection: string[];
@@ -27,6 +29,8 @@ const FilterTrack: React.FC<FilterTrackProps> = ({
   handleMinMaxPrice,
   submitMinMix,
 }) => {
+  const { translate } = useLang();
+
   return (
     <article
       className={`price filter-section 
@@ -34,7 +38,7 @@ const FilterTrack: React.FC<FilterTrackProps> = ({
         `}
     >
       <div className='filter-header'>
-        <h3>Price range</h3>
+        <h3>{translate(dictionaries.filters.priceRange)}</h3>
         <button onClick={() => toggleArrowDrop('price')}>
           <DropArrow list={visibleSection} item='price' />
         </button>
@@ -43,7 +47,7 @@ const FilterTrack: React.FC<FilterTrackProps> = ({
       <div className='filter-body'>
         <button className="clear pb-2" onClick={_ => handleRemoveFilter('price')}>
           <FontAwesomeIcon icon={faTrashCan} />
-          <span>remove filter</span>
+          <span>{translate(dictionaries.filters.removeFilter)}</span>
         </button>
         <div className='ranges'>
           <div className='range'>
@@ -73,7 +77,7 @@ const FilterTrack: React.FC<FilterTrackProps> = ({
         </div>
         <div className='numbers'>
           <div>
-            <h4>Min</h4>
+            <h4>{translate(dictionaries.filters.min)}</h4>
             <input 
               type="number" 
               min={minPriceFromData} 
@@ -84,7 +88,7 @@ const FilterTrack: React.FC<FilterTrackProps> = ({
             />
           </div>
           <div>
-            <h4>Max</h4>
+            <h4>{translate(dictionaries.filters.max)}</h4>
             <input 
               type="number" 
               min={minPriceFromData} 
@@ -97,7 +101,7 @@ const FilterTrack: React.FC<FilterTrackProps> = ({
         </div>
 
         <button className='apply' onClick={submitMinMix}>
-          Apply
+          {translate(dictionaries.filters.apply)}
         </button>
       </div>
 

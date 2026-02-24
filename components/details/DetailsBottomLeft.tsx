@@ -24,22 +24,22 @@ const DetailsBottomLeft = ({product}:props) => {
                         <p className="details">
                             {translate(product.description)}
                         </p>
-
+<h1>kjhej</h1>
                         <div className="table">
                             <div className="row">
-                                <div className="ceil-right"><h3>Model</h3></div>
+                                <div className="ceil-right"><h3>{translate(dictionaries.productDetails.model)}</h3></div>
                                 <div className="ceil-left"><p>{product.static_id || '#8786867'}</p></div>
                             </div>
                             <div className="row">
-                                <div className="ceil-right"><h3>Style</h3></div>
-                                <div className="ceil-left"><p>{translate(product.type) || 'Classic style'}</p></div>
+                                <div className="ceil-right"><h3>{translate(dictionaries.productDetails.style)}</h3></div>
+                                <div className="ceil-left"><p>{translate(product.type) || translate(dictionaries.productDetails.classicStyle)}</p></div>
                             </div>
                             <div className="row">
-                                <div className="ceil-right"><h3>Brand</h3></div>
+                                <div className="ceil-right"><h3>{translate(dictionaries.productDetails.brand)}</h3></div>
                                 <div className="ceil-left"><p>{translate(product.brand)}</p></div>
                             </div>
                             <div className="row">
-                                <div className="ceil-right"><h3>Color</h3></div>
+                                <div className="ceil-right"><h3>{translate(dictionaries.productDetails.color)}</h3></div>
                                 <div className="ceil-left"><p>{translate(product.color)}</p></div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@ const DetailsBottomLeft = ({product}:props) => {
                         </p>
                         <div className="ratings-else">
                             <span>{product.avgRating}.0</span>
-                            <span className="orders">{product.ratings} reviews</span>
+                            <span className="orders">{product.ratings} {translate(dictionaries.productDetails.reviews)}</span>
                         </div>
                     </div>
                 );
@@ -75,8 +75,8 @@ const DetailsBottomLeft = ({product}:props) => {
                             {translate(dictionaries.productTabs.shippingInfo)}
                         </p>
                         <ul className="details-list">
-                            <li>{product.free_delivery ? 'Free Delivery' : 'Paid Shipping'}</li>
-                            <li>Ships to: International</li>
+                            <li>{product.free_delivery ? translate(dictionaries.productTabs.freeDelivery) : translate(dictionaries.productTabs.paidShipping)}</li>
+                            <li>{translate(dictionaries.productTabs.shipsTo)}: {translate(dictionaries.productTabs.international)}</li>
                         </ul>
                     </div>
                 );
@@ -88,7 +88,7 @@ const DetailsBottomLeft = ({product}:props) => {
                         </p>
                         <div className="seller-details">
                             <h3>{translate(product.brand)}</h3>
-                            <p>Verified Supplier</p>
+                            <p>{translate(dictionaries.productTabs.verifiedSupplier)}</p>
                         </div>
                     </div>
                 );

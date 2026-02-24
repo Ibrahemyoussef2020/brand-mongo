@@ -10,6 +10,7 @@ import BrowserProduct from "../general/BrowserProduct"
 import ToggleFav from "../general/ToggleFav"
 import ResultsSkelton from "@/skelton/showItems/ResultsSkelton"
 import { useLang } from "@/context/LangContext"
+import { dictionaries } from "@/lib/dictionaries"
 
 
 
@@ -67,7 +68,7 @@ const Results = ({products,category,maxCountProducts,handleFilter,loading}:props
                     </div>
                     <br className="in-list"/>
                     <div className="product__info">
-                        <p className="title-in-list in-list">{translate(product.title)} <span className="good-item">Very Good Item</span> ,</p>
+                        <p className="title-in-list in-list">{translate(product.title)} <span className="good-item">{translate(dictionaries.orderResults.veryGoodItem)}</span> ,</p>
 
                         <div className="top">
                             <div className="right">
@@ -83,13 +84,13 @@ const Results = ({products,category,maxCountProducts,handleFilter,loading}:props
                                 <div className="ratings-else">
                                     <ProductRating avgRating={+product.avgRating} />.
                                     <span>{product.avgRating}.0</span>
-                                    <span className="orders in-list">{product.price.toString().slice(0,3)} orders</span>
-                                    {product.free_delivery ? <span className="shipping in-list">Free Shipping</span> : 
+                                    <span className="orders in-list">{product.price.toString().slice(0,3)} {translate(dictionaries.orderResults.orders)}</span>
+                                    {product.free_delivery ? <span className="shipping in-list">{translate(dictionaries.orderResults.freeShipping)}</span> : 
                                     
-                                    <span className="shipping in-list">pluse delivery</span>
+                                    <span className="shipping in-list">{translate(dictionaries.orderResults.plusDelivery)}</span>
                                     }
                                     <Link href={`/itemDetails/${category}/${product.static_id}`} className="mobile-details in-list">
-                                        View details       
+                                        {translate(dictionaries.orderResults.viewDetails)}       
                                     </Link>
                                 </div>
                             </div>
@@ -117,7 +118,7 @@ const Results = ({products,category,maxCountProducts,handleFilter,loading}:props
 
 
                         <Link href={`/itemDetails/${category}/${product.static_id}`} className="details in-list">
-                            View details       
+                            {translate(dictionaries.orderResults.viewDetails)}       
                         </Link>
 
                         <BrowserProduct section={category} productId={product.static_id} base="showCategories"/>

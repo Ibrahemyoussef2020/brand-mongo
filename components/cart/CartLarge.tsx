@@ -1,6 +1,7 @@
 'use client'
 import { addToFavStore, clearCart, handleBill, handleProductsQuantity, removeFromCart, fetchCart, setCart } from "@/redux/slices"
 import { ProductProps } from "@/types"
+import { dictionaries } from "@/lib/dictionaries"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -71,7 +72,7 @@ const CartLarge = () => {
   return (
     <div className="large-cart">
         <div className="container container--heading">
-            <h2>My cart ({productCount})</h2>
+            <h2>{translate(dictionaries.cart.myCart)} ({productCount})</h2>
         </div>
 
         <div className="container container--top">
@@ -98,27 +99,27 @@ const CartLarge = () => {
                                     <h3>{details.slice(0,40)}</h3>
                                     <div className="features">
                                         <div className="feature">
-                                            <h3>Size: </h3>
-                                            <span> medium,</span>
+                                            <h3>{translate(dictionaries.cart.size)} </h3>
+                                            <span> {translate(dictionaries.cart.medium)},</span>
                                         </div>                             
                                         <div className="feature">
-                                            <h3>Color: </h3>
+                                            <h3>{translate(dictionaries.cart.color)} </h3>
                                             <span> {translate(product.color)},</span>
                                         </div>
 
                                         <div className="feature">
-                                            <h3>Category: </h3>
+                                            <h3>{translate(dictionaries.cart.category)} </h3>
                                             <span> {product.section},</span>
                                         </div>
                                     </div>
                                     <div className="feature">
-                                        <h3>Seller: </h3>
-                                        <span>{translate(product.brand)} agent,</span>
+                                        <h3>{translate(dictionaries.cart.seller)} </h3>
+                                        <span>{translate(product.brand)} {translate(dictionaries.cart.agent)},</span>
                                     </div>
 
                                     <div className="buttons">
-                                        <button className="remove" onClick={_=>handleRemoveItem(product._id)}>Remove</button>
-                                        <button className="add-fav" onClick={_=>handleSaveForLater(product)}>Save for later</button>
+                                        <button className="remove" onClick={_=>handleRemoveItem(product._id)}>{translate(dictionaries.cart.remove)}</button>
+                                        <button className="add-fav" onClick={_=>handleSaveForLater(product)}>{translate(dictionaries.cart.saveForLater)}</button>
                                     </div>
                                 </div>
                             </div>
@@ -127,16 +128,16 @@ const CartLarge = () => {
                                 <p>${product.total}</p>
                                 <div className="select-wrapper">
                                     <select id="select-count" name="select-count" onChange={(e)=> handleModifyQuantity(e,product._id)} value={product.quantity}>
-                                        <option value={product.quantity}>Qty: {product.quantity}</option>
-                                        <option value="1">Qty: 1</option>
-                                        <option value="2">Qty: 2</option>
-                                        <option value="3">Qty: 3</option>
-                                        <option value="4">Qty: 4</option>
-                                        <option value="5">Qty: 5</option>
-                                        <option value="6">Qty: 6</option>
-                                        <option value="7">Qty: 7</option>
-                                        <option value="8">Qty: 8</option>
-                                        <option value="9">Qty: 9</option>
+                                        <option value={product.quantity}>{translate(dictionaries.cart.qty)} {product.quantity}</option>
+                                        <option value="1">{translate(dictionaries.cart.qty)} 1</option>
+                                        <option value="2">{translate(dictionaries.cart.qty)} 2</option>
+                                        <option value="3">{translate(dictionaries.cart.qty)} 3</option>
+                                        <option value="4">{translate(dictionaries.cart.qty)} 4</option>
+                                        <option value="5">{translate(dictionaries.cart.qty)} 5</option>
+                                        <option value="6">{translate(dictionaries.cart.qty)} 6</option>
+                                        <option value="7">{translate(dictionaries.cart.qty)} 7</option>
+                                        <option value="8">{translate(dictionaries.cart.qty)} 8</option>
+                                        <option value="9">{translate(dictionaries.cart.qty)} 9</option>
                                     </select>
                                 </div>
                             </div>
@@ -154,9 +155,9 @@ const CartLarge = () => {
                                 height={20}
                                 width={20}
                             />
-                            <span>Back to shop</span>
+                            <span>{translate(dictionaries.cart.backToShop)}</span>
                         </button>
-                        <button className="remove" onClick={handleClearCart}>Remove all</button>
+                        <button className="remove" onClick={handleClearCart}>{translate(dictionaries.cart.removeAll)}</button>
                    </div> 
                 </div>
                 <PaymentFeatures/>
@@ -164,38 +165,44 @@ const CartLarge = () => {
             
             <div className="buy-card">
                 <div className="coupon">
-                    <h2>Have a coupon?</h2>
+                    <h2>{translate(dictionaries.cart.couponHeading)}</h2>
                     <form action="#">
-                        <input type="text" placeholder="Add coupon"/>
-                        <button type="submit">Apply</button>
+                        <input type="text" placeholder={translate(dictionaries.cart.couponPlaceholder)}/>
+                        <button type="submit">{translate(dictionaries.cart.apply)}</button>
                     </form>
                 </div>
 
-                <div className="buy-process">
+                 <div className="buy-process">
                     <div className="buy-card__details">
                         <article>
-                            <h3>Subtotal:</h3>
+                            <h3>{translate(dictionaries.cart.subtotal)}</h3>
                             <span>${bill}</span>
                         </article>
+                        {products.some(p => p.price && p.total && p.total < (p.price * p.quantity)) && (
+                            <article>
+                                <h3>{translate(dictionaries.cart.subscriberDiscount)}</h3>
+                                <span style={{ color: '#00b517' }}>
+                                    -${products.reduce((acc, p) => {
+                                        return acc; 
+                                    }, 0)}
+                                </span>
+                            </article>
+                        )}
                         <article>
-                            <h3>Discount:</h3>
-                            <span>$0</span>
-                        </article>
-                        <article>
-                            <h3>Tax:</h3>
+                            <h3>{translate(dictionaries.cart.tax)}</h3>
                             <span>$0</span>
                         </article>
                     </div>
 
                     <div className="total">
-                        <h3>Total:</h3>
+                        <h3>{translate(dictionaries.cart.total)}</h3>
                         <p>${bill}</p>
                     </div>
 
                     {showCheckout ? (
                         <Stripe />
                     ) : (
-                        <button className="buy" onClick={() => setShowCheckout(true)}>Checkout</button>
+                        <button className="buy" onClick={() => setShowCheckout(true)}>{translate(dictionaries.cart.checkout)}</button>
                     )}
 
                     <div className="payment">

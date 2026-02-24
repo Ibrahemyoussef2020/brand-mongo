@@ -15,6 +15,7 @@ import DetailsMayLik from "@/components/general/DetailsMayLik";
 import { AppDispatch, IRootState } from "@/redux/store";
 import EmptyCart from "../cart/EmptyCart";
 import { useLang } from "@/context/LangContext";
+import { dictionaries } from "@/lib/dictionaries";
 
 
 const OrderResult = () => {
@@ -31,7 +32,7 @@ const OrderResult = () => {
 
   return  <div className="order-results">
 
-            <h2 className="old-purchases__heading">Your Old Purchases</h2>
+            <h2 className="old-purchases__heading">{translate(dictionaries.orderResults.oldPurchases)}</h2>
         {
           purchases.length ?
             purchases?.map((product:ProductProps,index:number) => {
@@ -47,36 +48,36 @@ const OrderResult = () => {
                     </div>
                     <br/>
                     <div className="product__info">
-                        <p className="title">{translate(product.title)} <span className="good-item">Very Good Item</span> ,</p>
+                        <p className="title">{translate(product.title)} <span className="good-item">{translate(dictionaries.orderResults.veryGoodItem)}</span> ,</p>
 
                         <div className="top">
                             <div className="right">                    
                               <div className="ratings-else">
                                   <ProductRating avgRating={+product.avgRating} />
-                                  {product.free_delivery ? <span className="shipping">Free Shipping</span> :         
-                                  <span className="shipping">pluse delivery</span>
+                                  {product.free_delivery ? <span className="shipping">{translate(dictionaries.orderResults.freeShipping)}</span> :         
+                                  <span className="shipping">{translate(dictionaries.orderResults.plusDelivery)}</span>
                                   } 
                               </div>
                             </div>                        
                         </div>
                         <div className="item-info">
-                            <h4>Seller</h4><p>{translate(product.brand)} Brand</p>
+                            <h4>{translate(dictionaries.orderResults.seller)}</h4><p>{translate(product.brand)} {translate(dictionaries.orderResults.brandSuffix)}</p>
                         </div>
 
                         <div className="item-info">
-                            <h4>Date order</h4><p> {selectDate(1)}</p>
+                            <h4>{translate(dictionaries.orderResults.dateOrder)}</h4><p> {selectDate(1)}</p>
                         </div>
                         <div className="item-info arival-lg">
-                            <h4>Arrival between</h4><p className="dates"> {selectDate(2)} <span className="slash"> - </span> </p>  <p className="dates"> {selectDate(3)}</p>
+                            <h4>{translate(dictionaries.orderResults.arrivalBetween)}</h4><p className="dates"> {selectDate(2)} <span className="slash"> - </span> </p>  <p className="dates"> {selectDate(3)}</p>
                         </div>
                         <div className="item-info arival-sm">
-                            <h4>Arrival in</h4> <p className="dates">Two days</p>
+                            <h4>{translate(dictionaries.orderResults.arrivalIn)}</h4> <p className="dates">{translate(dictionaries.orderResults.twoDays)}</p>
                         </div>
                         {
                           product.has_discount ? 
 
                           <div className="item-info">
-                            <h4>Item price</h4><p>${product.price}.00</p>
+                            <h4>{translate(dictionaries.orderResults.itemPrice)}</h4><p>${product.price}.00</p>
                           </div>
                           : null
                         }
@@ -84,7 +85,7 @@ const OrderResult = () => {
                           !product.free_delivery && product?.deliveryPrice > 0 ? 
 
                           <div className="item-info">
-                            <h4>Deliverry cost</h4><p>${product.deliveryPrice}.00</p>
+                            <h4>{translate(dictionaries.orderResults.deliveryCost)}</h4><p>${product.deliveryPrice}.00</p>
                           </div>
                           : null
                         }
@@ -92,16 +93,16 @@ const OrderResult = () => {
                           product?.quantity > 1 ? 
 
                           <div className="item-info">
-                            <h4>Items quantity</h4><p>{product.quantity}</p>
+                            <h4>{translate(dictionaries.orderResults.itemsQuantity)}</h4><p>{product.quantity}</p>
                           </div>
                           : null
                         }
                         <div className="item-info total">
-                          <h4>Final cost</h4><p>$.{product.total}.00</p>
+                          <h4>{translate(dictionaries.orderResults.finalCost)}</h4><p>$.{product.total}.00</p>
                         </div>
                     </div>
                 </article>
-                
+
             }) 
 
             : <EmptyCart />

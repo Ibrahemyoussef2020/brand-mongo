@@ -1,4 +1,4 @@
-import { ProductProps } from "@/types"
+import { Locale, ProductProps } from "@/types"
 import { customStringIncludes } from "@/utilities"
 import customObjectIncludes from "@/utilities/customObjectIncludes"
 import { faHeart } from "@fortawesome/free-solid-svg-icons"
@@ -7,13 +7,16 @@ import Image from "next/image"
 
 import ToggleFav from "../general/ToggleFav"
 import AddRemoveCart from "../general/AddRemoveCart"
+import { sTranslate } from "@/utilities/translate"
+import { dictionaries } from "@/lib/dictionaries"
 
 interface props {
-    product:ProductProps
+    product:ProductProps,
+    locale: Locale
 }
 
 
-const DetailsTopLeft = ({product}:props) => {
+const DetailsTopLeft = ({product, locale}:props) => {
   return (
     <div className="left">
        <div className="card">
@@ -27,8 +30,8 @@ const DetailsTopLeft = ({product}:props) => {
                     />
                 </div>
                 <div className="text">
-                    <p>Supplier</p>
-                    <p>Guanjoi Trading LLC</p>
+                    <p>{sTranslate(dictionaries.productDetails.supplier, locale)}</p>
+                    <p>{sTranslate(dictionaries.productDetails.supplierName, locale)}</p>
                 </div>
             </div>
 
@@ -40,7 +43,7 @@ const DetailsTopLeft = ({product}:props) => {
                         width={21}
                         height={15}
                     />
-                    <span>Germany, Berlin</span>
+                    <span>{sTranslate(dictionaries.productDetails.germanyBerlin, locale)}</span>
                 </div>
 
                 <div className="feature">
@@ -50,7 +53,7 @@ const DetailsTopLeft = ({product}:props) => {
                         width={20}
                         height={20}
                     />
-                    <span>Verified Seller</span>
+                    <span>{sTranslate(dictionaries.productDetails.verifiedSeller, locale)}</span>
                 </div>
 
                 <div className="feature">
@@ -60,13 +63,13 @@ const DetailsTopLeft = ({product}:props) => {
                         width={20}
                         height={20}
                     />
-                    <span>Worldwide shipping</span>
+                    <span>{sTranslate(dictionaries.productDetails.worldwideShipping, locale)}</span>
                 </div>
             </div>
 
             <div className="buttons">
                 <AddRemoveCart product={product} process="add" />
-                <button className="profile not-allowed">Seller’s profile</button>
+                <button className="profile not-allowed">{sTranslate(dictionaries.productDetails.sellersProfile, locale)}</button>
             </div>
        </div>
 

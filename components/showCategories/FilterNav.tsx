@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleMobileAsideFilter } from '@/redux/slices';
 import Image from 'next/image'
 import { AppDispatch, IRootState } from '@/redux/store'
+import { useLang } from '@/context/LangContext';
+import { dictionaries } from '@/lib/dictionaries';
 
 
 
 const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortStrategy, design, setDesign, filterSelectedList, filtersClear, setFiltersClear, maxCountProducts, handleFilter }: FilterNavprops) => {
-
+  const { translate } = useLang();
   const dispatch =useDispatch<AppDispatch>()
   const { isOppend } = useSelector((state: IRootState) => state.combine.asideFilter)
   const verifiedRef = useRef<any>();
@@ -57,7 +59,7 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
   return (
     <nav className="filter-nav">
       <div className="left">
-        <span>00,0{productsShowenCount}</span> <span>items <span>in</span></span> <span>{category}</span>
+        <span>00,0{productsShowenCount}</span> <span>{translate(dictionaries.filterNav.items)} <span>{translate(dictionaries.filterNav.in)}</span></span> <span>{category}</span>
       </div>
 
       <div className="right">
@@ -71,7 +73,7 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
             ref={verifiedRef}
 
           />
-          <span>verified</span>
+          <span>{translate(dictionaries.filterNav.verified)}</span>
         </label>
 
 
@@ -81,11 +83,11 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
             value={sort || "#"}
             className="featured-nav" id="featured-nav" name="featured-nav"
           >
-            <option value="#">Featured</option>
-            <option value="heigh-price">Price: heigh to Low</option>
-            <option value="low-price">Price: Low to heigh</option>
-            <option value="ratings">Avg.Customer Review</option>
-            <option value="new-arrivals">Newest  Arrivals</option>
+            <option value="#">{translate(dictionaries.filterNav.featured)}</option>
+            <option value="heigh-price">{translate(dictionaries.filterNav.priceHighToLow)}</option>
+            <option value="low-price">{translate(dictionaries.filterNav.priceLowToHigh)}</option>
+            <option value="ratings">{translate(dictionaries.filterNav.avgCustomerReview)}</option>
+            <option value="new-arrivals">{translate(dictionaries.filterNav.newestArrivals)}</option>
           </select>
         </div>
 
@@ -96,11 +98,11 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
               value={sort || "#"}
               id="featured-nav-mobile" name="featured-nav-mobile"
             >
-              <option value="#">Featured</option>
-              <option value="heigh-price">heigh price</option>
-              <option value="low-price">low price</option>
-              <option value="ratings">ratings</option>
-              <option value="new-arrivals">Newest</option>
+              <option value="#">{translate(dictionaries.filterNav.featured)}</option>
+              <option value="heigh-price">{translate(dictionaries.filterNav.highPriceShort)}</option>
+              <option value="low-price">{translate(dictionaries.filterNav.lowPriceShort)}</option>
+              <option value="ratings">{translate(dictionaries.filterNav.ratingsShort)}</option>
+              <option value="new-arrivals">{translate(dictionaries.filterNav.newestShort)}</option>
             </select>
 
             <span className='icon-wrapper'>
@@ -111,7 +113,7 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
           </div>
 
           <button className='filter' onClick={() => dispatch(toggleMobileAsideFilter(!isOppend))}>
-            <span className='text'>Filter({filterSelectedList?.length})</span>
+            <span className='text'>{translate(dictionaries.filterNav.filter)}({filterSelectedList?.length})</span>
             <span className='icon'>
               <Image
                 src='/images/icons/filter.png'
@@ -127,7 +129,7 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
           <button className={`grid-btn-mode ${design === 'grid' ? 'selected' : ''}`} onClick={_ => setDesign('grid')}>
             <Image
               src='/images/icons/grid.png'
-              alt='Grid'
+              alt={translate(dictionaries.filterNav.grid)}
               height={20}
               width={20}
             />
@@ -136,7 +138,7 @@ const FilterNav = ({ products, setProducts, category, sort, setSort, handleSortS
           <button className={`list-btn-mode ${design === 'list' ? 'selected' : ''}`} onClick={_ => setDesign('list')}>
             <Image
               src='/images/icons/list-view.png'
-              alt='Grid'
+              alt={translate(dictionaries.filterNav.list)}
               height={20}
               width={20}
             />

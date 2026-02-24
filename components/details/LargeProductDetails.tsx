@@ -14,6 +14,7 @@ import { getProductsFromDB } from "@/lib/db/fetchProducts"
 import { Suspense } from "react"
 import MayLikeSkelton from "@/skelton/general/MayLike"
 import { sTranslate } from "@/utilities/translate"
+import { dictionaries } from "@/lib/dictionaries"
 
 import { Locale } from "@/types"
 
@@ -43,7 +44,7 @@ const LargeProductDetails = async ({product,category,locale}:props) => {
                 <DetailsTopCenter product={product} locale={locale} />
 
              
-                <DetailsTopLeft product={product}  />
+                <DetailsTopLeft product={product} locale={locale} />
 
             </div>
     
@@ -56,7 +57,7 @@ const LargeProductDetails = async ({product,category,locale}:props) => {
 
             </div>
 
-            <AnotherItems products={relatedProducts} category={category} title="Related products"/>
+            <AnotherItems products={relatedProducts} category={category} title={sTranslate(dictionaries.productDetails.relatedProducts, locale)}/>
             <DiscountBanner/>
         </div>
       )

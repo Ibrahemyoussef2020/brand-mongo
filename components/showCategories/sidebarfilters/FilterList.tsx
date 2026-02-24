@@ -2,6 +2,7 @@ import React, { MutableRefObject } from 'react';
 import { customStringIncludes } from '@/utilities';
 import { useLang } from '@/context/LangContext';
 import { LocalizedString } from '@/types';
+import { dictionaries } from '@/lib/dictionaries';
 import DropArrow from '../../general/DropArrow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan, faStar } from '@fortawesome/free-solid-svg-icons';
@@ -33,7 +34,7 @@ const FilterList: React.FC<FilterListProps> = ({
   const isRating = section === 'rating';
   
   // Mapping for section name display
-  const title = isBrand ? 'Brand' : 'Ratings';
+  const title = isBrand ? translate(dictionaries.productDetails.brand) : translate(dictionaries.filters.ratings);
   const filterKey = isBrand ? 'brand' : 'avgRating'; // Use 'avgRating' for remove filter key if rating
 
   return (
@@ -52,7 +53,7 @@ const FilterList: React.FC<FilterListProps> = ({
       <div className='filter-body'>
         <button className="clear pb-2" onClick={_ => handleRemoveFilter(isRating ? 'avgRating' : section)}>
           <FontAwesomeIcon icon={faTrashCan} />
-          <span>remove filter</span>
+          <span>{translate(dictionaries.filters.removeFilter)}</span>
         </button>
         {isBrand && productsData && productsData.length > 0 &&
           productsData.map((brandObj, index) => {
@@ -107,7 +108,7 @@ const FilterList: React.FC<FilterListProps> = ({
       <div className='filter-footer'>
         {isBrand && (
             <Link href='#' className='not-allowed' >
-              See all
+              {translate(dictionaries.filters.seeAll)}
             </Link>
         )}
       </div>

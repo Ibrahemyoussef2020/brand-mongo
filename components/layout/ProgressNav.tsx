@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useLang } from '@/context/LangContext'
 import { dictionaries } from '@/lib/dictionaries';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 interface props{
     page:string,
@@ -13,6 +14,7 @@ interface props{
 
 const ProgressNav = ({page='home',category='',item=''}:props) => {
     const { lang, translate } = useLang();
+    const arrowIcon = lang === 'en' ? faAngleRight : faAngleLeft;
       
     if (page === 'home') {
       return  <section className='progress-nav'>
@@ -20,12 +22,7 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
                 <li>
                     <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                     <span>
-                        <Image
-                            height={15}
-                            width={15}
-                            src='/images/road-arrow.png'
-                            alt=''
-                        />    
+                        <FontAwesomeIcon icon={arrowIcon} />
                     </span>
                 </li>
             </ul>
@@ -38,23 +35,13 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
             <li>
                     <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
             <li>
                 <Link href={`/${lang}/showCategories/${category}`}>{category}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
         </ul>
@@ -67,34 +54,19 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
             <li>
                     <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
             <li>
                 <Link href={`/${lang}/showCategories/${category}`}>{category}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
             <li>
                 <Link href={`/${lang}/itemDetails/${category}/${item}`}>{item}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
         </ul>
@@ -107,23 +79,13 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
             <li>
                     <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
             <li>
                 <Link href={`/${lang}/cart`}>{translate(dictionaries.userMenu.myCart)}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
         </ul>
@@ -136,23 +98,13 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
             <li>
                     <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
             <li>
                 <Link href={`/${lang}/profile`}>{translate(dictionaries.userMenu.myProfile)}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
         </ul>
@@ -165,23 +117,13 @@ const ProgressNav = ({page='home',category='',item=''}:props) => {
             <li>
                 <Link href={`/${lang}`}>Home</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
             <li>
                 <Link href={`/${lang}/orders`}>{translate(dictionaries.header.orders)}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
         </ul>

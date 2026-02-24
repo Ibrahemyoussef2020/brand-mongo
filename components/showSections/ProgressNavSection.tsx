@@ -1,8 +1,10 @@
 
-import Image from 'next/image'
+'use client';
 import Link from 'next/link'
 import { useLang } from '@/context/LangContext'
 import { dictionaries } from '@/lib/dictionaries'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 interface props{
     page:string,
@@ -12,6 +14,7 @@ interface props{
 
 const ProgressNavSection = ({page='home',section='',item=''}:props) => {
     const { lang, translate } = useLang();
+    const arrowIcon = lang === 'en' ? faAngleRight : faAngleLeft;
       
     if (page === 'home') {
       return  <section className='progress-nav'>
@@ -19,12 +22,7 @@ const ProgressNavSection = ({page='home',section='',item=''}:props) => {
                 <li>
                     <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                     <span>
-                        <Image
-                            height={15}
-                            width={15}
-                            src='/images/road-arrow.png'
-                            alt=''
-                        />    
+                        <FontAwesomeIcon icon={arrowIcon} />
                     </span>
                 </li>
             </ul>
@@ -37,23 +35,13 @@ const ProgressNavSection = ({page='home',section='',item=''}:props) => {
             <li>
                 <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
             <li>
                 <Link href={`/${lang}/${section}`}>{section}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
         </ul>
@@ -66,34 +54,19 @@ const ProgressNavSection = ({page='home',section='',item=''}:props) => {
             <li>
                 <Link href={`/${lang}`}>{translate(dictionaries.header.home)}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
             <li>
                 <Link href={`/${lang}/${section}`}>{section}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
             <li>
                 <Link href={`/${lang}/itemDetails/${section}/${item}`}>{item}</Link>
                 <span>
-                    <Image
-                        height={15}
-                        width={15}
-                        src='/images/road-arrow.png'
-                        alt=''
-                    />    
+                    <FontAwesomeIcon icon={arrowIcon} />
                 </span>
             </li>
         </ul>

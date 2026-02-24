@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import MenuSidebar from '@/components/layout/menu-sidebar';
-import Footer from '@/components/layout/Footer';
 import axios from 'axios';
+import { useLang } from '@/context/LangContext';
+import { dictionaries } from '@/lib/dictionaries';
 
 const MessagePage = () => {
+  const { translate } = useLang();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -40,25 +42,25 @@ const MessagePage = () => {
       setStatus({
         loading: false,
         success: false,
-        error: error.response?.data?.message || 'Something went wrong. Please try again later.',
+        error: error.response?.data?.message || translate(dictionaries.messagePage.errorMsg),
       });
     }
   };
 
   return (
     <>
-      <Header page="message" heading="Contact Us" />
+      <Header page="message" heading={translate(dictionaries.messagePage.contactUs)} />
       <MenuSidebar />
       <div className="message-page container">
         <div className="form-container">
-          <h1>Send us a message</h1>
+          <h1>{translate(dictionaries.messagePage.sendUsMessage)}</h1>
           <p className="desc">
-            Have a question or want to work together? Fill out the form below and we'll get back to you as soon as possible.
+            {translate(dictionaries.messagePage.description)}
           </p>
 
           {status.success && (
             <div className="status-msg success">
-              Your message has been sent successfully!
+              {translate(dictionaries.messagePage.successMsg)}
             </div>
           )}
 
@@ -70,7 +72,7 @@ const MessagePage = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="name">Full Name</label>
+              <label htmlFor="name">{translate(dictionaries.messagePage.fullName)}</label>
               <input
                 type="text"
                 id="name"
@@ -82,7 +84,7 @@ const MessagePage = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="email">{translate(dictionaries.messagePage.emailAddress)}</label>
               <input
                 type="email"
                 id="email"
@@ -94,7 +96,7 @@ const MessagePage = () => {
             </div>
 
             <div className="form-group subject-field">
-              <label htmlFor="subject">Subject</label>
+              <label htmlFor="subject">{translate(dictionaries.messagePage.subject)}</label>
               <input
                 type="text"
                 id="subject"
@@ -106,7 +108,7 @@ const MessagePage = () => {
             </div>
 
             <div className="form-group full-width">
-              <label htmlFor="message">Message</label>
+              <label htmlFor="message">{translate(dictionaries.messagePage.message)}</label>
               <textarea
                 id="message"
                 name="message"
@@ -122,12 +124,11 @@ const MessagePage = () => {
               disabled={status.loading}
               className="submit-btn"
             >
-              {status.loading ? 'Sending...' : 'Send Message'}
+              {status.loading ? translate(dictionaries.messagePage.sending) : translate(dictionaries.messagePage.sendMessage)}
             </button>
           </form>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

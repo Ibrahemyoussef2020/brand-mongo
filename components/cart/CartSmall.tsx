@@ -18,6 +18,7 @@ import EmptyCart from "./EmptyCart"
 import { AppDispatch } from "@/redux/store"
 import CartSmallSkelton from "@/skelton/cart/CartSmall"
 import { useLang } from "@/context/LangContext"
+import { dictionaries } from "@/lib/dictionaries"
 
 
 const CartSmall = () => {
@@ -78,18 +79,18 @@ const toggleMoreButtons = (id:string)=>{
                               <h3>{details.slice(0,60)}</h3>
                               <div className="features">
                                   <div className="feature">
-                                      <h3>Size: </h3>
-                                      <span> medium,</span>
+                                      <h3>{translate(dictionaries.cart.size)} </h3>
+                                      <span> {translate(dictionaries.cart.medium)},</span>
                                   </div>                             
                                   <div className="feature">
-                                      <h3>Color: </h3>
+                                      <h3>{translate(dictionaries.cart.color)} </h3>
                                       <span> {translate(product.color)},</span>
                                   </div>         
 
                               </div>
                               <div className="feature">
-                                  <h3>Seller: </h3>
-                                  <span>{translate(product.brand)} agent,</span>
+                                  <h3>{translate(dictionaries.cart.seller)} </h3>
+                                  <span>{translate(product.brand)} {translate(dictionaries.cart.agent)},</span>
                               </div>    
 
                           </div>
@@ -129,30 +130,30 @@ const toggleMoreButtons = (id:string)=>{
         <div className="buy-card">
                 <div className="coupon">
                     <form action="#">
-                        <input type="text" placeholder="Add coupon"/>
-                        <button type="submit">Apply</button>
+                        <input type="text" placeholder={translate(dictionaries.cart.couponPlaceholder)}/>
+                        <button type="submit">{translate(dictionaries.cart.apply)}</button>
                     </form>
                 </div>
 
                 <div className="buy-process">
                     <div className="buy-card__details">
                         <article>
-                            <h3>Subtotal:</h3>
-                            <span>$ {bill - 1}.97</span>
+                            <h3>{translate(dictionaries.cart.subtotal)}</h3>
+                            <span>${bill}</span>
                         </article>
                         <article>
-                            <h3>Discount:</h3>
-                            <span>$00.00</span>
+                            <h3>{translate(dictionaries.cart.subscriberDiscount)}</h3>
+                            <span>$0.00</span>
                         </article>
                         <article>
-                            <h3>Tax:</h3>
-                            <span>$005.95</span>
+                            <h3>{translate(dictionaries.cart.tax)}</h3>
+                            <span>$0.00</span>
                         </article>
                     </div>
 
                     <div className="total">
-                        <h3>Total:</h3>
-                        <p>$ {bill + 4}.97</p>
+                        <h3>{translate(dictionaries.cart.total)}</h3>
+                        <p>${bill}</p>
                     </div>
 
                     
@@ -200,7 +201,7 @@ const toggleMoreButtons = (id:string)=>{
                     </div>
 
                     <button className="buy" onClick={handleByProcess}>
-                      Checkout ({productCount} items)
+                      {translate(dictionaries.cart.checkout)} ({productCount} {translate(dictionaries.cart.items)})
                     </button>
                 </div>
             </div>

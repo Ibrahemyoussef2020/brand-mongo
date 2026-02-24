@@ -11,6 +11,7 @@ import AddRemoveCart from "../general/AddRemoveCart";
 import ProgressNav from "../layout/ProgressNav";
 import { getProductsFromDB } from "@/lib/db/fetchProducts";
 import { sTranslate } from "@/utilities/translate";
+import { dictionaries } from "@/lib/dictionaries";
 
 import { Locale } from "@/types";
 
@@ -31,6 +32,7 @@ const SmallProductDetails = async ({product,category,locale}:props) => {
   if (product != null) {
     return (
       <div className="mobile-details">
+
         <ProgressNav page="details" category={category} item={sTranslate(product.title, locale)} /> 
         <div className="images">
            <DetailsSmallSlider product={product} />
@@ -53,7 +55,7 @@ const SmallProductDetails = async ({product,category,locale}:props) => {
                   />
                   <div>
                       <span>{product?.ratings.toString().slice(0,3)}</span>
-                      <span> reviews</span>
+                      <span> {sTranslate(dictionaries.productDetails.reviews, locale)}</span>
                   </div>
               </div>
               <div className="sold review-sold">
@@ -65,7 +67,7 @@ const SmallProductDetails = async ({product,category,locale}:props) => {
                   />
                   <div>
                       <span>{product?.ratings.toString().slice(1,4)}</span>
-                      <span> sold</span>
+                      <span> {sTranslate(dictionaries.productDetails.sold, locale)}</span>
                   </div>
               </div>
             </div>
@@ -78,42 +80,34 @@ const SmallProductDetails = async ({product,category,locale}:props) => {
             <div className="table">
                 <div className="row">
                     <div className="ceil-right">
-                        <h3>Model</h3>
+                        <h3>{sTranslate(dictionaries.productDetails.model, locale)}</h3>
                     </div>
                     <div className="ceil-left">
-                        <p>#8786867</p>
+                        <p>{product.static_id}</p>
                     </div>
                 </div>
                 <div className="row">
                     <div className="ceil-right">
-                        <h3>Style</h3>
+                        <h3>{sTranslate(dictionaries.productDetails.style, locale)}</h3>
                     </div>
                     <div className="ceil-left">
-                        <p>Classic style</p>
+                        <p>{sTranslate(product.type, locale)}</p>
                     </div>
                 </div>
                 <div className="row">
                     <div className="ceil-right">
-                        <h3>Certificate</h3>
+                        <h3>{sTranslate(dictionaries.productDetails.brand, locale)}</h3>
                     </div>
                     <div className="ceil-left">
-                        <p>ISO-898921212</p>
+                        <p>{sTranslate(product.brand, locale)}</p>
                     </div>
                 </div>
                 <div className="row">
                     <div className="ceil-right">
-                        <h3>Size</h3>
+                        <h3>{sTranslate(dictionaries.productDetails.color, locale)}</h3>
                     </div>
                     <div>
-                        <p>34mm x 450mm</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="ceil-right">
-                        <h3>Memory</h3>
-                    </div>
-                    <div className="ceil-left">
-                        <p>36GB RAM</p>
+                        <p>{sTranslate(product.color, locale)}</p>
                     </div>
                 </div>
             </div>
@@ -125,7 +119,7 @@ const SmallProductDetails = async ({product,category,locale}:props) => {
               <details>
                 <summary></summary>
                 <p>
-                  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                   {sTranslate(product?.description, locale)}
                 </p>
               </details>
             </div>  
@@ -143,8 +137,8 @@ const SmallProductDetails = async ({product,category,locale}:props) => {
                     />
                 </div>
                 <div className="text">
-                    <p>Supplier</p>
-                    <p>Guanjoi Trading LLC</p>
+                    <p>{sTranslate(dictionaries.productDetails.supplier, locale)}</p>
+                    <p>{sTranslate(dictionaries.productDetails.supplierName, locale)}</p>
                 </div>
             </div>
 
@@ -156,7 +150,7 @@ const SmallProductDetails = async ({product,category,locale}:props) => {
                         width={21}
                         height={15}
                     />
-                    <span>Germany</span>
+                    <span>{sTranslate(dictionaries.productDetails.germany, locale)}</span>
                 </div>
 
                 <div className="feature">
@@ -166,7 +160,7 @@ const SmallProductDetails = async ({product,category,locale}:props) => {
                         width={20}
                         height={20}
                     />
-                    <span>Verified</span>
+                    <span>{sTranslate(dictionaries.productDetails.verified, locale)}</span>
                 </div>
 
                 <div className="feature">
@@ -176,13 +170,13 @@ const SmallProductDetails = async ({product,category,locale}:props) => {
                         width={20}
                         height={20}
                     />
-                    <span>shipping</span>
+                    <span>{sTranslate(dictionaries.productDetails.shipping, locale)}</span>
                 </div>
             </div>
        </div> 
 
       <div className="similar">
-        <AnotherItems products={similarProducts} category={category} title="Similar products" />
+        <AnotherItems products={similarProducts} category={category} title={sTranslate(dictionaries.productDetails.similarProducts, locale)} />
       </div>
        
       </div>

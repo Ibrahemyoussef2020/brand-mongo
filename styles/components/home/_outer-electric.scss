@@ -11,8 +11,12 @@
     /// intro
     /// 
     .intro{
-        height: 258px !important;
-        border-bottom: 1px solid $gray-350 !important; 
+        
+        @include min-width($medium_size){
+            height: 258px !important; 
+            border-bottom: 1px solid $gray-350 !important; 
+        }
+
        .external-heading{
             padding: 14px 16px 15px;
          
@@ -82,7 +86,7 @@
 
         .swiper-slide{
             width: 140px !important;
-            height: 178px;
+            height: 193px ;
             margin: 0 !important;
             font-size: 15px;
             border: 1px solid #ccc;

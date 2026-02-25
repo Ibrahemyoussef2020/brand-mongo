@@ -183,8 +183,9 @@ const CartLarge = () => {
                                 <h3>{translate(dictionaries.cart.subscriberDiscount)}</h3>
                                 <span style={{ color: '#00b517' }}>
                                     -${products.reduce((acc, p) => {
-                                        return acc; 
-                                    }, 0)}
+                                        const discount = (p.price * p.quantity) - (p.total || 0);
+                                        return acc + (discount > 0 ? discount : 0);
+                                    }, 0).toFixed(2)}
                                 </span>
                             </article>
                         )}

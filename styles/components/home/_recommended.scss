@@ -1,5 +1,6 @@
 .recomended-items{
     margin-bottom: 10px;
+    padding: 20px;
 
     @include min-width($medium_size){
         margin-bottom: 20px;

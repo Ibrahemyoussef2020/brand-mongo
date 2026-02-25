@@ -1,5 +1,5 @@
 'use client'
-import { decreaseQuantity, handleBill, handleProductsQuantity, increaseQuantity, removeFromCart } from "@/redux/slices"
+import { decreaseQuantity, handleBill, handleProductsQuantity, increaseQuantity, removeFromCart, fetchCart } from "@/redux/slices"
 import { ProductProps } from "@/types"
 import Image from "next/image"
 import Link from "next/link"
@@ -11,7 +11,8 @@ import PaymentFeatures from "../general/PaymentFeatures"
 import { faEllipsisVertical, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import ToggleFav from "../general/ToggleFav"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import Stripe from "../orders/Stripe"
 import { customStringIncludes } from "@/utilities"
 import { IRootState } from "@/redux/store"
 import EmptyCart from "./EmptyCart"
@@ -33,7 +34,13 @@ const CartSmall = () => {
   const router = useRouter()
 
  
-const handleByProcess = ()=>{
+  const [showCheckout, setShowCheckout] = useState(false)
+  
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
+
+  const handleByProcess = ()=>{
   dispatch(handleBill())
   router.push('/orders')
 }
@@ -50,6 +57,13 @@ const toggleMoreButtons = (id:string)=>{
     setMoreList(newMoreList)
   }
 }
+
+  // Helper to resolve image path
+  const resolveImage = (imagePath: string) => {
+      if (!imagePath) return "/images/placeholder.webp"; 
+      if (imagePath.includes('.')) return `/${imagePath}`;
+      return `/${imagePath}.webp`;
+  }
 
   if (status === 'loading' || status === 'idle') {
     return <CartSmallSkelton />;
@@ -69,7 +83,7 @@ const toggleMoreButtons = (id:string)=>{
                       <div className="article-wrapper">
                           <div className="img-wrapper">
                               <Image
-                                  src={`/${product.image}.webp`}
+                                  src={resolveImage(product.image)}
                                   alt=""
                                   height={60}
                                   width={60}
@@ -141,10 +155,17 @@ const toggleMoreButtons = (id:string)=>{
                             <h3>{translate(dictionaries.cart.subtotal)}</h3>
                             <span>${bill}</span>
                         </article>
-                        <article>
-                            <h3>{translate(dictionaries.cart.subscriberDiscount)}</h3>
-                            <span>$0.00</span>
-                        </article>
+                        {products.some(p => p.price && p.total && p.total < (p.price * p.quantity)) && (
+                            <article>
+                                <h3>{translate(dictionaries.cart.subscriberDiscount)}</h3>
+                                <span style={{ color: '#00b517' }}>
+                                    -${products.reduce((acc, p) => {
+                                        const discount = (p.price * p.quantity) - (p.total || 0);
+                                        return acc + (discount > 0 ? discount : 0);
+                                    }, 0).toFixed(2)}
+                                </span>
+                            </article>
+                        )}
                         <article>
                             <h3>{translate(dictionaries.cart.tax)}</h3>
                             <span>$0.00</span>
@@ -200,9 +221,13 @@ const toggleMoreButtons = (id:string)=>{
                         </Link>
                     </div>
 
-                    <button className="buy" onClick={handleByProcess}>
-                      {translate(dictionaries.cart.checkout)} ({productCount} {translate(dictionaries.cart.items)})
-                    </button>
+                    {showCheckout ? (
+                        <Stripe />
+                    ) : (
+                        <button className="buy" onClick={() => setShowCheckout(true)}>
+                            {translate(dictionaries.cart.checkout)} ({productCount} {translate(dictionaries.cart.items)})
+                        </button>
+                    )}
                 </div>
             </div>
       </div>

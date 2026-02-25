@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const cart = await CartModel.findOne({ user: session.user.id });
 
     if (!cart) {
-         return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+         return NextResponse.json({ error: "Cart not found" }, { status: 400 });
     }
 
     // Calculate amount from cart to be safe (in cents)

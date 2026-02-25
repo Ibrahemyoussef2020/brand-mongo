@@ -24,7 +24,6 @@ const DetailsBottomLeft = ({product}:props) => {
                         <p className="details">
                             {translate(product.description)}
                         </p>
-<h1>kjhej</h1>
                         <div className="table">
                             <div className="row">
                                 <div className="ceil-right"><h3>{translate(dictionaries.productDetails.model)}</h3></div>

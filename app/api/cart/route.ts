@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     let cart = await CartModel.findOne({ user: userId });
     
     if (!cart) {
-        return NextResponse.json({ items: [], bill: 0 , success: false  , message: "Cart not found" }, {status: 404 });
+        return NextResponse.json({ items: [], bill: 0, success: true, message: "Cart empty" }, { status: 200 });
     }
 
     return NextResponse.json(cart);
@@ -106,7 +106,7 @@ export async function PATCH(req: NextRequest) {
 
         let cart = await CartModel.findOne({ user: userId });
         if (!cart) {
-             return NextResponse.json({success: false , message: "Cart not found" }, { status: 404 });
+             return NextResponse.json({ success: true, message: "Cart empty", cart: { items: [], bill: 0 } }, { status: 200 });
         }
 
         const itemIndex = cart.items.findIndex((item: any) => item.product === productId);
@@ -151,7 +151,7 @@ export async function PATCH(req: NextRequest) {
             return NextResponse.json({success: true , message: "Item updated successfully" , cart , status: 201 });
         }
 
-        return NextResponse.json({success: false , message: "Item not found" , status: 404 });
+        return NextResponse.json({ success: true, message: "Item not found in cart", cart, status: 200 });
     } catch (error: any) {
         console.error("Error in PATCH /api/cart:", error);
         return NextResponse.json({ message: "Internal Server Error", error: error.message }, { status: 500 });
@@ -184,7 +184,7 @@ export async function DELETE(req: NextRequest) {
             return NextResponse.json({success: true , message: "Cart cleared successfully" , cart: { items: [], bill: 0 }});
         }
         
-        return NextResponse.json({ message: "Cart not found" }, { status: 404 });
+        return NextResponse.json({ success: true, message: "Cart is already empty", cart: { items: [], bill: 0 } }, { status: 200 });
     } catch (error: any) {
         console.error("Error in DELETE /api/cart:", error);
         return NextResponse.json({success: false , message: "Internal Server Error", error: error.message , status: 500 }, { status: 500 });

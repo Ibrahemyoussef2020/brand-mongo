@@ -26,7 +26,7 @@ const HeaderTopLeft = ({page,heading = ''}:props) => {
             {
             page === 'home' ? 
 
-            <div className='flex'>
+            <div className='btn-img'>
                 <Link href={`/${lang}`}>
                     <picture>
                         <source media="(min-width:767px)" srcSet="/images/pc-logo.webp" height={46} width={151} />

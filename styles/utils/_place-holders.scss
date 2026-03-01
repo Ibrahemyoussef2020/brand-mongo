@@ -129,7 +129,7 @@
     &::before{
         content: '';
         position: absolute;
-        top:0;
+        top:10px;
         left: 0;
         width:20px;
         height:20px;
@@ -141,7 +141,7 @@
       &::after{
         content:url(/images/checked.png);
         position: absolute;
-        top:0;
+        top:10px;
         left: 0;
         font-family:'Font Awesome 6 Free';
     

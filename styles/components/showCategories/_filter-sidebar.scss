@@ -15,7 +15,7 @@
 
     @include min-max-width($large_size,$x-large_size){
         max-width: 220px;
-        padding: 0 5px;
+        padding: 0 10px;
 
         .numbers input{
             padding:0;
@@ -193,8 +193,8 @@
                         margin-bottom: 5px;
                     }
                     input{
+                        flex: 1;
                         min-height: 40px;
-                        width: 110px;
                         padding-left: .5rem;
                         font-size: 1rem;
                         font-weight: 700;
@@ -209,7 +209,7 @@
             .apply{
                 margin: 8px auto 0;
                 min-height: 40px;
-                width:228px;
+                max-width:228px;
                 font-size: 1rem;
                 font-weight: 600;
                 color:$primary;

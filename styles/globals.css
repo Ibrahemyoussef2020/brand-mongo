@@ -116,7 +116,7 @@
 .show-result .main .filter-nav .right .verified::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 10px;
   left: 0;
   width: 20px;
   height: 20px;

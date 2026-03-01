@@ -30,7 +30,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 23px 20px 20px 11px;
+      padding: 23px 5px 20px 5px;
       background-color: #fff;
       margin-bottom: 20px;
       border-top: 1px solid $gray_300;
@@ -84,17 +84,12 @@
           @extend %customCheckBox;
           display: none;
           gap: 9px;
-          margin-top: 4px;
-          @include min-width($large_size) {
-            margin-top: 12px;
-          }
-          span {
-            position: relative;
-            top: 2px;
-          }
+      
+       
 
           @include min-width($small_size) {
-            display: block;
+            display: flex;
+            align-items: center;
           }
         }
 
@@ -106,6 +101,7 @@
             padding-left: 11px;
             border: 1px solid $gray_350;
             border-radius: 4px;
+            text-align: center;
           }
 
           @include min-width($large_size) {
@@ -132,6 +128,7 @@
             border: 1px solid $gray_350;
             border-radius: 6px;
             appearance: none;
+            text-align: center;
           }
 
           &::after {
@@ -188,7 +185,7 @@
 
         .modes {
           display: flex;
-
+          direction: ltr;
           .selected {
             background-color: #eee !important;
           }

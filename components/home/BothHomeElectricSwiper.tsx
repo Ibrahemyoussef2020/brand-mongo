@@ -1,10 +1,11 @@
 'use client'
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Grid } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/grid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { showProducts } from "@/app/apis"; 
@@ -51,12 +52,16 @@ const BothHomeElectricSwiper = ({section}:prop) => {
     <div className="offers-swiper">
        <div className="container">
        <Swiper
-        slidesPerView={3}
-        loop={true}
-        className="wraper-center h-[250px]"
+        modules={[Grid]}
+        slidesPerView={2}
+        grid={{ rows: 2, fill: 'row' }}
+        loop={false}
+        spaceBetween={10}
+        className="wraper-center h-[260px]"
         breakpoints={{
           570: {
-            slidesPerView: 5,
+            slidesPerView: 4,
+            grid: { rows: 2, fill: 'row' }
           },
         }}
       >

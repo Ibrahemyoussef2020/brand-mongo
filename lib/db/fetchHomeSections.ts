@@ -1,59 +1,97 @@
 import dbConnect from "@/lib/dbConnect";
 import { HomeSection } from "@/lib/models/HomeSection";
 import ProductModel from "@/lib/models/ProductModel";
+import { withRetry } from "./withRetry";
 
 export const getHomeSections = async () => {
   try {
-    await dbConnect();
+    // Skip database only during build to prevent failures
+    if (process.env.BUILD_TIME === 'true') {
+      return [];
+    }
+    
+    await withRetry(() => dbConnect(), { timeout: 10000 });
 
-    // Ensure ProductModel is registered
-    const productModel = ProductModel;
+    // Get all sections first with retry
+    let sections = await withRetry(
+      () => HomeSection.find({ enabled: true, status: 'published' })
+        .sort({ order: 1 })
+        .lean(),
+      { timeout: 15000 }
+    );
 
-    let sections = await HomeSection.find({ enabled: true, status: 'published' })
-                                  .sort({ order: 1 })
-                                  .lean();
+    // Collect all manual product IDs for batch fetching
+    const manualSections = sections.filter(section => 
+      section.itemsSource && 
+      section.itemsSource.mode === 'manual' && 
+      section.itemsSource.productIds && 
+      section.itemsSource.productIds.length > 0
+    );
 
-    sections = await Promise.all(sections.map(async (section: any) => {
-      if (section.itemsSource && section.itemsSource.mode === 'manual' && section.itemsSource.productIds && section.itemsSource.productIds.length > 0) {
-          const products = await ProductModel.find({
-            _id: { $in: section.itemsSource.productIds }
-          })
-          .select('_id static_id title image price oldPrice badge discount ratings free_delivery to_home')
-          .lean();
+    const allManualProductIds = manualSections.flatMap(section => section.itemsSource.productIds);
+    
+    // Batch fetch all manual products in ONE query with retry
+    let allManualProducts: any[] = [];
+    if (allManualProductIds.length > 0) {
+      allManualProducts = await withRetry(
+        () => ProductModel.find({
+          _id: { $in: allManualProductIds }
+        })
+        .select('_id static_id title image price oldPrice badge discount ratings free_delivery to_home')
+        .lean(),
+        { timeout: 20000 }
+      );
+    }
 
-          const populatedProducts = section.itemsSource.productIds.map((id: any) => 
-             products.find((p: any) => p._id.toString() === id.toString())
-          ).filter(Boolean);
+    // Collect all query sections for batch processing
+    const querySections = sections.filter(section => 
+      section.itemsSource && 
+      section.itemsSource.mode === 'query'
+    );
 
-          section.products = populatedProducts;
-      } else if (section.itemsSource && section.itemsSource.mode === 'query') {
-          const query: any = {};
-          if (section.itemsSource.categoryId) {
-               query['category.en'] = section.itemsSource.categoryId;
-          }
-          if (section.itemsSource.collectionId) {
-               query['type.en'] = section.itemsSource.collectionId;
-          }
-          let mongoQuery = ProductModel.find(query);
-          
-          if (section.itemsSource.sort === 'newest') mongoQuery = mongoQuery.sort({ createdAt: -1 });
-          else if (section.itemsSource.sort === 'priceLow') mongoQuery = mongoQuery.sort({ price: 1 });
-          else if (section.itemsSource.sort === 'priceHigh') mongoQuery = mongoQuery.sort({ price: -1 });
-          else if (section.itemsSource.sort === 'topRated') mongoQuery = mongoQuery.sort({ ratings: -1 });
-
-          if (section.itemsSource.limit) {
-              mongoQuery = mongoQuery.limit(section.itemsSource.limit);
-          } else {
-              mongoQuery = mongoQuery.limit(10);
-          }
-
-          const products = await mongoQuery.select('_id static_id title image price oldPrice badge discount ratings free_delivery to_home').lean();
-          section.products = products;
+    // Batch process query sections
+    const queryResults = await Promise.all(querySections.map(async (section) => {
+      const query: any = {};
+      if (section.itemsSource.categoryId) {
+           query['category.en'] = section.itemsSource.categoryId;
       }
-      return section;
+      if (section.itemsSource.collectionId) {
+           query['type.en'] = section.itemsSource.collectionId;
+      }
+      
+      let mongoQuery = ProductModel.find(query);
+      
+      if (section.itemsSource.sort === 'newest') mongoQuery = mongoQuery.sort({ createdAt: -1 });
+      else if (section.itemsSource.sort === 'priceLow') mongoQuery = mongoQuery.sort({ price: 1 });
+      else if (section.itemsSource.sort === 'priceHigh') mongoQuery = mongoQuery.sort({ price: -1 });
+      else if (section.itemsSource.sort === 'topRated') mongoQuery = mongoQuery.sort({ ratings: -1 });
+
+      const limit = section.itemsSource.limit || 10;
+      mongoQuery = mongoQuery.limit(limit);
+
+      const products = await mongoQuery.select('_id static_id title image price oldPrice badge discount ratings free_delivery to_home').lean();
+      
+      return { sectionKey: section.key, products };
     }));
 
-    return JSON.parse(JSON.stringify(sections)); // Ensure plain object for React Server Components
+    // Process sections with fetched data
+    sections = sections.map((section: any) => {
+      if (section.itemsSource && section.itemsSource.mode === 'manual' && section.itemsSource.productIds) {
+        // Map products back to section
+        const populatedProducts = section.itemsSource.productIds.map((id: any) => 
+          allManualProducts.find((p: any) => p._id.toString() === id.toString())
+        ).filter(Boolean);
+        
+        section.products = populatedProducts;
+      } else if (section.itemsSource && section.itemsSource.mode === 'query') {
+        // Get products from query results
+        const queryResult = queryResults.find(qr => qr.sectionKey === section.key);
+        section.products = queryResult ? queryResult.products : [];
+      }
+      return section;
+    });
+
+    return sections; // No JSON.parse needed - .lean() returns plain objects
   } catch (error) {
     console.error("Failed to fetch home sections:", error);
     return [];

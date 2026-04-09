@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from 'fs';
 import path from 'path';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300; // Cache for 5 minutes
 
 export const GET = async (request: NextRequest) => {
     const logFile = path.join(process.cwd(), 'api_debug.log');

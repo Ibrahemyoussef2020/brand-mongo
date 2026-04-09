@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 120; // Cache for 2 minutes - critical for performance
 
 import CategoriesLinksSwipper from '@/components/layout/categoriesLinksSwipper';
 import HomeCover from '@/components/home/HomeCover';
@@ -18,44 +18,59 @@ import InlineStartImageSection from '@/components/home/dynamic/InlineStartImageS
 import GridSection from '@/components/home/dynamic/GridSection';
 import DealOffersSection from '@/components/home/dynamic/DealOffersSection';
 import CategoryTilesGridSection from '@/components/home/dynamic/CategoryTilesGridSection';
-import RecomendedItemSkelton from '@/skelton/home/RecomendedItem';
+import { HomeSkeleton } from '@/components/skeletons/HomeSkeleton';
 
-const Home = async ({ params }: { params: { locale: string } }) => {
+// Static content that renders instantly
+const StaticHomeContent = () => (
+  <>
+    <CategoriesLinksSwipper />
+    <div className='home container'>
+      <ProgressNav page='home' category='no category' item='no item' />
+      <HomeCover />
+      <EasyRrquest />
+      <ExtraServices />
+      <Suppliers />
+      <Subscribe />
+    </div>
+  </>
+);
+
+// Dynamic sections that load after static content
+const DynamicHomeSections = async ({ locale }: { locale: string }) => {
+  const sections = await getHomeSections();
+  
+  return sections.map((section: any) => {
+    switch(section.type) {
+      case HomeSectionType.INLINE_START_IMAGE:
+        return <InlineStartImageSection key={section.key} section={section} />;
+      case HomeSectionType.GRID_SECTION:
+        return <GridSection key={section.key} section={section} locale={locale as any} />;
+      case HomeSectionType.DEAL_OFFERS:
+        return <DealOffersSection key={section.key} section={section} />;
+      case HomeSectionType.CATEGORY_TILES_GRID:
+        return <CategoryTilesGridSection key={section.key} section={section} locale={locale as any} />;
+      default:
+        return null;
+    }
+  });
+};
+
+const Home = ({ params }: { params: { locale: string } }) => {
   const { locale } = params;
   
-  const sections = await getHomeSections();
-
   return (
     <>
       <Header page='home' heading='Home' />
       <MenuSidebar />
-
-      <CategoriesLinksSwipper />
+      
+      {/* Static content renders immediately */}
+      <StaticHomeContent />
+      
+      {/* Dynamic content loads without blocking */}
       <div className='home container'>
-        <ProgressNav page='home' category='no category' item='no item' />
-        <HomeCover />
-        
-        <Suspense fallback={<RecomendedItemSkelton />}>
-          {sections.map((section: any) => {
-            switch(section.type) {
-              case HomeSectionType.INLINE_START_IMAGE:
-                return <InlineStartImageSection key={section.key} section={section} />;
-              case HomeSectionType.GRID_SECTION:
-                return <GridSection key={section.key} section={section} locale={locale as any} />;
-              case HomeSectionType.DEAL_OFFERS:
-                return <DealOffersSection key={section.key} section={section} />;
-              case HomeSectionType.CATEGORY_TILES_GRID:
-                return <CategoryTilesGridSection key={section.key} section={section} locale={locale as any} />;
-              default:
-                return null;
-            }
-          })}
+        <Suspense fallback={<HomeSkeleton />}>
+          <DynamicHomeSections locale={locale} />
         </Suspense>
-
-        <EasyRrquest />
-        <ExtraServices />
-        <Suppliers />
-        <Subscribe />
       </div>
     </>
   )

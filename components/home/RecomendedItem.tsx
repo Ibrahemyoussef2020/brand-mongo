@@ -12,7 +12,7 @@ import { Locale } from '@/types';
 
 
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300; // Cache for 5 minutes
 
 const RecomendedItem = async ({ locale }: { locale: Locale }) => {
     const recomendedItems = await getRecommendedItemsFromDB();

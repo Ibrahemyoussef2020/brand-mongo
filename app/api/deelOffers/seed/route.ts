@@ -3,7 +3,7 @@ import dbConnect from "@/lib/dbConnect";
 import DealOffersModel from "@/lib/models/DealOffersModel";
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 180; // Cache for 3 minutes
 
 function buildQuery(searchParams: URLSearchParams) {
   const query: any = {};

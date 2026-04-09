@@ -1,7 +1,7 @@
 import { getProductsFromDB } from "@/lib/db/fetchProducts";
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60; // Cache for 1 minute - critical for performance
 
 export async function GET(req: NextRequest) {
   try {

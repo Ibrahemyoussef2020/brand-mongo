@@ -12,7 +12,7 @@ import { showProducts } from "@/app/apis";
 import { ProductProps } from "@/types";
 import Image from "next/image";
 import BrowserProduct from "../general/BrowserProduct";
-import { fetchAllProducts } from "@/lib/services";
+import { fetchHomeOutdoorAction } from "@/lib/actions/clientProducts";
 import BothHomeElectricSwiperSkelton from "@/skelton/home/BothHomeElectricSwiper";
 import { useLang } from "@/context/LangContext";
 
@@ -27,12 +27,12 @@ const BothHomeElectricSwiper = ({section}:prop) => {
     const { translate } = useLang();
 
 
-    const [products,setProducts] = useState<[]|ProductProps[]>([]);
+    const [products,setProducts] = useState<ProductProps[]>([]);
     const [loading,setLoading] = useState(true);
 
         const fetchAllProductsFn = async()=>{
-          const data = await fetchAllProducts(section)
-          setProducts(data.data)
+          const data = await fetchHomeOutdoorAction()
+          setProducts((data.data as unknown as ProductProps[]) || [])
             setLoading(false)
         }
         

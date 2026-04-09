@@ -11,7 +11,7 @@ import { showProducts } from "@/app/apis";
 import { ProductProps } from "@/types";
 import Image from "next/image";
 import BrowserProduct from "../general/BrowserProduct";
-import { fetchAllProducts } from "@/lib/services";
+import { fetchDealOffersAction } from "@/lib/actions/clientProducts";
 import OffersSwiperSkelton from "@/skelton/home/OffersSwiper";
 import { useLang } from "@/context/LangContext";
 
@@ -27,8 +27,8 @@ const OffersSwiper = () => {
 const { lang, translate } = useLang();
 
   const fetchAllProductsFn = async () => {
-    const data = await fetchAllProducts('deelOffers')
-    setProducts(data.data)
+    const data = await fetchDealOffersAction()
+    setProducts((data.data as unknown as ProductProps[]) || [])
     setLoading(false)
   }
 

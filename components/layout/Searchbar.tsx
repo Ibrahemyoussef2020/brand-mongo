@@ -11,7 +11,7 @@ import Link from "next/link"
 import { ProductProps } from "@/types"
 import { useRouter } from "next/navigation"
 import { AppDispatch, IRootState } from "@/redux/store"
-import { fetchAllProducts } from "@/lib/services"
+import { fetchHomeConsumerAction } from "@/lib/actions/clientProducts"
 
 import { dictionaries } from "@/lib/dictionaries"
 import { useLang } from "@/context/LangContext"
@@ -24,7 +24,7 @@ interface prop{
 
 const Searchbar = ({size = 'pc'}:prop) => {
  const [sug , setSug] = useState('')
-  const [sugList,setSugsList] = useState([])
+  const [sugList,setSugsList] = useState<ProductProps[]>([])
   const [selectedValue , setSelectedValue] = useState('')
   const [magnifyingGlassColor , setMagnifyingGlassColor] = useState('text-costum-clr_primary')
   const [closeClass,setCloseClass] = useState('hidden');
@@ -37,8 +37,8 @@ const Searchbar = ({size = 'pc'}:prop) => {
 
     
   const fetchAllProductsFn = async()=>{
-    const data = await fetchAllProducts('homeConsumer')
-    setSugsList(data.data)      
+    const data = await fetchHomeConsumerAction()
+    setSugsList((data.data as unknown as ProductProps[]) || [])      
     return data.data;
   }
   
@@ -81,7 +81,8 @@ const Searchbar = ({size = 'pc'}:prop) => {
   const handleDrop = async () => {
     let currentList = sugList;
     if (sugList.length === 0) {
-       currentList = await fetchAllProductsFn();
+       const result = await fetchAllProductsFn();
+       currentList = (result as unknown as ProductProps[]) || [];
     }
     setCloseClass('visible');
     dispatch(toggleSuggegtionsDrop(currentList));

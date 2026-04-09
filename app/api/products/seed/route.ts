@@ -9,7 +9,7 @@ import UserModel from "@/lib/models/UserModel";
 import data from "@/lib/data";
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300; // Cache for 5 minutes
 
 export async function GET(req: NextRequest) {
   try {

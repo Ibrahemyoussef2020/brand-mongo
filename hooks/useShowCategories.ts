@@ -77,14 +77,14 @@ export const useShowCategories = () => {
            // Note: On ShowSections page, 'category' param is undefined, so we fetch all items from that section.
            const categoriesResult = await fetchProductsAction({ category, section });
            if (isCancelled) return;
-           const allProducts = categoriesResult?.data || [];
+           const allProducts = (categoriesResult?.data as unknown as ProductProps[]) || [];
            setConstantProducts(allProducts);
         } catch (error) {
            console.error("Failed to fetch constant products", error);
         }
 
         // 3. Fetch Displayed Products
-        let displayProducts = [];
+        let displayProducts: ProductProps[] = [];
         const hasFilters = filters.length > 0;
 
         try {
@@ -105,7 +105,7 @@ export const useShowCategories = () => {
 
             const result = await fetchProductsAction(queryParams);
             if (isCancelled) return;
-            displayProducts = result?.data || [];
+            displayProducts = (result?.data as unknown as ProductProps[]) || [];
           } else {
              // If no filters, we can just use the constant products we already fetched, 
              // OR fetch again if pagination is involved (but here it seems we want all or same set)
@@ -115,7 +115,7 @@ export const useShowCategories = () => {
              } else {
                  const result = await fetchProductsAction({ category, section });
                  if (isCancelled) return;
-                 displayProducts = result?.data || [];
+                 displayProducts = (result?.data as unknown as ProductProps[]) || [];
              }
           }
         } catch (error) {

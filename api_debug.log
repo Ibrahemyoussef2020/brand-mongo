@@ -1806,3 +1806,17 @@
 [2026-02-17T01:03:37.964Z] Old items deleted
 [2026-02-17T01:03:37.964Z] Inserting new items...
 [2026-02-17T01:03:38.084Z] New items inserted: 10
+[2026-04-09T09:49:31.238Z] --- SEEDING recommendedItems ---
+[2026-04-09T09:49:31.239Z] Data source check: Found 10 items
+[2026-04-09T09:49:31.239Z] Connecting to DB...
+[2026-04-09T09:50:01.318Z] ERROR: Error: Connection failed: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/
+    at s (D:\work\portfolio 20225\next\brand-mongo\.next\server\app\api\orders\route.js:1:4648)
+    at async S (D:\work\portfolio 20225\next\brand-mongo\.next\server\app\api\recommendedItems\seed\route.js:2:232)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:42484
+    at async eI.execute (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:32486)
+    at async eI.handle (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:43737)
+    at async exportAppRoute (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\export\routes\app-route.js:77:26)
+    at async exportPageImpl (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\export\worker.js:175:20)
+    at async D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\export\worker.js:239:16
+    at async Span.traceAsyncFn (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\trace\trace.js:151:20)
+    at async Object.exportPage (D:\work\portfolio 20225\next\brand-mongo\node_modules\next\dist\export\worker.js:238:20)

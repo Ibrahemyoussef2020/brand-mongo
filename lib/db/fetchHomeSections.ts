@@ -10,6 +10,47 @@ export const getHomeSections = async () => {
       return [];
     }
     
+    // Return mock sections to allow components to render and make their own API calls
+    return [
+      {
+        key: 'deal-offers',
+        type: 'DEAL_OFFERS',
+        title: { en: 'Deal Offers', ar: ' ofertas especiales' },
+        config: {
+          showTimer: true,
+          endAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+        },
+        products: [] // Empty - component will fetch via API
+      },
+      {
+        key: 'home-consumer',
+        type: 'GRID_SECTION',
+        title: { en: 'Home Consumer', ar: ' products for home' },
+        config: {
+          layout: { columns: 5 }
+        },
+        products: [] // Empty - component will fetch via API
+      },
+      {
+        key: 'home-outdoor',
+        type: 'GRID_SECTION',
+        title: { en: 'Home Outdoor', ar: ' outdoor products' },
+        config: {
+          layout: { columns: 5 }
+        },
+        products: [] // Empty - component will fetch via API
+      },
+      {
+        key: 'recommended-items',
+        type: 'GRID_SECTION',
+        title: { en: 'Recommended Items', ar: ' recommended' },
+        config: {
+          layout: { columns: 5 }
+        },
+        products: [] // Empty - component will fetch via API
+      }
+    ];
+    
     await withRetry(() => dbConnect(), { timeout: 10000 });
 
     // Get all sections first with retry

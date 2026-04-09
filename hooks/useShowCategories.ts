@@ -156,7 +156,7 @@ export const useShowCategories = () => {
 
            if (isCancelled) return;
 
-           const allProducts = categoriesResult?.data || [];
+           const allProducts = (categoriesResult?.data as unknown as ProductProps[]) || [];
 
            setConstantProducts(allProducts);
 
@@ -170,7 +170,7 @@ export const useShowCategories = () => {
 
         // 3. Fetch Displayed Products
 
-        let displayProducts = [];
+        let displayProducts: ProductProps[] = [];
 
         const hasFilters = filters.length > 0;
 
@@ -212,7 +212,7 @@ export const useShowCategories = () => {
 
             if (isCancelled) return;
 
-            displayProducts = result?.data || [];
+            displayProducts = (result?.data as unknown as ProductProps[]) || [];
 
           } else {
 
@@ -232,7 +232,7 @@ export const useShowCategories = () => {
 
                  if (isCancelled) return;
 
-                 displayProducts = result?.data || [];
+                 displayProducts = (result?.data as unknown as ProductProps[]) || [];
 
              }
 

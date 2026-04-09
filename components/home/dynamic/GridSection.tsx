@@ -1,7 +1,9 @@
+'use client';
+
 import { ProductProps } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import BrowserProduct from '../../general/BrowserProduct';
 import { sTranslate } from '@/utilities/translate';
 import { Locale } from '@/types';
@@ -12,11 +14,48 @@ interface GridSectionProps {
 }
 
 const GridSection = ({ section, locale }: GridSectionProps) => {
-    const products = section.products || [];
+    const [products, setProducts] = useState(section.products || []);
+    const [loading, setLoading] = useState(false);
     const config = section.config || {};
     
     const titleObj = section.title || {};
     const currentTitle = titleObj[locale] || titleObj.en || '';
+
+    // Fetch data if products array is empty
+    useEffect(() => {
+        if (section.products && section.products.length === 0) {
+            const fetchProducts = async () => {
+                setLoading(true);
+                try {
+                    let apiUrl = '';
+                    if (section.key === 'home-consumer') {
+                        apiUrl = '/api/home-consumer-direct';
+                    } else if (section.key === 'home-outdoor') {
+                        apiUrl = '/api/home-outdoor-direct';
+                    } else if (section.key === 'recommended-items') {
+                        apiUrl = '/api/recommended-items-direct';
+                    }
+                    
+                    if (apiUrl) {
+                        console.log(`Fetching ${section.key} data...`);
+                        const response = await fetch(apiUrl);
+                        const data = await response.json();
+                        setProducts(data.data || []);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching ${section.key} data:`, error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            
+            fetchProducts();
+        }
+    }, [section.key, section.products]);
+
+    if (loading) {
+        return <div>Loading {section.key}...</div>;
+    }
 
     if (!products || products.length === 0) {
         return null;

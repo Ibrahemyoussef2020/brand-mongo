@@ -1,5 +1,8 @@
 "use server";
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import dbConnect from "@/lib/dbConnect";
 import { getProductsFromDB } from "@/lib/db/fetchProducts";
 import { getRecommendedItemsFromDB } from "@/lib/db/fetchProducts";
 
@@ -24,8 +27,26 @@ const mapCategoryToDatabase = (frontendCategory: string): string => {
 
 export async function fetchDealOffersAction() {
   try {
-    const result = await getProductsFromDB({ category: 'deal-offers' });
-    return result;
+    // Check if this is being called from NextAuth
+    const session = await getServerSession(authOptions);
+    console.log('fetchDealOffersAction called, session:', session);
+    
+    // If session exists but we're getting session data instead of action result,
+    // it means NextAuth is intercepting. We need to handle this differently.
+    
+    await dbConnect();
+    const DealOffersModel = require("@/lib/models/DealOffersModel").default;
+    const result = await DealOffersModel.find({}).lean();
+    
+    console.log(`Found ${result.length} deal offers`);
+    
+    return {
+      total: result.length,
+      page: null,
+      limit: null,
+      totalPages: null,
+      data: result
+    };
   } catch (error) {
     console.error("Error fetching deal offers:", error);
     return {
@@ -41,8 +62,17 @@ export async function fetchDealOffersAction() {
 
 export async function fetchHomeConsumerAction() {
   try {
-    const result = await getProductsFromDB({ category: 'home-consumer' });
-    return result;
+    await dbConnect();
+    const HomeConsumerModel = require("@/lib/models/HomeConsumer").default;
+    const result = await HomeConsumerModel.find({}).lean();
+    
+    return {
+      total: result.length,
+      page: null,
+      limit: null,
+      totalPages: null,
+      data: result
+    };
   } catch (error) {
     console.error("Error fetching home consumer:", error);
     return {
@@ -58,8 +88,17 @@ export async function fetchHomeConsumerAction() {
 
 export async function fetchHomeOutdoorAction() {
   try {
-    const result = await getProductsFromDB({ category: 'home-outdoor' });
-    return result;
+    await dbConnect();
+    const HomeOutdoorModel = require("@/lib/models/HomeOutdoorModel").default;
+    const result = await HomeOutdoorModel.find({}).lean();
+    
+    return {
+      total: result.length,
+      page: null,
+      limit: null,
+      totalPages: null,
+      data: result
+    };
   } catch (error) {
     console.error("Error fetching home outdoor:", error);
     return {

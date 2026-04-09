@@ -19,7 +19,8 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
   const currentSubtitle = subtitleObj[lang] || subtitleObj.en || '';
 
   const { endAt, badgeText } = section.config || {};
-  const products = section.products || [];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [timeLeft, setTimeLeft] = useState({
       days: 0,
@@ -27,6 +28,25 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
       minutes: 0,
       seconds: 0
   });
+
+  // Fetch deal offers data
+  useEffect(() => {
+    const fetchDealOffers = async () => {
+      console.log('Fetching deal offers for DealOffersSection...');
+      try {
+        const response = await fetch('/api/deal-offers-direct');
+        const data = await response.json();
+        console.log('Deal offers data received:', data);
+        setProducts(data.data || []);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching deal offers:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchDealOffers();
+  }, []);
 
   useEffect(() => {
     if (!endAt) return;
@@ -52,8 +72,12 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
     return () => clearInterval(interval);
   }, [endAt]);
 
+  if (loading) {
+      return <div>Loading deals...</div>;
+  }
+
   if (!products || products.length === 0) {
-      return null;
+      return <div>No deals available</div>;
   }
 
   return (

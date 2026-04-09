@@ -1,4 +1,4 @@
-const products = [
+export const products = [
     {
         static_id:"deal-1",
         title:"Smart watches",

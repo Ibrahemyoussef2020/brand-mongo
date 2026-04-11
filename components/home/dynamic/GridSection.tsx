@@ -10,6 +10,7 @@ import { Locale } from '@/types';
 import Icon from '@/components/ui/Icon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faHeart } from '@fortawesome/free-regular-svg-icons';
+import { faCartArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 interface GridSectionProps {
   section: any;
@@ -171,26 +172,49 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                                         </div>
                                     )}
                                     
-                                    {/* Quick View Button */}
-                                    <button style={{
-                                        position: 'absolute',
-                                        top: '15px',
-                                        right: '15px',
-                                        background: 'rgba(255,255,255,0.95)',
-                                        border: 'none',
-                                        borderRadius: '50%',
-                                        width: '36px',
-                                        height: '36px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        cursor: 'pointer',
-                                        zIndex: 1,
-                                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                                        transition: 'all 0.3s ease'
-                                    }}>
-                                        <FontAwesomeIcon icon={faEye} style={{ color: '#666', fontSize: '18px' }} />
-                                    </button>
+                                    {/* Action Toggle Top-Right Button */}
+                                    {section.key === 'home-consumer' || section.key === 'home-outdoor' ? (
+                                        <button style={{
+                                            position: 'absolute',
+                                            top: '15px',
+                                            right: '15px',
+                                            background: 'rgba(255,255,255,0.95)',
+                                            border: 'none',
+                                            borderRadius: '50%',
+                                            width: '36px',
+                                            height: '36px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            cursor: 'pointer',
+                                            zIndex: 10,
+                                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                            transition: 'all 0.3s ease'
+                                        }}>
+                                            <FontAwesomeIcon icon={faCartArrowDown} style={{ color: '#666', fontSize: '18px' }} />
+                                        </button>
+                                    ) : (
+                                        <Link href={`/${locale}/itemDetails/${product.category?.en || section.key}/${product.static_id}`} style={{
+                                            position: 'absolute',
+                                            top: '15px',
+                                            right: '15px',
+                                            background: 'rgba(255,255,255,0.95)',
+                                            border: 'none',
+                                            borderRadius: '50%',
+                                            width: '36px',
+                                            height: '36px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            cursor: 'pointer',
+                                            zIndex: 10,
+                                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                            transition: 'all 0.3s ease',
+                                            textDecoration: 'none'
+                                        }}>
+                                            <FontAwesomeIcon icon={faEye} style={{ color: '#666', fontSize: '18px' }} />
+                                        </Link>
+                                    )}
                                     
                                     {/* Add to Wishlist */}
                                     <button style={{

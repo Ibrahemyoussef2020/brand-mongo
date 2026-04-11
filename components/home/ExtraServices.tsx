@@ -35,7 +35,7 @@ const ExtraServices = () => {
       <h2>{translate(dictionaries.extraServices.heading)}</h2>
       <div className='services'>
         {services.map((service, index) => (
-          <article key={index}>
+          <article key={index + Math.random()}>
             <div className="cover img-wrapper">
               <Image
                 src={service.image}

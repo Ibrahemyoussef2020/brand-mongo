@@ -42,6 +42,7 @@ export const addToCart = createAsyncThunk("cart/addToCart", async (product: any,
     }
 
     const response = await axios.post("/api/cart", payload);
+    toast.success("Added to Cart");
     return response.data;
 });
 
@@ -52,6 +53,7 @@ export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (pro
         return rejectWithValue("Not logged in");
     }
     const response = await axios.delete("/api/cart", { data: { productId } }); 
+    toast.info("Removed from Cart");
     return response.data;
 });
 

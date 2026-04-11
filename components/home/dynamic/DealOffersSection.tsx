@@ -257,7 +257,7 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
 
                 {products.map((product: any) => (
 
-                    <SwiperSlide key={product._id} className="py-4 !flex items-center">
+                    <SwiperSlide key={product._id + product.static_id} className="py-4 !flex items-center">
 
                         <Link href={`/${lang}/itemDetails/${product.category?.en || 'deals'}/${product.static_id}`} className="block !m-auto d-flex flex-column align-items-center">
 

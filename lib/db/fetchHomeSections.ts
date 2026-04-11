@@ -22,7 +22,10 @@ export const getHomeSections = async () => {
         key: 'deal-offers',
         type: 'DEAL_OFFERS',
         title: { en: 'Deal Offers', ar: ' ofertas especiales' },
+        sortOrder: 1,
         config: {
+          displayType: 'deal-slider',
+          actionButtonType: 'show-details',
           showTimer: true,
           endAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
         },
@@ -37,7 +40,10 @@ export const getHomeSections = async () => {
         key: 'home-consumer',
         type: 'GRID_SECTION',
         title: { en: 'Home Consumer', ar: ' products for home' },
+        sortOrder: 2,
         config: {
+          displayType: 'two-line',
+          actionButtonType: 'show-details',
           layout: { columns: 5 }
         },
         products: [] // Empty - component will fetch via API
@@ -51,7 +57,10 @@ export const getHomeSections = async () => {
         key: 'home-outdoor',
         type: 'GRID_SECTION',
         title: { en: 'Home Outdoor', ar: ' outdoor products' },
+        sortOrder: 3,
         config: {
+          displayType: 'one-line',
+          actionButtonType: 'show-details',
           layout: { columns: 5 }
         },
         products: [] // Empty - component will fetch via API
@@ -65,7 +74,10 @@ export const getHomeSections = async () => {
         key: 'recommended-items',
         type: 'GRID_SECTION',
         title: { en: 'Recommended Items', ar: ' recommended' },
+        sortOrder: 4,
         config: {
+          displayType: 'grid',
+          actionButtonType: 'add-to-cart',
           layout: { columns: 5 }
         },
         products: [] // Empty - component will fetch via API
@@ -73,6 +85,10 @@ export const getHomeSections = async () => {
     }
     
     console.log(`Dynamically created ${sections.length} sections based on available data`);
+    
+    // Sort array using the dashboard-inspired sortOrder system
+    sections.sort((a, b) => a.sortOrder - b.sortOrder);
+    
     return sections;
   } catch (error: any) {
     console.error('Error in getHomeSections:', error);

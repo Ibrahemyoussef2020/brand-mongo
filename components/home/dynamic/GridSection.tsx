@@ -8,6 +8,8 @@ import BrowserProduct from '../../general/BrowserProduct';
 import { sTranslate } from '@/utilities/translate';
 import { Locale } from '@/types';
 import Icon from '@/components/ui/Icon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faHeart } from '@fortawesome/free-regular-svg-icons';
 
 interface GridSectionProps {
   section: any;
@@ -84,7 +86,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                     letterSpacing: '1px'
                 }}>{currentTitle}</h2> : <div></div>}
                 
-                {section.key === 'recommended-items' && (
+                {(section.key === 'recommended-items' || section.key === 'home-consumer' || section.key === 'home-outdoor') && (
                     <Link href={`/${locale}/${section.key}`} style={{
                         background: 'linear-gradient(135deg, #ff9800, #f57c00)',
                         color: 'white',
@@ -187,7 +189,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                                         boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                                         transition: 'all 0.3s ease'
                                     }}>
-                                        <Icon name="eye" size={18} color="#666" />
+                                        <FontAwesomeIcon icon={faEye} style={{ color: '#666', fontSize: '18px' }} />
                                     </button>
                                     
                                     {/* Add to Wishlist */}
@@ -208,7 +210,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                                         boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                                         transition: 'all 0.3s ease'
                                     }}>
-                                        <Icon name="heart" size={18} color="#666" />
+                                        <FontAwesomeIcon icon={faHeart} style={{ color: '#666', fontSize: '18px' }} />
                                     </button>
                                 </div>
                                 

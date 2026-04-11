@@ -32,6 +32,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
     const router = useRouter();
     
     const productId = product._id || product.static_id;
+    const activeColor = config.actionButtonType === 'show-details' ? '#2196F3' : '#4CAF50';
 
     const handleAddToCart = (e: React.MouseEvent , product:any) => {
         e.preventDefault();
@@ -133,8 +134,9 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                         right: '15px',
                         background: 'rgba(255,255,255,0.95)',
                         border: 'none',
-                        borderRadius: '50%',
-                        width: '36px',
+                        borderRadius: currentCartItem ? '18px' : '50%',
+                        width: currentCartItem ? 'auto' : '36px',
+                        padding: currentCartItem ? '0 12px' : '0',
                         height: '36px',
                         display: 'flex',
                         alignItems: 'center',
@@ -142,9 +144,13 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                         cursor: 'pointer',
                         zIndex: 10,
                         boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                        transition: 'all 0.3s ease'
+                        transition: 'all 0.3s ease',
+                        gap: currentCartItem ? '6px' : '0'
                     }}>
-                        <FontAwesomeIcon icon={faCartArrowDown} style={{ color: '#666', fontSize: '18px' }} />
+                        <FontAwesomeIcon icon={faCartArrowDown} style={{ color: currentCartItem ? activeColor : '#666', fontSize: '16px' }} />
+                        {currentCartItem && (
+                            <span style={{ color: activeColor, fontSize: '13px', fontWeight: 'bold' }}>~ {currentCartItem.quantity}</span>
+                        )}
                     </button>
                 ) : (
                     <Link href={`/${locale}/itemDetails/${product.category?.en || sectionKey}/${product.static_id}`} style={{
@@ -187,7 +193,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                     transition: 'all 0.3s ease'
                 }}>
-                    <FontAwesomeIcon icon={faHeart} style={{ color: '#666', fontSize: '18px' }} />
+                    <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: isFav ? activeColor : '#666', fontSize: '18px' }} />
                 </button>
             </div>
             

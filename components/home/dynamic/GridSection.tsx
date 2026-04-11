@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react'
 import BrowserProduct from '../../general/BrowserProduct';
 import { sTranslate } from '@/utilities/translate';
 import { Locale } from '@/types';
+import Icon from '@/components/ui/Icon';
 
 interface GridSectionProps {
   section: any;
@@ -62,49 +63,260 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
     }
 
     return (
-        <section className='recomended-items' style={{ gridTemplateColumns: `repeat(${config.layout?.columns || 5}, 1fr)` }}>
-            {currentTitle && <h2>{currentTitle}</h2>}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px' }}>
+        <section className='recomended-items' style={{ 
+            padding: '40px 0',
+            backgroundColor: '#ffffff'
+        }}>
+            {currentTitle && <h2 style={{ 
+                fontSize: '28px', 
+                fontWeight: '700', 
+                marginBottom: '30px',
+                textAlign: 'center',
+                color: '#2c3e50',
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
+            }}>{currentTitle}</h2>}
+            
+            <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: `repeat(${config.layout?.columns || 5}, 1fr)`,
+                gap: '25px',
+                maxWidth: '1400px',
+                margin: '0 auto',
+                padding: '0 30px'
+            }}>
                 {
                     products.map((product: any) => {
-                        let imgSrc = product.image;
-                        if (imgSrc) {
-                            if (!imgSrc.startsWith('http')) {
-                                if (!imgSrc.startsWith('/')) {
-                                    imgSrc = `/${imgSrc}`;
-                                }
-                                if (!imgSrc.endsWith('.webp') && !imgSrc.includes('.png') && !imgSrc.includes('.jpg')) {
-                                    imgSrc = `${imgSrc}.webp`;
-                                }
-                            }
-                        } else {
-                            imgSrc = '/images/default.webp';
-                        }
-                        
-                        return <article key={product._id} style={{ flex: '1 1 200px' }}>
-                            <div className='broweserd-product' style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
-                                <div className='img-wrapper' style={{ width: '150px', height: '150px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                    <Image
-                                        src={imgSrc}
-                                        style={{ objectFit: "contain" }}
+                        return (
+                            <div key={product.static_id} className='product-card' style={{
+                                backgroundColor: '#ffffff',
+                                borderRadius: '8px',
+                                overflow: 'hidden',
+                                boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
+                                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                border: '1px solid #f0f0f0',
+                                position: 'relative'
+                            }}>
+                                {/* Product Image Container */}
+                                <div style={{ 
+                                    position: 'relative', 
+                                    height: '220px',
+                                    overflow: 'hidden',
+                                    backgroundColor: '#fafafa'
+                                }}>
+                                    <Image 
+                                        src={product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image).replace(/\.jpg$/, '').replace(/\.jpeg$/, '').replace(/\.png$/, '').replace(/\.webp$/, '') + '.webp' : '/placeholder.jpg'} 
+                                        alt={product.title || 'Product'} 
                                         fill
-                                        alt={product.title?.en || ''}
-                                        sizes='100%'
+                                        style={{ 
+                                            objectFit: 'contain',
+                                            transition: 'transform 0.4s ease',
+                                            padding: '20px'
+                                        }}
+                                        onError={(e) => {
+                                            // Fallback to placeholder if image fails to load
+                                            const target = e.target as HTMLImageElement;
+                                            target.src = '/placeholder.jpg';
+                                        }}
                                     />
-                                </div>
-                                <div style={{ textAlign: 'center', marginTop: '10px', width: '100%' }}>
-                                    {config.showPrice !== false && (
-                                        <p>
-                                            ${product.price}
-                                            {product.oldPrice && <span style={{ textDecoration: 'line-through', color: '#8b96a5', marginLeft: '5px', fontSize: '12px' }}>${product.oldPrice}</span>}
-                                        </p>
+                                    
+                                    {/* Discount Badge */}
+                                    {product.discount && (
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: '15px',
+                                            left: '15px',
+                                            background: 'linear-gradient(135deg, #ff6b6b, #ff5252)',
+                                            color: 'white',
+                                            padding: '6px 12px',
+                                            borderRadius: '25px',
+                                            fontSize: '11px',
+                                            fontWeight: '700',
+                                            zIndex: 1,
+                                            boxShadow: '0 2px 8px rgba(255,107,107,0.3)',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.5px'
+                                        }}>
+                                            {product.discount}
+                                        </div>
                                     )}
-                                    <h3 style={{ fontSize: '15px', fontWeight: '500', color: '#1c1c1c' }}>{sTranslate(product.title, locale).slice(0, 20)} {product.badge?.en ? `, ${product.badge.en}` : ''}</h3>
+                                    
+                                    {/* Quick View Button */}
+                                    <button style={{
+                                        position: 'absolute',
+                                        top: '15px',
+                                        right: '15px',
+                                        background: 'rgba(255,255,255,0.95)',
+                                        border: 'none',
+                                        borderRadius: '50%',
+                                        width: '36px',
+                                        height: '36px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                        zIndex: 1,
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                        transition: 'all 0.3s ease'
+                                    }}>
+                                        <Icon name="eye" size={18} color="#666" />
+                                    </button>
+                                    
+                                    {/* Add to Wishlist */}
+                                    <button style={{
+                                        position: 'absolute',
+                                        bottom: '15px',
+                                        right: '15px',
+                                        background: 'rgba(255,255,255,0.95)',
+                                        border: 'none',
+                                        borderRadius: '50%',
+                                        width: '36px',
+                                        height: '36px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        cursor: 'pointer',
+                                        zIndex: 1,
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                        transition: 'all 0.3s ease'
+                                    }}>
+                                        <Icon name="heart" size={18} color="#666" />
+                                    </button>
                                 </div>
-
-                                <BrowserProduct section='dynamicGridSection' productId={product.static_id} />
+                                
+                                {/* Product Info */}
+                                <div style={{ 
+                                    padding: '20px',
+                                    flex: 1,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    backgroundColor: '#ffffff'
+                                }}>
+                                    {/* Brand */}
+                                    {product.brand && (
+                                        <div style={{
+                                            fontSize: '11px',
+                                            color: '#999',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '1px',
+                                            fontWeight: '600',
+                                            marginBottom: '8px'
+                                        }}>
+                                            {product.brand}
+                                        </div>
+                                    )}
+                                    
+                                    {/* Title */}
+                                    <h3 style={{ 
+                                        fontSize: '15px', 
+                                        fontWeight: '600', 
+                                        color: '#2c3e50',
+                                        marginBottom: '12px',
+                                        lineHeight: '1.4',
+                                        height: '42px',
+                                        overflow: 'hidden',
+                                        display: '-webkit-box',
+                                        WebkitLineClamp: 2,
+                                        WebkitBoxOrient: 'vertical'
+                                    }}>
+                                        {sTranslate(product.title, locale)}
+                                    </h3>
+                                    
+                                    {/* Rating */}
+                                    <div style={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center',
+                                        marginBottom: '12px',
+                                        gap: '8px'
+                                    }}>
+                                        <div style={{ 
+                                            display: 'flex',
+                                            color: '#ffa500',
+                                            fontSize: '13px'
+                                        }}>
+                                            {Array.from({ length: Math.floor(product.avgRating || 0) }, (_, i) => (
+                                                <Icon key={`${product.static_id}-filled-${i}`} name="star" size={13} color="#ffa500" filled={true} />
+                                            ))}
+                                            {Array.from({ length: 5 - Math.floor(product.avgRating || 0) }, (_, i) => (
+                                                <Icon key={`${product.static_id}-empty-${i}`} name="star-empty" size={13} color="#ddd" filled={false} />
+                                            ))}
+                                        </div>
+                                        <span style={{ 
+                                            fontSize: '12px', 
+                                            color: '#999',
+                                            fontWeight: '500'
+                                        }}>
+                                            ({product.ratings || 0})
+                                        </span>
+                                    </div>
+                                    
+                                    {/* Price Section */}
+                                    <div style={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        marginBottom: '15px',
+                                        gap: '8px'
+                                    }}>
+                                        <div>
+                                            <span style={{
+                                                fontSize: '20px',
+                                                fontWeight: '700',
+                                                color: '#2c3e50'
+                                            }}>
+                                                ${product.price || 0}
+                                            </span>
+                                            {product.oldPrice && product.oldPrice > product.price && (
+                                                <span style={{
+                                                    fontSize: '14px',
+                                                    color: '#999',
+                                                    textDecoration: 'line-through',
+                                                    marginLeft: '8px'
+                                                }}>
+                                                    ${product.oldPrice}
+                                                </span>
+                                            )}
+                                        </div>
+                                        
+                                        {/* Free Delivery Badge */}
+                                        {product.free_delivery && (
+                                            <span style={{
+                                                fontSize: '10px',
+                                                color: '#4CAF50',
+                                                background: '#e8f5e8',
+                                                padding: '3px 6px',
+                                                borderRadius: '12px',
+                                                fontWeight: '600'
+                                            }}>
+                                                FREE
+                                            </span>
+                                        )}
+                                    </div>
+                                    
+                                    {/* Add to Cart Button */}
+                                    <button style={{
+                                        background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        padding: '12px 20px',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease',
+                                        marginTop: 'auto',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.5px',
+                                        boxShadow: '0 2px 8px rgba(76,175,80,0.3)'
+                                    }}>
+                                        Add to Cart
+                                    </button>
+                                </div>
                             </div>
-                        </article> 
+                        )
                     })
                 }
             </div>

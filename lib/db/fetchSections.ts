@@ -130,45 +130,40 @@ export async function getProductsFromDB(searchParams: URLSearchParams | any) {
 }
 
 export async function getSingleProductFromDB(static_id: string, section?: string) {
-  await dbConnect();
+  let product = null;
   
-  // First try to find in database using dynamic model if section provided
-  const Model = section && SECTION_MODEL_MAP[section] ? SECTION_MODEL_MAP[section] : ProductModel;
-  
-  let product = await Model.findOne({ static_id }).lean();
-  
-  // Fallback to _id if not found by static_id and it's a valid ObjectId
-  if (!product && mongoose.Types.ObjectId.isValid(static_id)) {
-      product = await Model.findById(static_id).lean();
+  try {
+    await dbConnect();
+    
+    // First try to find in database using dynamic model if section provided
+    const Model = section && SECTION_MODEL_MAP[section] ? SECTION_MODEL_MAP[section] : ProductModel;
+    
+    product = await Model.findOne({ static_id }).lean();
+    
+    // Fallback to _id if not found by static_id and it's a valid ObjectId
+    if (!product && mongoose.Types.ObjectId.isValid(static_id)) {
+        product = await Model.findById(static_id).lean();
+    }
+  } catch (error) {
+    console.error("Database connection or query failed out on item details, falling back to static data", error);
   }
   
-  // If not found in DB, try to find in seed data and add to DB
+  // If not found in DB (or DB failed), try to find in seed data
   if (!product) {
-    const safeData: any = data;
+    const { products: staticProducts } = await import('@/db');
 
     // Check main products data
-    let seedProduct = safeData.products?.find((p: any) => p.static_id === static_id);
+    let seedProduct = staticProducts?.find((p: any) => p.static_id === static_id);
     
-    // Check specific section data if not found
-    if (!seedProduct && section && safeData[section]) {
-        seedProduct = safeData[section].find((p: any) => p.static_id === static_id);
-    } 
-    // Fallback: Check all sections in data if still not found
-    else if (!seedProduct) {
-         for (const key in safeData) {
-             if (Array.isArray(safeData[key])) {
-                 const found = safeData[key].find((p: any) => p?.static_id === static_id);
-                 if (found) {
-                     seedProduct = found;
-                     break;
-                 }
-             }
-         }
-    }
-
     if (seedProduct) {
-      await Model.create(seedProduct);
-      product = await Model.findOne({ static_id }).lean();
+      try {
+        const Model = section && SECTION_MODEL_MAP[section] ? SECTION_MODEL_MAP[section] : ProductModel;
+        await Model.create(seedProduct);
+        product = await Model.findOne({ static_id }).lean();
+      } catch (err) {
+        // If DB insertion fails, just return the static object directly
+        product = seedProduct;
+      }
     }
   }
   

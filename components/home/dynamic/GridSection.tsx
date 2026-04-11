@@ -67,15 +67,40 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
             padding: '40px 0',
             backgroundColor: '#ffffff'
         }}>
-            {currentTitle && <h2 style={{ 
-                fontSize: '28px', 
-                fontWeight: '700', 
-                marginBottom: '30px',
-                textAlign: 'center',
-                color: '#2c3e50',
-                textTransform: 'uppercase',
-                letterSpacing: '1px'
-            }}>{currentTitle}</h2>}
+            <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                maxWidth: '1400px',
+                margin: '0 auto 30px',
+                padding: '0 30px'
+            }}>
+                {currentTitle ? <h2 style={{ 
+                    fontSize: '28px', 
+                    fontWeight: '700', 
+                    margin: 0,
+                    color: '#2c3e50',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
+                }}>{currentTitle}</h2> : <div></div>}
+                
+                {section.key === 'recommended-items' && (
+                    <Link href={`/${locale}/${section.key}`} style={{
+                        background: 'linear-gradient(135deg, #ff9800, #f57c00)',
+                        color: 'white',
+                        padding: '10px 24px',
+                        borderRadius: '25px',
+                        fontWeight: '700',
+                        textDecoration: 'none',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        boxShadow: '0 4px 10px rgba(255, 152, 0, 0.3)',
+                        transition: 'all 0.3s ease'
+                    }}>
+                        Show ALL
+                    </Link>
+                )}
+            </div>
             
             <div style={{ 
                 display: 'grid', 
@@ -108,7 +133,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                                     backgroundColor: '#fafafa'
                                 }}>
                                     <Image 
-                                        src={product.image ? (product.image.startsWith('/') ? product.image : '/' + product.image).replace(/\.jpg$/, '').replace(/\.jpeg$/, '').replace(/\.png$/, '').replace(/\.webp$/, '') + '.webp' : '/placeholder.jpg'} 
+                                        src={product.image ? (product.image.startsWith('/') || product.image.startsWith('http') ? product.image : `/${product.image}`).replace(/\.jpg$/, '') + '.webp' : '/placeholder.jpg'} 
                                         alt={product.title || 'Product'} 
                                         fill
                                         style={{ 
@@ -296,24 +321,51 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                                         )}
                                     </div>
                                     
-                                    {/* Add to Cart Button */}
-                                    <button style={{
-                                        background: 'linear-gradient(135deg, #4CAF50, #45a049)',
-                                        color: 'white',
-                                        border: 'none',
-                                        borderRadius: '6px',
-                                        padding: '12px 20px',
-                                        fontSize: '14px',
-                                        fontWeight: '600',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.3s ease',
-                                        marginTop: 'auto',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.5px',
-                                        boxShadow: '0 2px 8px rgba(76,175,80,0.3)'
-                                    }}>
-                                        Add to Cart
-                                    </button>
+                                    {/* Action Button: Add to Cart vs Show Details */}
+                                    {section.key === 'home-consumer' || section.key === 'home-outdoor' ? (
+                                        <Link href={`/${locale}/itemDetails/${product.category?.en || section.key}/${product.static_id}`} style={{
+                                            background: 'linear-gradient(135deg, #2196F3, #1976D2)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '6px',
+                                            padding: '12px 20px',
+                                            fontSize: '14px',
+                                            fontWeight: '600',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s ease',
+                                            marginTop: 'auto',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.5px',
+                                            display: 'block',
+                                            textAlign: 'center',
+                                            boxShadow: '0 2px 8px rgba(33,150,243,0.3)',
+                                            textDecoration: 'none',
+                                            position: 'relative',
+                                            zIndex: 10
+                                        }}>
+                                            Show Details
+                                        </Link>
+                                    ) : (
+                                        <button style={{
+                                            background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '6px',
+                                            padding: '12px 20px',
+                                            fontSize: '14px',
+                                            fontWeight: '600',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.3s ease',
+                                            marginTop: 'auto',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.5px',
+                                            boxShadow: '0 2px 8px rgba(76,175,80,0.3)',
+                                            position: 'relative',
+                                            zIndex: 10
+                                        }}>
+                                            Add to Cart
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         )

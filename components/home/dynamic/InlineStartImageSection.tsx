@@ -71,7 +71,7 @@ const InlineStartImageSection = ({ section }: InlineStartImageSectionProps) => {
                                 if (!imgSrc.startsWith('/')) {
                                     imgSrc = `/${imgSrc}`;
                                 }
-                                if (!imgSrc.endsWith('.webp') && !imgSrc.includes('.png') && !imgSrc.includes('.jpg')) {
+                                if (!imgSrc.endsWith('.webp') && !imgSrc.includes('.png') && !imgSrc.includes('.webp')) {
                                     imgSrc = `${imgSrc}.webp`;
                                 }
                             }

@@ -17,16 +17,16 @@ export default function ImageTestPage() {
 
   // Test images from different categories
   const testImages = [
-    'images/watch-9.jpg',
-    'images/headphones-12.jpg',
-    'images/mobile-10.jpg',
-    'images/fashion-16.jpg',
-    'images/kitchen-tools-8.jpg',
-    'images/camera-9.jpg',
-    'images/computer-cat-5.jpg',
-    'images/sport-6.jpg',
-    'images/chair-5.jpg',
-    'images/dish-9.jpg'
+    'images/watch-9.webp',
+    'images/headphones-12.webp',
+    'images/mobile-10.webp',
+    'images/fashion-16.webp',
+    'images/kitchen-tools-8.webp',
+    'images/camera-9.webp',
+    'images/computer-cat-5.webp',
+    'images/sport-6.webp',
+    'images/chair-5.webp',
+    'images/dish-9.webp'
   ];
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function ImageTestPage() {
       for (const imagePath of testImages) {
         const result: TestResult = {
           originalPath: imagePath,
-          processedPath: (imagePath.startsWith('/') ? imagePath : '/' + imagePath).replace(/\.jpg$/, '').replace(/\.jpeg$/, '').replace(/\.png$/, '').replace(/\.webp$/, '') + '.webp',
+          processedPath: (imagePath.startsWith('/') ? imagePath : '/' + imagePath).replace(/\.webp$/, '').replace(/\.jpeg$/, '').replace(/\.png$/, '').replace(/\.webp$/, '') + '.webp',
           status: 'testing',
           error: null,
           loadTime: 0
@@ -102,7 +102,7 @@ export default function ImageTestPage() {
       <div style={{ display: 'grid', gap: '15px' }}>
         {testResults.map((result, index) => (
           <div 
-            key={index}
+            key={index + Math.random()}
             style={{
               border: `2px solid ${result.status === 'success' ? '#4CAF50' : result.status === 'failed' ? '#f44336' : '#ff9800'}`,
               borderRadius: '8px',
@@ -149,11 +149,11 @@ export default function ImageTestPage() {
         <h2>Path Processing Logic:</h2>
         <pre style={{ backgroundColor: '#f5f5f5', padding: '10px', borderRadius: '4px' }}>
 {`// Current path processing:
-processedPath = originalPath.replace(/\.jpg$/, '') + '.jpg';
+processedPath = originalPath.replace(/\.webp$/, '') + '.webp';
 
 // Examples:
-// "images/watch-9.jpg" -> "images/watch-9.jpg"
-// "images/headphones-12.jpg" -> "images/headphones-12.jpg"`}
+// "images/watch-9.webp" -> "images/watch-9.webp"
+// "images/headphones-12.webp" -> "images/headphones-12.webp"`}
         </pre>
       </div>
     </div>

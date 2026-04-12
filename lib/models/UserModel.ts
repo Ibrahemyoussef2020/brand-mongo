@@ -7,6 +7,8 @@ export type User = {
     name: string
     email: string
     isAdmin: boolean
+    isCashier?: boolean
+    isSeller?: boolean
 }
 
 
@@ -18,6 +20,8 @@ const UserSchema = new mongoose.Schema(
       image: { type: String, required: false },
       password: {type: String, required: false},
       isAdmin: { type: Boolean, required: true, default: false },
+      isCashier: { type: Boolean, required: false, default: false },
+      isSeller: { type: Boolean, required: false, default: false },
     },
     { timestamps: true }
   )

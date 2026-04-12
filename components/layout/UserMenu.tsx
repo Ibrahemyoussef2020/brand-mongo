@@ -2,7 +2,7 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faSignOutAlt, faCartShopping, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faSignOutAlt, faCartShopping, faChevronDown, faChartLine } from '@fortawesome/free-solid-svg-icons';
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { dictionaries } from "@/lib/dictionaries";
@@ -81,6 +81,13 @@ export default function UserMenu() {
                 <FontAwesomeIcon icon={faUser} width={16} />
                 <span>{translate(dictionaries.userMenu.myProfile)}</span>
               </Link>
+              
+              {(session.user as any)?.isAdmin && (
+                <Link href={`/${lang}/dashboard`} className="menu-item" onClick={() => setIsOpen(false)}>
+                  <FontAwesomeIcon icon={faChartLine} width={16} />
+                  <span>Dashboard</span>
+                </Link>
+              )}
 
               <Link href={`/${lang}/cart`} className="menu-item" onClick={() => setIsOpen(false)}>
                 <FontAwesomeIcon icon={faCartShopping} width={16} />

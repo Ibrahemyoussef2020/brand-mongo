@@ -26,6 +26,7 @@ export type Product = {
   verified?: boolean;
   link?: LocalizedString;
   badge?: LocalizedString;
+  stockCount?: number;
 }
 
 const ProductSchema = new mongoose.Schema(
@@ -76,6 +77,7 @@ const ProductSchema = new mongoose.Schema(
     to_home: { type: Boolean, default: true, required: false },
     premium_offer: { type: Boolean, default: false, required: false },
     verified: { type: Boolean, default: false, required: false },
+    stockCount: { type: Number, default: 0, required: false }
   },
   {
     timestamps: true,

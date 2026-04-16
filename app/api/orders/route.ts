@@ -75,3 +75,44 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function PUT(req: NextRequest) {
+  try {
+    await dbConnect();
+    
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    
+    const body = await req.json();
+    const { orderId, status, items } = body;
+
+    if (!orderId) {
+      return NextResponse.json({ error: "Order ID is required" }, { status: 400 });
+    }
+
+    const updateData: any = {};
+    if (status) updateData.status = status;
+    if (items) {
+      updateData.items = items;
+      // Recalculate totalBill
+      updateData.totalBill = items.reduce((sum: number, item: any) => sum + (item.total || item.price * item.quantity), 0);
+    }
+
+    const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, updateData, { new: true });
+
+    if (!updatedOrder) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: "Order updated successfully", 
+      order: updatedOrder 
+    });
+  } catch (error: any) {
+    console.error("Error in PUT /api/orders:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

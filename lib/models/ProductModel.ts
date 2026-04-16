@@ -10,6 +10,9 @@ export type Product = {
   static_id: string;
   title?: LocalizedString;
   image?: string;
+  image2?: string;
+  image3?: string;
+  image4?: string;
   price?: number;
   oldPrice?: number;
   discount?: LocalizedString | string;
@@ -45,6 +48,9 @@ const ProductSchema = new mongoose.Schema(
       ar: { type: String }
     },
     image: { type: String, required: false },
+    image2: { type: String, required: false },
+    image3: { type: String, required: false },
+    image4: { type: String, required: false },
     price: { type: Number, required: false },
     oldPrice: { type: Number, required: false },
     discount: {

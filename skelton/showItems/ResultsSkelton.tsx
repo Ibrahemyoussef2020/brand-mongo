@@ -4,7 +4,7 @@ const ResultsSkelton = () => {
   return (
     <div className="product-results">
         {Array.from({ length: 6 }).map((_, index) => (
-            <article key={index} className="broweserd-product">
+            <article key={index + Math.random()} className="broweserd-product">
                 <div className="img-wrapper in-list skelton-shimmer" style={{ width: '150px', height: '150px', borderRadius: '6px' }} />
                 <div className="img-wrapper in-grid skelton-shimmer" style={{ width: '100%', height: '202px', borderRadius: '6px' }} />
                 

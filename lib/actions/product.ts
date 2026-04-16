@@ -4,22 +4,9 @@ import { getProductsFromDB } from "@/lib/db/fetchProducts";
 import { shouldSkipDatabase } from "@/lib/db/buildGuard";
 
 // Map frontend category names to database category names
+// Identity mapping: return the category as is. Previously there was a mapping that altered category names, causing mismatches with DB values.
 const mapCategoryToDatabase = (frontendCategory: string): string => {
-  const categoryMap: Record<string, string> = {
-    'fashion': 'clothes',
-    'mobiles': 'automobiles', 
-    'kitchen-tools': 'homeInteriors',
-    'computers': 'computerTech',
-    'sports': 'sportsOutdoor',
-    'pets': 'animalPets',
-    'chairs': 'officeFurniture',
-    'headphones': 'moreCategory',
-    'deal-offers': 'dealOffers',
-    'home-consumer': 'homeConsumer',
-    'home-outdoor': 'homeOutdoor'
-  };
-  
-  return categoryMap[frontendCategory] || frontendCategory;
+  return frontendCategory;
 };
 
 export async function fetchProductsAction(params: Record<string, any>) {

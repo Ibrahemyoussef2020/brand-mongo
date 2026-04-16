@@ -11,7 +11,7 @@ export default async function DashboardLayout({
 }) {
   const session = await getServerSession(authOptions);
 
-  if (!session || !(session.user as any)?.isAdmin) {
+  if (!session || !session.user) {
     redirect("/en/login");
   }
 

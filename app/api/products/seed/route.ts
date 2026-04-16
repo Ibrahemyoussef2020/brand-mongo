@@ -65,6 +65,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (error: any) {
     console.error("Error seeding database:", error);
-    return NextResponse.json({ message: "Failed to seed database", error: error.message }, { status: 500 });
+    return NextResponse.json({ message: "Failed to seed database", error: (error as Error).message || String(error) }, { status: 500 });
   }
 }

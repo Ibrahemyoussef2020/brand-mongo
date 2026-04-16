@@ -14,7 +14,7 @@ export async function GET() {
     });
   } catch (error) {
     return NextResponse.json({
-      error: error.message
+      error: (error as Error).message || String(error)
     }, { status: 500 });
   }
 }

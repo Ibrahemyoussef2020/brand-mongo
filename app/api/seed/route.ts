@@ -32,7 +32,7 @@ export async function POST() {
   } catch (error) {
     console.error("API Seed error:", error);
     return NextResponse.json({
-      error: error.message,
+      error: (error as Error).message || 'Unknown error',
       seededCount: 0
     }, { status: 500 });
   }
@@ -49,7 +49,7 @@ export async function GET() {
     });
   } catch (error) {
     return NextResponse.json({
-      error: error.message,
+      error: (error as Error).message || 'Unknown error',
       totalProducts: 0
     }, { status: 500 });
   }

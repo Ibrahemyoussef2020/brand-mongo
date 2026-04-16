@@ -66,7 +66,7 @@ export async function GET() {
   } catch (error) {
     console.error("API Study error:", error);
     return NextResponse.json({
-      error: error.message
+      error: (error as Error).message || String(error)
     }, { status: 500 });
   }
 }

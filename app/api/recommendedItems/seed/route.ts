@@ -45,7 +45,7 @@ export const GET = async (request: NextRequest) => {
         console.error('ERROR in recommendedItems/seed:', error);
         return NextResponse.json({
             message: 'Failed to seed recommendedItems',
-            error: error.message || String(error)
+            error: (error as Error).message || String(error) || String(error)
         }, { status: 500 });
     }
 }

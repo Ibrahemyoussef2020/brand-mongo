@@ -30,7 +30,8 @@ export async function fetchProductsAction(params: Record<string, any>) {
     
     const result = await getProductsFromDB(params);
     console.log(`Found ${result.data?.length || 0} products`);
-    return result;
+    // Serialize Mongoose documents to plain objects (converts ObjectId, Date, etc. to strings)
+    return JSON.parse(JSON.stringify(result));
   } catch (error) {
     console.error("Error in fetchProductsAction:", error);
     

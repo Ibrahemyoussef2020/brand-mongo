@@ -51,6 +51,6 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ success: true, message: "Sections reordered successfully" }, { status: 200 });
   } catch (error: any) {
     console.error(`Error in PATCH /api/admin/home/sections/reorder:`, error);
-    return NextResponse.json({ success: false, message: "Internal Server Error", error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: "Internal Server Error", error: (error as Error).message || String(error) }, { status: 500 });
   }
 }

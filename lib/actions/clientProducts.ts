@@ -40,13 +40,14 @@ export async function fetchDealOffersAction() {
     
     console.log(`Found ${result.length} deal offers`);
     
-    return {
+    const response = {
       total: result.length,
       page: null,
       limit: null,
       totalPages: null,
       data: result
     };
+    return JSON.parse(JSON.stringify(response));
   } catch (error) {
     console.error("Error fetching deal offers:", error);
     return {
@@ -66,13 +67,14 @@ export async function fetchHomeConsumerAction() {
     const HomeConsumerModel = require("@/lib/models/HomeConsumer").default;
     const result = await HomeConsumerModel.find({}).lean();
     
-    return {
+    const response = {
       total: result.length,
       page: null,
       limit: null,
       totalPages: null,
       data: result
     };
+    return JSON.parse(JSON.stringify(response));
   } catch (error) {
     console.error("Error fetching home consumer:", error);
     return {
@@ -92,13 +94,14 @@ export async function fetchHomeOutdoorAction() {
     const HomeOutdoorModel = require("@/lib/models/HomeOutdoorModel").default;
     const result = await HomeOutdoorModel.find({}).lean();
     
-    return {
+    const response = {
       total: result.length,
       page: null,
       limit: null,
       totalPages: null,
       data: result
     };
+    return JSON.parse(JSON.stringify(response));
   } catch (error) {
     console.error("Error fetching home outdoor:", error);
     return {
@@ -120,7 +123,7 @@ export async function fetchProductsByCategoryAction(category: string) {
     const result = await getProductsFromDB({ category: dbCategory });
     console.log(`Found ${result.data?.length || 0} products for ${dbCategory}`);
     
-    return result;
+    return JSON.parse(JSON.stringify(result));
   } catch (error) {
     console.error(`Error fetching products for category ${category}:`, error);
     return {
@@ -137,7 +140,7 @@ export async function fetchProductsByCategoryAction(category: string) {
 export async function fetchRecommendedItemsAction() {
   try {
     const result = await getRecommendedItemsFromDB();
-    return result;
+    return JSON.parse(JSON.stringify(result));
   } catch (error) {
     console.error("Error fetching recommended items:", error);
     return {

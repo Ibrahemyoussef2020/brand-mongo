@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('Newsletter subscription error:', error);
     return NextResponse.json(
-      { message: 'Something went wrong. Please try again later.', error: error.message },
+      { message: 'Something went wrong. Please try again later.', error: (error as Error).message || String(error) },
       { status: 500 }
     );
   }

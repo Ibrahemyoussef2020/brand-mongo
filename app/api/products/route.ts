@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error: any) {
     console.error("Error in POST /api/products:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message || String(error) }, { status: 500 });
   }
 }
 
@@ -93,6 +93,6 @@ export async function PUT(req: NextRequest) {
     });
   } catch (error: any) {
     console.error("Error in PUT /api/products:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message || String(error) }, { status: 500 });
   }
 }

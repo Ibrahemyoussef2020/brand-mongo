@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(cart);
   } catch (error: any) {
     console.error("Error in GET /api/cart:", error);
-    return NextResponse.json({success: false , message: "Internal Server Error", error: error.message }, { status: 500 });
+    return NextResponse.json({success: false , message: "Internal Server Error", error: (error as Error).message || String(error) }, { status: 500 });
   }
 }
 
@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(cart);
   } catch (error: any) {
     console.error("Error in POST /api/cart:", error);
-    return NextResponse.json({success: false , message: "Internal Server Error", error: error.message , status: 500 }, { status: 500 });
+    return NextResponse.json({success: false , message: "Internal Server Error", error: (error as Error).message || String(error) , status: 500 }, { status: 500 });
   }
 }
 
@@ -154,7 +154,7 @@ export async function PATCH(req: NextRequest) {
         return NextResponse.json({ success: true, message: "Item not found in cart", cart, status: 200 });
     } catch (error: any) {
         console.error("Error in PATCH /api/cart:", error);
-        return NextResponse.json({ message: "Internal Server Error", error: error.message }, { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error", error: (error as Error).message || String(error) }, { status: 500 });
     }
 }
 
@@ -187,6 +187,6 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({ success: true, message: "Cart is already empty", cart: { items: [], bill: 0 } }, { status: 200 });
     } catch (error: any) {
         console.error("Error in DELETE /api/cart:", error);
-        return NextResponse.json({success: false , message: "Internal Server Error", error: error.message , status: 500 }, { status: 500 });
+        return NextResponse.json({success: false , message: "Internal Server Error", error: (error as Error).message || String(error) , status: 500 }, { status: 500 });
     }
 }

@@ -35,7 +35,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({ success: true, section: updatedSection }, { status: 200 });
   } catch (error: any) {
     console.error(`Error in PUT /api/admin/home/sections/${params.id}:`, error);
-    return NextResponse.json({ success: false, message: "Internal Server Error", error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: "Internal Server Error", error: (error as Error).message || String(error) }, { status: 500 });
   }
 }
 
@@ -57,6 +57,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ success: true, message: "Section deleted successfully" }, { status: 200 });
     } catch (error: any) {
       console.error(`Error in DELETE /api/admin/home/sections/${params.id}:`, error);
-      return NextResponse.json({ success: false, message: "Internal Server Error", error: error.message }, { status: 500 });
+      return NextResponse.json({ success: false, message: "Internal Server Error", error: (error as Error).message || String(error) }, { status: 500 });
     }
   }

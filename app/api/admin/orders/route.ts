@@ -11,6 +11,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(orders);
   } catch (error: any) {
     console.error("Error in GET /api/admin/orders:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message || String(error) }, { status: 500 });
   }
 }

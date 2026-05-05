@@ -2,8 +2,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartPie, faBoxOpen, faShoppingCart, faUsers, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { signOut } from "next-auth/react";
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { signOut, useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
+import SidebarItem from "./SidebarItem";
+import { getMenuItemsByRole } from "@/config/dashboard";
 
 import { useLang } from "@/context/LangContext";
 import Image from "next/image";
@@ -11,15 +14,17 @@ import Image from "next/image";
 import { dictionaries } from "@/lib/dictionaries";
 
 export default function Sidebar() {
-  const pathname = usePathname();
   const { lang, translate } = useLang();
+  const { data: session } = useSession();
+  const role = session?.user?.role;
+  
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
-  const navLinks = [
-    { label: translate(dictionaries.dashboard.sidebar.overview), href: `/${lang}/dashboard`, icon: faChartPie },
-    { label: translate(dictionaries.dashboard.sidebar.products), href: `/${lang}/dashboard/products`, icon: faBoxOpen },
-    { label: translate(dictionaries.dashboard.sidebar.orders), href: `/${lang}/dashboard/orders`, icon: faShoppingCart },
-    { label: translate(dictionaries.dashboard.sidebar.users), href: `/${lang}/dashboard/users`, icon: faUsers },
-  ];
+  const menuItems = getMenuItemsByRole(role);
+
+  const handleToggle = (labelKey: string) => {
+    setExpandedSection(prev => prev === labelKey ? null : labelKey);
+  };
 
   return (
     <aside className="dashboard-sidebar">
@@ -38,19 +43,14 @@ export default function Sidebar() {
       </div>
       
       <nav className="sidebar-nav">
-        {navLinks.map((link) => {
-          const isActive = pathname === link.href;
-          return (
-            <Link 
-              key={link.href} 
-              href={link.href}
-              className={`nav-link ${isActive ? 'active' : ''}`}
-            >
-              <FontAwesomeIcon icon={link.icon} />
-              <span>{link.label}</span>
-            </Link>
-          );
-        })}
+        {menuItems.map((item, index) => (
+          <SidebarItem 
+            key={item.labelKey || index}
+            item={item}
+            isExpanded={expandedSection === item.labelKey}
+            onToggle={() => handleToggle(item.labelKey)}
+          />
+        ))}
       </nav>
 
       <div className="sidebar-footer">

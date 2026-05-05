@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import dbConnect from "@/lib/dbConnect";
-import UserModel from "@/lib/models/UserModel";
+import UserModel, { User } from "@/lib/models/UserModel";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -39,13 +39,18 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async jwt({ token, user, account }: any) {
-      if (user) {
+      // If user object is provided (during sign in) or role is missing, fetch from DB
+      if (user || !token.role) {
          try {
            await dbConnect();
-           const dbUser = await UserModel.findOne({ email: user.email });
-           if (dbUser) {
-             token.id = dbUser._id.toString();
-             token.isAdmin = dbUser.isAdmin;
+           // use token.email if user is not present (subsequent calls)
+           const emailToSearch = user?.email || token.email;
+           if (emailToSearch) {
+             const dbUser = await UserModel.findOne({ email: emailToSearch }).lean() as User | null;
+             if (dbUser) {
+               token.id = dbUser._id.toString();
+               token.role = dbUser.role || 'user'; // Ensure fallback
+             }
            }
          } catch (error) {
            console.error("Error fetching user for token", error);
@@ -56,7 +61,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }: any) {
         if (token) {
            session.user.id = token.id;
-           session.user.isAdmin = token.isAdmin;
+           session.user.role = token.role;
         }
         return session;
     },

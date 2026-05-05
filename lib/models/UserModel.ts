@@ -6,9 +6,7 @@ export type User = {
     static_id:string
     name: string
     email: string
-    isAdmin: boolean
-    isCashier?: boolean
-    isSeller?: boolean
+    role: string
 }
 
 
@@ -19,9 +17,7 @@ const UserSchema = new mongoose.Schema(
       email: {type: String,   required: true, unique: true },
       image: { type: String, required: false },
       password: {type: String, required: false},
-      isAdmin: { type: Boolean, required: true, default: false },
-      isCashier: { type: Boolean, required: false, default: false },
-      isSeller: { type: Boolean, required: false, default: false },
+      role: { type: String, enum: ['super_admin', 'ecommerce_admin', 'pos_admin', 'user'], default: 'user' },
     },
     { timestamps: true }
   )

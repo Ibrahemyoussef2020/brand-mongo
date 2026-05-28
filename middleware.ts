@@ -20,11 +20,11 @@ export async function middleware(request: NextRequest) {
   let locale = defaultLocale;
   const pathnameHasLocale = locales.some(
     (loc) => {
-        if (pathname.startsWith(`/${loc}`)) {
-            locale = loc;
-            return true;
-        }
-        return false;
+      if (pathname.startsWith(`/${loc}`)) {
+        locale = loc;
+        return true;
+      }
+      return false;
     }
   );
 
@@ -41,8 +41,13 @@ export async function middleware(request: NextRequest) {
   const isDashboardPath = request.nextUrl.pathname.includes('/dashboard');
 
   if (isDashboardPath) {
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
-    
+    const useSecureCookie = process.env.NEXTAUTH_URL?.startsWith('https://') || !!request.cookies.get('__Secure-next-auth.session-token');
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+      secureCookie: useSecureCookie
+    });
+
     if (!token) {
       return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
     }
@@ -58,7 +63,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (redirected) {
-      return NextResponse.redirect(finalUrl);
+    return NextResponse.redirect(finalUrl);
   }
 
   return NextResponse.next();

@@ -152,7 +152,7 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+
 
     return (
         <div className="dashboard-page">
@@ -175,7 +175,11 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map((order) => (
+                            {loading ? (
+                                <tr>
+                                    <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>Loading...</td>
+                                </tr>
+                            ) : orders.map((order) => (
                                 <tr key={order._id}>
                                     <td>
                                         <span style={{ fontWeight: 600, color: '#0D6EFD' }}>#{order._id.slice(-6)}</span>
@@ -201,7 +205,7 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
                                     </td>
                                 </tr>
                             ))}
-                            {orders.length === 0 && (
+                            {!loading && orders.length === 0 && (
                                 <tr>
                                     <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>{dictionaries.dashboard.tables.noOrders[locale]}</td>
                                 </tr>

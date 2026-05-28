@@ -1,47 +1,49 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+/**
+ * Minimal auth state — a derived cache of NextAuth session status.
+ *
+ * This slice does NOT hold user identity data (name, email, image).
+ * All identity data comes from NextAuth's `useSession()` hook directly.
+ *
+ * `isLogged` is kept in Redux solely because cart/favorites thunks
+ * need synchronous access to auth status via `getState()`, and thunks
+ * cannot call React hooks.
+ *
+ * The value is kept in sync with NextAuth by the `SessionSync` component,
+ * which dispatches `setAuthenticated()` idempotently on every status change.
+ *
+ * `isAuthReady` starts `false` and becomes `true` once the first definitive
+ * status ("authenticated" or "unauthenticated") is received from NextAuth.
+ * This prevents thunks from seeing a stale redux-persist value as definitive
+ * before the real session has been resolved.
+ */
 
-const storageIsLogged = false
-const storageUserInfo =  {
-    userName:'',
-    userEmail:'',
-    userPassword:''
+interface AuthState {
+  isLogged: boolean
+  isAuthReady: boolean
+  isSubscriber: boolean
 }
 
-
-const initialState = {
-    isLogged:storageIsLogged,
-    isSubscriber: false,
-    userInfo:{
-        userName:storageUserInfo.userName,
-        userEmail:storageUserInfo.userEmail,
-        userPassword:storageUserInfo.userPassword
-    }
+const initialState: AuthState = {
+  isLogged: false,
+  isAuthReady: false,
+  isSubscriber: false,
 }
 
-const LogSlice = createSlice({
-    name:'LogSlice',
-    initialState,
-    reducers:{
-        logUp:(state , action)=>{
-            state.isLogged = true    
-            state.userInfo = {...action.payload}
-            localStorage.setItem('isLogged' , JSON.stringify(state.isLogged))
-            localStorage.setItem('user' , JSON.stringify(state.userInfo))
-        },
-        logOut:(state)=>{
-            state.isLogged = false
-            state.isSubscriber = false
-            state.userInfo = {userName:'',userEmail:'',userPassword:''}
-            localStorage.setItem('isLogged' , JSON.stringify(state.isLogged))
-            localStorage.setItem('user' , JSON.stringify(state.userInfo))
-        },
-        setSubscriberStatus: (state, action) => {
-            state.isSubscriber = action.payload;
-        }
-    }
+const authSlice = createSlice({
+  name: 'LogSlice',          // keep the same slice name so redux-persist key doesn't break
+  initialState,
+  reducers: {
+    setAuthenticated: (state, action: PayloadAction<boolean>) => {
+      state.isLogged = action.payload
+      state.isAuthReady = true
+    },
+    setSubscriberStatus: (state, action: PayloadAction<boolean>) => {
+      state.isSubscriber = action.payload
+    },
+  },
 })
 
-export const {logUp,logOut, setSubscriberStatus} = LogSlice.actions
-
-export default LogSlice.reducer
+export const { setAuthenticated, setSubscriberStatus } = authSlice.actions
+export default authSlice.reducer

@@ -342,7 +342,7 @@ export default function ProductsPage({ params: { locale } }: { params: { locale:
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+
 
     const productsData = products;
 
@@ -402,7 +402,11 @@ export default function ProductsPage({ params: { locale } }: { params: { locale:
                             </tr>
                         </thead>
                         <tbody>
-                            {productsData.map((product: any) => (
+                            {loading ? (
+                                <tr>
+                                    <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>Loading...</td>
+                                </tr>
+                            ) : productsData.map((product: any) => (
                                 <tr key={product._id.toString()}>
                                     <td>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -433,7 +437,7 @@ export default function ProductsPage({ params: { locale } }: { params: { locale:
                                     </td>
                                 </tr>
                             ))}
-                            {productsData.length === 0 && (
+                            {!loading && productsData.length === 0 && (
                                 <tr>
                                     <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>{dictionaries.dashboard.tables.noProducts[locale]}</td>
                                 </tr>

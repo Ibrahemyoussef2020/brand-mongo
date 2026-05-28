@@ -1,6 +1,7 @@
 import { getRecommendedItemsFromDB } from '@/lib/db/fetchProducts';
 import { ProductProps } from '@/types';
 import Image from 'next/image';
+import { getImageSrc } from '@/helpers/getImageSrc';
 import Link from 'next/link';
 import React from 'react'
 import BrowserProduct from '../general/BrowserProduct';
@@ -44,7 +45,7 @@ const RecomendedItem = async ({ locale }: { locale: Locale }) => {
                             <div className='broweserd-product'>
                                 <div className='img-wrapper'>
                                     <Image
-                                        src={`/${recomendedItem.image}.webp`}
+                                        src={getImageSrc(recomendedItem.image)}
                                         style={{ objectFit: "cover" }}
                                         fill
                                         alt=''

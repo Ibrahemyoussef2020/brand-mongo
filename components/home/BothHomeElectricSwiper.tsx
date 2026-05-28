@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { showProducts } from "@/app/apis"; 
 import { ProductProps } from "@/types";
 import Image from "next/image";
+import { getImageSrc } from "@/helpers/getImageSrc";
 import BrowserProduct from "../general/BrowserProduct";
 import { fetchHomeOutdoorAction } from "@/lib/actions/clientProducts";
 import BothHomeElectricSwiperSkelton from "@/skelton/home/BothHomeElectricSwiper";
@@ -77,7 +78,7 @@ const BothHomeElectricSwiper = ({section}:prop) => {
                 >
                   <div className="img-wrapper"> 
                     <Image
-                        src={`/${product.image}.webp`}
+                        src={getImageSrc(product.image)}
                         height={98}
                         width={98}
                         alt=""

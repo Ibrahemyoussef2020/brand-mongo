@@ -1,0 +1,41 @@
+import dotenv from 'dotenv';
+import dbConnect from '@/lib/dbConnect';
+import { SectionModel } from '@/lib/models/Section';
+
+dotenv.config({ path: '.env.local' });
+
+
+const sectionsToSeed = [
+    { en: 'products', ar: 'المنتجات' },
+    { en: 'dealOffers', ar: 'عروض الصفقات' },
+    { en: 'homeConsumer', ar: 'مستهلك المنزل' },
+    { en: 'homeOutdoor', ar: 'منزل خارجي' },
+    { en: 'homeSections', ar: 'أقسام المنزل' },
+    { en: 'recommendedItems', ar: 'عناصر مختارة' },
+];
+
+(async () => {
+    try {
+        await dbConnect();
+        console.log('✅ Connected to MongoDB');
+
+        for (const sec of sectionsToSeed) {
+            const existing = await SectionModel.findOne({ en: sec.en });
+
+            if (existing) {
+                console.log(`⏭️  Section "${sec.en}" already exists (id: ${existing._id})`);
+                continue;
+            }
+
+            const created = await SectionModel.create({ en: sec.en, ar: sec.ar });
+
+            console.log(`✅ Created "${sec.en}" → id: ${created._id}`);
+        }
+
+        console.log('🎉 All sections processed');
+        process.exit(0);
+    } catch (err) {
+        console.error('❌ Seed failed', err);
+        process.exit(1);
+    }
+})();

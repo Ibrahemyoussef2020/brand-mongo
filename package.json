@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:images": "tsx scripts/migrate-images.ts",
+    "seed:sections": "tsx scripts/seedHomeSections.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -22,6 +24,7 @@
     "axios": "^1.8.3",
     "babel-plugin-macros": "^3.1.0",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.10.0",
     "json-server": "^1.0.0-alpha.21",
     "mongoose": "^8.9.5",
     "next": "14.1.0",
@@ -45,7 +48,7 @@
     "@types/nodemailer": "^7.0.9",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "dotenv": "^17.3.1",
+    "dotenv": "^17.4.2",
     "sass": "^1.70.0",
     "tsx": "^4.21.0",
     "typescript": "^5"

@@ -33,16 +33,16 @@ export default function SalesPage() {
   const [selectedRecord, setSelectedRecord] = useState<SalesItem | null>(null);
 
   // Form states for Add/Edit
-  const [formName, setFormName] = useState('');
+  const [formData, setFormData] = useState({ name: '', status: 'Active' });
 
   const handleAddClick = () => {
-    setFormName('');
+    setFormData({ name: '', status: 'Active' });
     setIsAddModalOpen(true);
   };
 
   const handleEditClick = (record: SalesItem) => {
     setSelectedRecord(record);
-    setFormName(record.name);
+    setFormData({ name: record.name, status: record.status });
     setIsEditModalOpen(true);
   };
 
@@ -60,8 +60,8 @@ export default function SalesPage() {
   const onSaveNew = () => {
     const newItem: SalesItem = {
       id: Math.floor(Math.random() * 1000).toString(),
-      name: formName,
-      status: 'Active',
+      name: formData.name,
+      status: formData.status,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     };
     setData([...data, newItem]);
@@ -70,7 +70,7 @@ export default function SalesPage() {
 
   const onUpdate = () => {
     if (!selectedRecord) return;
-    setData(data.map(item => item.id === selectedRecord.id ? { ...item, name: formName } : item));
+    setData(data.map(item => item.id === selectedRecord.id ? { ...item, name: formData.name, status: formData.status } : item));
     setIsEditModalOpen(false);
     setSelectedRecord(null);
   };
@@ -153,11 +153,23 @@ export default function SalesPage() {
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Name</label>
             <input 
               type="text" 
-              value={formName} 
-              onChange={(e) => setFormName(e.target.value)}
+              value={formData.name} 
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }} 
               placeholder="Enter Name" 
             />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Status</label>
+            <select 
+              value={formData.status} 
+              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            >
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Inactive">Inactive</option>
+            </select>
           </div>
           <button 
             onClick={onSaveNew}
@@ -179,10 +191,22 @@ export default function SalesPage() {
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Name</label>
             <input 
               type="text" 
-              value={formName} 
-              onChange={(e) => setFormName(e.target.value)}
+              value={formData.name} 
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }} 
             />
+          </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Status</label>
+            <select 
+              value={formData.status} 
+              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            >
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Inactive">Inactive</option>
+            </select>
           </div>
           <button 
             onClick={onUpdate}

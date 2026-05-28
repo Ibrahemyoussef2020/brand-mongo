@@ -17,7 +17,7 @@ interface ShippingDeliveryItem {
 
 export default function ShippingDeliveryPage() {
   const { translate } = useLang();
-  
+
   // Data State
   const [data, setData] = useState<ShippingDeliveryItem[]>([
     { id: '1', name: 'Sample Shipping & Delivery A', status: 'Active', date: 'Oct 24, 2026' },
@@ -33,16 +33,16 @@ export default function ShippingDeliveryPage() {
   const [selectedRecord, setSelectedRecord] = useState<ShippingDeliveryItem | null>(null);
 
   // Form states for Add/Edit
-  const [formName, setFormName] = useState('');
+  const [formData, setFormData] = useState({ name: '', status: 'Active' });
 
   const handleAddClick = () => {
-    setFormName('');
+    setFormData({ name: '', status: 'Active' });
     setIsAddModalOpen(true);
   };
 
   const handleEditClick = (record: ShippingDeliveryItem) => {
     setSelectedRecord(record);
-    setFormName(record.name);
+    setFormData({ name: record.name, status: record.status });
     setIsEditModalOpen(true);
   };
 
@@ -60,8 +60,8 @@ export default function ShippingDeliveryPage() {
   const onSaveNew = () => {
     const newItem: ShippingDeliveryItem = {
       id: Math.floor(Math.random() * 1000).toString(),
-      name: formName,
-      status: 'Active',
+      name: formData.name,
+      status: formData.status,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     };
     setData([...data, newItem]);
@@ -70,7 +70,7 @@ export default function ShippingDeliveryPage() {
 
   const onUpdate = () => {
     if (!selectedRecord) return;
-    setData(data.map(item => item.id === selectedRecord.id ? { ...item, name: formName } : item));
+    setData(data.map(item => item.id === selectedRecord.id ? { ...item, name: formData.name, status: formData.status } : item));
     setIsEditModalOpen(false);
     setSelectedRecord(null);
   };
@@ -86,16 +86,16 @@ export default function ShippingDeliveryPage() {
   const columns: Column<ShippingDeliveryItem>[] = [
     { key: 'id', title: 'ID' },
     { key: 'name', title: 'Name' },
-    { 
-      key: 'status', 
-      title: 'Status', 
+    {
+      key: 'status',
+      title: 'Status',
       render: (record: ShippingDeliveryItem) => {
         let color = '#666';
         let bg = '#eee';
         if (record.status === 'Active') { color = '#00b517'; bg = '#e6f7eb'; }
         else if (record.status === 'Pending') { color = '#ff9017'; bg = '#fff0db'; }
         else if (record.status === 'Inactive') { color = '#fa3434'; bg = '#fef0f0'; }
-        
+
         return (
           <span style={{ background: bg, color, padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: '500' }}>
             {record.status}
@@ -104,9 +104,9 @@ export default function ShippingDeliveryPage() {
       }
     },
     { key: 'date', title: 'Date' },
-    { 
-      key: 'actions', 
-      title: 'Actions', 
+    {
+      key: 'actions',
+      title: 'Actions',
       align: 'right',
       render: (record: ShippingDeliveryItem) => (
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
@@ -134,32 +134,44 @@ export default function ShippingDeliveryPage() {
         <StatCard label="Pending" value={data.filter(i => i.status === 'Pending').length} trend="-2.1%" colorClass="c-orange" />
       </div>
 
-      <DataTable 
-        title="Manage Shipping & Delivery" 
+      <DataTable
+        title="Manage Shipping & Delivery"
         description="View and manage all your shipping & delivery here."
-        columns={columns} 
-        data={data} 
+        columns={columns}
+        data={data}
         onAdd={handleAddClick}
       />
 
       {/* Add New Modal */}
-      <Modal 
-        isOpen={isAddModalOpen} 
-        onClose={() => setIsAddModalOpen(false)} 
+      <Modal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
         title="Add New Shipping & Delivery"
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           <div>
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Name</label>
-            <input 
-              type="text" 
-              value={formName} 
-              onChange={(e) => setFormName(e.target.value)}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }} 
-              placeholder="Enter Name" 
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+              placeholder="Enter Name"
             />
           </div>
-          <button 
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Status</label>
+            <select
+              value={formData.status}
+              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            >
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+          <button
             onClick={onSaveNew}
             style={{ background: '#0D6EFD', color: '#fff', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', marginTop: '10px' }}
           >
@@ -169,22 +181,34 @@ export default function ShippingDeliveryPage() {
       </Modal>
 
       {/* Edit Modal */}
-      <Modal 
-        isOpen={isEditModalOpen} 
-        onClose={() => { setIsEditModalOpen(false); setSelectedRecord(null); }} 
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => { setIsEditModalOpen(false); setSelectedRecord(null); }}
         title="Edit Shipping & Delivery"
       >
         <div key={selectedRecord?.id} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           <div>
             <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Name</label>
-            <input 
-              type="text" 
-              value={formName} 
-              onChange={(e) => setFormName(e.target.value)}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }} 
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
             />
           </div>
-          <button 
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Status</label>
+            <select
+              value={formData.status}
+              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+            >
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+          <button
             onClick={onUpdate}
             style={{ background: '#0D6EFD', color: '#fff', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', marginTop: '10px' }}
           >
@@ -194,9 +218,9 @@ export default function ShippingDeliveryPage() {
       </Modal>
 
       {/* View Modal */}
-      <Modal 
-        isOpen={isViewModalOpen} 
-        onClose={() => { setIsViewModalOpen(false); setSelectedRecord(null); }} 
+      <Modal
+        isOpen={isViewModalOpen}
+        onClose={() => { setIsViewModalOpen(false); setSelectedRecord(null); }}
         title="View Shipping & Delivery"
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -208,16 +232,16 @@ export default function ShippingDeliveryPage() {
       </Modal>
 
       {/* Delete Confirmation Modal */}
-      <Modal 
-        isOpen={isDeleteModalOpen} 
-        onClose={() => { setIsDeleteModalOpen(false); setSelectedRecord(null); }} 
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => { setIsDeleteModalOpen(false); setSelectedRecord(null); }}
         title="Confirm Delete"
       >
         <div style={{ textAlign: 'center' }}>
           <p>Are you sure you want to delete <strong>{selectedRecord?.name}</strong>?</p>
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '20px' }}>
             <button onClick={() => setIsDeleteModalOpen(false)} style={{ padding: '8px 16px', borderRadius: '4px', border: '1px solid #ddd', background: '#fff', cursor: 'pointer' }}>Cancel</button>
-            <button 
+            <button
               onClick={onConfirmDelete}
               style={{ padding: '8px 16px', borderRadius: '4px', border: 'none', background: '#dc3545', color: '#fff', cursor: 'pointer' }}
             >

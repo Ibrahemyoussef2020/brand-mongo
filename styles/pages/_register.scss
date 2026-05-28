@@ -1,0 +1,243 @@
+@use '../utils/vars.scss';
+@use '../utils/mixins.scss';
+
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgb(33,150,243), rgb(25,118,210));
+  padding: 20px;
+
+  @include mixins.min-width(vars.$medium_size) {
+    padding: 40px 20px;
+  }
+}
+
+.register-wrapper {
+  width: 100%;
+  max-width: 450px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: slideUp 0.5s ease-out;
+
+  @include mixins.min-width(vars.$medium_size) {
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.register-header {
+  background: linear-gradient(135deg, rgb(33,150,243), rgb(25,118,210));
+  padding: 40px 20px;
+  text-align: center;
+  color: #fff;
+
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    margin-bottom: 8px;
+
+    @include mixins.min-width(vars.$medium_size) {
+      font-size: 32px;
+    }
+  }
+
+  p {
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.9;
+  }
+}
+
+.register-content {
+  padding: 30px 25px;
+  max-height: 70vh;
+  overflow-y: auto;
+
+  @include mixins.min-width(vars.$medium_size) {
+    padding: 40px 35px;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: vars.$gray-100;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: vars.$gray-400;
+    border-radius: 10px;
+
+    &:hover {
+      background: vars.$gray-500;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 18px;
+
+  &:last-of-type {
+    margin-bottom: 10px;
+  }
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: vars.$gray-600;
+  margin-bottom: 8px;
+  text-transform: capitalize;
+
+  @include mixins.min-width(vars.$medium_size) {
+    font-size: 15px;
+  }
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  border: 2px solid vars.$gray-300;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: vars.$primary;
+    background-color: #f8fbff;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+  }
+
+  &:disabled {
+    background-color: vars.$gray-100;
+    cursor: not-allowed;
+    color: vars.$gray-500;
+  }
+
+  &::placeholder {
+    color: vars.$gray-400;
+  }
+}
+
+
+
+.submit-btn {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #2675ff 0%, #1b62d2 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: vars.$gray-400;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+.divider {
+  position: relative;
+  margin: 25px 0;
+  text-align: center;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: vars.$gray-300;
+  }
+
+  span {
+    position: relative;
+    background: #fff;
+    padding: 0 12px;
+    color: vars.$gray-500;
+    font-size: 13px;
+    font-weight: 500;
+  }
+}
+
+.oauth-btn {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: vars.$gray-600;
+  background: #fff;
+  border: 2px solid vars.$gray-300;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  &:hover {
+    border-color: #2675ff;
+    background: #f3f8ff;
+    color: #2675ff;
+  }
+
+  img {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Removed unused blocks: .alert, .password-requirements, .register-footer
+   These selectors are not used by app/[locale]/(main)/register/page.tsx
+   and were removed to keep this file focused. */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

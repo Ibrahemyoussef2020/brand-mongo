@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 import Link from "next/link";
 import { ProductProps } from "@/types";
 import Image from "next/image";
+import { getImageSrc } from "@/helpers/getImageSrc";
 import BrowserProduct from "../general/BrowserProduct";
 import { useEffect, useState } from "react";
 import { showProducts } from "@/app/apis";
@@ -83,7 +84,7 @@ const handleAddToCart = (product:ProductProps)=>{
             
             <article style={{height:"370px"}}>
                 <Image
-                    src={`/${product.image}.webp`}
+                    src={getImageSrc(product.image)}
                     alt=""
                     height={194}
                     width={194}
@@ -120,7 +121,7 @@ const handleAddToCart = (product:ProductProps)=>{
                       <div className="articel-wrapper">
                           <div className="img-wrapper">
                               <Image
-                                  src={`/${product.image}.webp`}
+                                  src={getImageSrc(product.image)}
                                   alt=""
                                   height={60}
                                   width={60}

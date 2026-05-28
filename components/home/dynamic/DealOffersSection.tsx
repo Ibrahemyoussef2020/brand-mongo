@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import "swiper/css";
+//import "swiper/css";
 
 import Image from "next/image";
 
@@ -162,9 +162,12 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
 
 
 
-  return (
+  return ( 
 
-    <section className='home-offers'>
+    <section>
+
+    <div className='home-offers'>
+
 
         <div className='intro' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px' }}>
 
@@ -192,7 +195,7 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
 
                         <p>{timeLeft.hours.toString().padStart(2, '0')}</p>
 
-                        <h3>Hour</h3>
+                        <h3>Hour</h3> 
 
                     </article>
 
@@ -216,20 +219,7 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
 
             )}
 
-            <Link href={`/${lang}/deal-offers`} style={{
-                background: 'linear-gradient(135deg, #ff9800, #f57c00)',
-                color: 'white',
-                padding: '10px 24px',
-                borderRadius: '25px',
-                fontWeight: '700',
-                textDecoration: 'none',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                boxShadow: '0 4px 10px rgba(255, 152, 0, 0.3)',
-                transition: 'all 0.3s ease',
-            }}>
-                Show ALL
-            </Link>
+       
 
         </div>
 
@@ -245,7 +235,7 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
 
                 loop={true}
 
-                className="wraper-center h-[250px]"
+                className="wraper-center"
 
                 breakpoints={{
 
@@ -297,8 +287,30 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
 
         </div>
 
-    </section>
+      
+       
+</div>
 
+
+            <Link href={`/${lang}/deal-offers`} style={{
+                background: 'linear-gradient(135deg, #ff9800, #f57c00)',
+                color: 'white',
+                padding: '10px 24px',
+                borderRadius: '25px',
+                fontWeight: '700',
+                textDecoration: 'none',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+                boxShadow: '0 4px 10px rgba(255, 152, 0, 0.3)',
+                transition: 'all 0.3s ease',
+                margin: '20px 0 20px ',
+                display: 'block',
+                maxWidth: 'fit-content',
+            }}>
+                Show ALL
+            </Link>
+
+</section>
   )
 
 }

@@ -8,8 +8,12 @@ import ProductModel from "@/lib/models/ProductModel";
 
 export async function GET(req: NextRequest) {
   try {
-    await dbConnect();
-    
+    const conn = await dbConnect();
+    if (!conn) {
+      console.error('GET /api/cart: database connection unavailable');
+      return NextResponse.json({ success: false, message: 'Database connection unavailable' }, { status: 503 });
+    }
+
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -32,8 +36,12 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    await dbConnect();
-    
+    const conn = await dbConnect();
+    if (!conn) {
+      console.error('POST /api/cart: database connection unavailable');
+      return NextResponse.json({ success: false, message: 'Database connection unavailable' }, { status: 503 });
+    }
+
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -42,6 +50,7 @@ export async function POST(req: NextRequest) {
     const userId = session.user.id;
     const userEmail = session.user.email;
     const body = await req.json();
+    console.log("POST /api/cart body:", body);
     const { product, quantity, price, title, image, deliveryPrice } = body;
 
     // Validate required fields
@@ -86,15 +95,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(cart);
   } catch (error: any) {
     console.error("Error in POST /api/cart:", error);
+    console.error(error?.stack);
     return NextResponse.json({success: false , message: "Internal Server Error", error: (error as Error).message || String(error) , status: 500 }, { status: 500 });
   }
 }
 
 export async function PATCH(req: NextRequest) {
-    try {
-        await dbConnect();
-        
-        const session = await getServerSession(authOptions);
+  try {
+    const conn = await dbConnect();
+    if (!conn) {
+      console.error('PATCH /api/cart: database connection unavailable');
+      return NextResponse.json({ success: false, message: 'Database connection unavailable' }, { status: 503 });
+    }
+
+    const session = await getServerSession(authOptions);
         if (!session || !session.user) {
           return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -159,10 +173,14 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-    try {
-        await dbConnect();
-        
-        const session = await getServerSession(authOptions);
+  try {
+    const conn = await dbConnect();
+    if (!conn) {
+      console.error('DELETE /api/cart: database connection unavailable');
+      return NextResponse.json({ success: false, message: 'Database connection unavailable' }, { status: 503 });
+    }
+
+    const session = await getServerSession(authOptions);
         if (!session || !session.user) {
           return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

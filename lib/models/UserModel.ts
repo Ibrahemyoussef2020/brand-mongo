@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema(
       email: {type: String,   required: true, unique: true },
       image: { type: String, required: false },
       password: {type: String, required: false},
-      role: { type: String, enum: ['super_admin', 'ecommerce_admin', 'pos_admin', 'user'], default: 'user' },
+      role: { type: String, enum: ['super_admin', 'admin', 'user'], default: 'user' },
     },
     { timestamps: true }
   )

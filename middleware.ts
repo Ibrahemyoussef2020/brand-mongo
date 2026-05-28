@@ -49,27 +49,11 @@ export async function middleware(request: NextRequest) {
 
     const role = token.role as string;
     const isSuperAdmin = role === 'super_admin';
-    const isEcommerceAdmin = role === 'ecommerce_admin';
-    const isPosAdmin = role === 'pos_admin';
-    
-    // Redirect admins to their specific overview pages if they land on the root dashboard
-    if (request.nextUrl.pathname === `/${locale}/dashboard` || request.nextUrl.pathname === `/${locale}/dashboard/`) {
-      if (isEcommerceAdmin) {
-        return NextResponse.redirect(new URL(`/${locale}/dashboard/ecommerce`, request.url));
-      }
-      if (isPosAdmin) {
-        return NextResponse.redirect(new URL(`/${locale}/dashboard/pos`, request.url));
-      }
-    }
+    const isAdmin = role === 'admin';
 
-    // Protect ecommerce and pos specific sub-routes if necessary
-    // Example: POS admin cannot access /dashboard/ecommerce
-    if (request.nextUrl.pathname.startsWith(`/${locale}/dashboard/ecommerce`) && !isSuperAdmin && !isEcommerceAdmin) {
-      return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url)); // Fallback redirect
-    }
-
-    if (request.nextUrl.pathname.startsWith(`/${locale}/dashboard/pos`) && !isSuperAdmin && !isPosAdmin) {
-      return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url)); // Fallback redirect
+    // Protect ecommerce-specific sub-routes if necessary
+    if (request.nextUrl.pathname.startsWith(`/${locale}/dashboard/ecommerce`) && !isSuperAdmin && !isAdmin) {
+      return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url));
     }
   }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image'
+import { getImageSrc } from '@/helpers/getImageSrc'
 import React from 'react'
 import { Navigation } from 'swiper/modules'
 import { SwiperSlide,Swiper } from 'swiper/react'
@@ -33,7 +34,7 @@ const DetailsSmallSlider = ({product}:props) => {
             >
               <div className="img-wrapper"> 
                 <Image
-                    src={`/${product.image}.webp`}
+                    src={getImageSrc(product.image)}
                     height={200}
                     width={200}
                     alt=""
@@ -45,7 +46,7 @@ const DetailsSmallSlider = ({product}:props) => {
             >
               <div className="img-wrapper"> 
                 <Image
-                    src={`/${product.image}.webp`}
+                    src={getImageSrc(product.image)}
                     height={200}
                     width={200}
                     alt=""
@@ -57,7 +58,7 @@ const DetailsSmallSlider = ({product}:props) => {
             >
               <div className="img-wrapper"> 
                 <Image
-                    src={`/${product.image}.webp`}
+                    src={getImageSrc(product.image)}
                     height={200}
                     width={200}
                     alt=""

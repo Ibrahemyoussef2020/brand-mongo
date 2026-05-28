@@ -1,6 +1,7 @@
 import {  getRecommendedItemsFromDB } from "@/lib/db/fetchProducts"
 import { ProductProps } from "@/types"
 import Image from "next/image"
+import { getImageSrc } from "@/helpers/getImageSrc"
 import Link from "next/link";
 import { sTranslate } from "@/utilities/translate";
 
@@ -30,7 +31,7 @@ const DetailsMayLik = async ({ locale }: { locale: Locale }) => {
                     return <Link href={`/${locale}/itemDetails/home-sections/${product.static_id || product._id}`} key={product._id}>
                     <div className="img-wrapper">
                         <Image
-                            src={`/${product.image}.webp`}
+                            src={getImageSrc(product.image)}
                             alt=""
                             height={60}
                             width={60}

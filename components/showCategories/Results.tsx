@@ -3,6 +3,7 @@
 import { FilterProps, ProductProps } from "@/types"
 
 import Image from "next/image"
+import { getImageSrc } from "@/helpers/getImageSrc"
 import ProductRating from "../general/ProductRating"
 
 import Link from "next/link"
@@ -50,7 +51,7 @@ const Results = ({products,category,maxCountProducts,handleFilter,loading}:props
                     return <article key={product._id + product.static_id + Math.random()} className="broweserd-product">
                     <div className="img-wrapper in-list">
                         <Image
-                        src={`/${product.image}.webp`}
+                        src={getImageSrc(product.image)}
                         alt={translate(product.title)}
 
                         height={164}
@@ -59,7 +60,7 @@ const Results = ({products,category,maxCountProducts,handleFilter,loading}:props
                     </div>
                     <div className="img-wrapper in-grid">
                         <Image
-                        src={`/${product.image}.webp`}
+                        src={getImageSrc(product.image)}
                         alt={translate(product.title)}
 
                         height={202}

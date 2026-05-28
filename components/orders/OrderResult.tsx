@@ -3,6 +3,7 @@
 import { addToFavStore, handleBill, handleProductsQuantity, removeFromCart } from "@/redux/slices"
 import { ProductProps } from "@/types"
 import Image from "next/image"
+import { getImageSrc } from "@/helpers/getImageSrc"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useDispatch, useSelector } from "react-redux"
@@ -39,7 +40,7 @@ const OrderResult = () => {
                     return <article key={product._id + Math.random()}>
                     <div className="img-wrapper">
                         <Image
-                        src={`/${product.image}.webp`}
+                        src={getImageSrc(product.image)}
                         alt={translate(product.title)}
                         height={200}
                         width={210}

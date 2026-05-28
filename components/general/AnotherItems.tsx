@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 import Link from "next/link";
 import { ProductProps } from "@/types";
 import Image from "next/image";
+import { getImageSrc } from "@/helpers/getImageSrc";
 import BrowserProduct from "../general/BrowserProduct";
 import { useLang } from "@/context/LangContext";
 
@@ -46,7 +47,7 @@ const AnotherItems = ({products, title, category='consumer-sections'}:props) => 
                     
                     <Link  href={`/itemDetails/${category}/${product._id}`}>
                         <Image
-                            src={`/${product.image}.webp`}
+                            src={getImageSrc(product.image)}
                             alt=""
                             height={114}
                             width={112}

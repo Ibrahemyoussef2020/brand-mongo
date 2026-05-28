@@ -25,17 +25,26 @@ async function main() {
       console.log(`User ${superAdminEmail} not found`);
     }
 
-    // Update ecommerce admin
+    // Update ecommerce admin to unified admin role
     const ecommerceAdminResult = await UserModel.findOneAndUpdate(
       { email: ecommerceAdminEmail },
-      { role: 'ecommerce_admin' },
+      { role: 'admin' },
       { new: true }
     );
 
     if (ecommerceAdminResult) {
-      console.log(`Updated ${ecommerceAdminEmail} to ecommerce_admin`);
+      console.log(`Updated ${ecommerceAdminEmail} to admin`);
     } else {
       console.log(`User ${ecommerceAdminEmail} not found`);
+    }
+
+    // Convert any remaining legacy admin roles to unified admin
+    const legacyAdminsUpdated = await UserModel.updateMany(
+      { role: { $in: ['ecommerce_admin', 'pos_admin'] } },
+      { role: 'admin' }
+    );
+    if (legacyAdminsUpdated.matchedCount > 0) {
+      console.log(`Converted ${legacyAdminsUpdated.matchedCount} legacy admin users to admin`);
     }
 
   } catch (error) {

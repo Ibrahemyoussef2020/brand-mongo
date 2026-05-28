@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { showProducts } from "@/app/apis";
 import { ProductProps } from "@/types";
 import Image from "next/image";
+import { getImageSrc } from "@/helpers/getImageSrc";
 import BrowserProduct from "../general/BrowserProduct";
 import { fetchDealOffersAction } from "@/lib/actions/clientProducts";
 import OffersSwiperSkelton from "@/skelton/home/OffersSwiper";
@@ -69,7 +70,7 @@ const { lang, translate } = useLang();
                   className="item-container"
                 >
                   <Image
-                    src={`/${product.image}.webp`}
+                    src={getImageSrc(product.image)}
                     height={98}
                     width={98}
                     alt=""

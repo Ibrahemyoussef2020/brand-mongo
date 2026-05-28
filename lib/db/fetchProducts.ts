@@ -1,6 +1,10 @@
 import dbConnect from "@/lib/dbConnect";
 import ProductModel from "@/lib/models/ProductModel";
 import RecommendedItemsModal from "@/lib/models/RecommendedItemsModel";
+import DealOffersModel from "@/lib/models/DealOffersModel";
+import HomeConsumerModel from "@/lib/models/HomeConsumer";
+import HomeOutdoorModel from "@/lib/models/HomeOutdoorModel";
+import { HomeSection } from "@/lib/models/HomeSection";
 import data from "@/lib/data";
 
 // --- Helpers for Products ---
@@ -79,7 +83,7 @@ function getPaginationParams(searchParams: URLSearchParams | any) {
 }
 
 export async function getProductsFromDB(searchParams: URLSearchParams | any) {
-  await dbConnect();
+  const conn = await dbConnect();
 
   const get = (key: string) => searchParams instanceof URLSearchParams ? searchParams.get(key) : searchParams[key];
   const shouldSeed = get('seed') === 'true';
@@ -96,18 +100,107 @@ export async function getProductsFromDB(searchParams: URLSearchParams | any) {
   let totalProducts = 0;
   let totalPages = 1;
 
-  if (isPaginationEnabled) {
-    const skip = (page - 1) * limit;
-    products = await ProductModel.find(query).skip(skip).limit(limit).lean();
-    totalProducts = await ProductModel.countDocuments(query);
-    totalPages = Math.ceil(totalProducts / limit);
+  if (!conn) {
+    // Fallback to in-memory seed data when DB is unavailable (development)
+    const matchesQuery = (product: any, queryObj: any): boolean => {
+      const getValue = (obj: any, path: string) => {
+        const parts = path.split('.');
+        let v = obj;
+        for (const p of parts) {
+          if (v == null) return undefined;
+          v = v[p];
+        }
+        return v;
+      };
+
+      const matchClause = (docVal: any, clause: any) => {
+        if (clause && typeof clause === 'object') {
+          if (clause.$in) return clause.$in.includes(docVal);
+          if (clause.$gte !== undefined) {
+            if (typeof docVal !== 'number') return false;
+            if (clause.$gte !== undefined && docVal < clause.$gte) return false;
+          }
+          if (clause.$lte !== undefined) {
+            if (typeof docVal !== 'number') return false;
+            if (clause.$lte !== undefined && docVal > clause.$lte) return false;
+          }
+          if (clause.$regex) {
+            const flags = clause.$options || '';
+            const re = new RegExp(clause.$regex, flags.replace('i', 'i'));
+            return re.test(String(docVal || ''));
+          }
+        }
+        return docVal === clause;
+      };
+
+      for (const key of Object.keys(queryObj)) {
+        if (key === '$or' && Array.isArray(queryObj.$or)) {
+          const orClauses = queryObj.$or;
+          if (!orClauses.some((c: any) => {
+            const subKey = Object.keys(c)[0];
+            return matchClause(getValue(product, subKey), c[subKey]);
+          })) return false;
+          continue;
+        }
+
+        const clause = queryObj[key];
+        const docVal = getValue(product, key);
+        if (!matchClause(docVal, clause)) return false;
+      }
+
+      return true;
+    };
+
+    const filtered = data.products.filter((p: any) => matchesQuery(p, query));
+    totalProducts = filtered.length;
+    if (isPaginationEnabled) {
+      const skip = (page - 1) * limit;
+      products = filtered.slice(skip, skip + limit);
+      totalPages = Math.ceil(totalProducts / limit);
+    } else {
+      products = filtered;
+    }
   } else {
-    products = await ProductModel.find(query).lean();
-    console.log("no pagggggghhhhhhhhhggggination" , query, products);
+    const section = get('section') || 'products';
+    
+    const SECTION_MODEL_MAP: Record<string, any> = {
+      'products': ProductModel,
+      'dealOffers': DealOffersModel,
+      'homeConsumer': HomeConsumerModel,
+      'homeOutdoor': HomeOutdoorModel,
+      'homeSections': HomeSection,
+      'recommendedItems': RecommendedItemsModal,
+    };
+    const TargetModel = SECTION_MODEL_MAP[section] || ProductModel;
 
-    totalProducts = products.length;
+    if (isPaginationEnabled) {
+      const skip = (page - 1) * limit;
+      products = await TargetModel.find(query).skip(skip).limit(limit).lean();
+      totalProducts = await TargetModel.countDocuments(query);
+      totalPages = Math.ceil(totalProducts / limit);
+    } else {
+      products = await TargetModel.find(query).lean();
+      totalProducts = products.length;
+    }
+
+    // Map HomeSections to look like standard products for the dashboard
+    if (section === 'homeSections' && products) {
+      products = products.map((item: any) => ({
+        _id: item._id,
+        static_id: item.key,
+        title: item.title || item.config?.productData?.title,
+        price: item.config?.productData?.price || 0,
+        oldPrice: item.config?.productData?.oldPrice || 0,
+        stockCount: item.config?.productData?.stockCount || 0,
+        category: item.subtitle || item.config?.productData?.category,
+        image: item.config?.productData?.image || '',
+        image2: item.config?.productData?.image2 || '',
+        image3: item.config?.productData?.image3 || '',
+        image4: item.config?.productData?.image4 || '',
+        section: 'homeSections'
+      }));
+    }
   }
-
 
   return {
     total: totalProducts,
@@ -119,28 +212,39 @@ export async function getProductsFromDB(searchParams: URLSearchParams | any) {
 }
 
 export async function getSingleProductFromDB(static_id: string) {
-  await dbConnect();
-  
-  // First try to find in database
-  let product = await ProductModel.findOne({ static_id }).lean();
-  
-  // If not found in DB, try to find in seed data and add to DB
+  const conn = await dbConnect();
+
+  // First try to find in database if connected
+  let product: any = null;
+  if (conn) {
+    product = await ProductModel.findOne({ static_id }).lean();
+  }
+
+  // If not found in DB or no DB, try to find in seed data and add to DB when possible
   if (!product) {
     const seedProduct = data.products.find((p) => p.static_id === static_id);
     if (seedProduct) {
-      await ProductModel.create(seedProduct);
-      product = await ProductModel.findOne({ static_id }).lean();
+      if (conn) {
+        await ProductModel.create(seedProduct);
+        product = await ProductModel.findOne({ static_id }).lean();
+      } else {
+        product = seedProduct;
+      }
     }
   }
-  
+
   return product;
 }
 
 // --- Helpers for Recommended Items ---
 
 export async function getRecommendedItemsFromDB() {
-  await dbConnect();
-  
+  const conn = await dbConnect();
+
+  if (!conn) {
+    return { data: data.recomendedItem || [] };
+  }
+
   // Try to find existing items
   let items = await RecommendedItemsModal.find({}).lean();
 

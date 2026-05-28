@@ -123,18 +123,15 @@ export default function UserMenu() {
 
               <div className="menu-divider"></div>
 
-              <button 
-                className="menu-item login-btn"
-                onClick={() => signIn("google", { callbackUrl: `/${lang}` })}
-              >
-                <Image 
-                  src="/images/icons/google.svg" 
-                  alt="Google" 
-                  width={16} 
-                  height={16}
-                />
-                <span>{translate(dictionaries.userMenu.signInWithGoogle)}</span>
-              </button>
+              <Link href={`/${lang}/login`} className="menu-item login-btn" onClick={() => setIsOpen(false)}>
+                <FontAwesomeIcon icon={faUser} width={16} />
+                <span>Sign In</span>
+              </Link>
+
+          
+
+              <div className="menu-divider"></div>
+
             </>
           )}
         </div>

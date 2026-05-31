@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     }
     
     const userId = session.user.id;
-    const orders = await OrderModel.find({ user: userId }).sort({ createdAt: -1 });
+    const orders = await OrderModel.find({ user: userId }).sort({ createdAt: -1 }).lean();
     return NextResponse.json(orders);
   } catch (error: any) {
     console.error("Error in GET /api/orders:", error);

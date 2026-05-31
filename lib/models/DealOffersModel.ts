@@ -83,9 +83,11 @@ const DealOffersSchema = new mongoose.Schema(
 
 )
 
+// Indexes for frequently filtered/looked-up fields
+DealOffersSchema.index({ static_id: 1 });
+DealOffersSchema.index({ 'category.en': 1 });
+
 const DealOffersModel =
   mongoose.models?.DealOffers || mongoose.model('DealOffers', DealOffersSchema)
-
-
 
 export default DealOffersModel

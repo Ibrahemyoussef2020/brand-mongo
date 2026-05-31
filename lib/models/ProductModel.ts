@@ -90,6 +90,21 @@ const ProductSchema = new mongoose.Schema(
   }
 )
 
+// Indexes for frequently filtered fields
+// category.en: used in 10+ category-level API routes
+ProductSchema.index({ 'category.en': 1 });
+// static_id: used in findOne lookups and prefix-regex queries
+ProductSchema.index({ static_id: 1 });
+// type.en / brand.en: used in fetchProducts filter builder
+ProductSchema.index({ 'type.en': 1 });
+ProductSchema.index({ 'brand.en': 1 });
+// price: used in range ($gte/$lte) filters
+ProductSchema.index({ price: 1 });
+// avgRating: used in equality and range filters
+ProductSchema.index({ avgRating: 1 });
+// Compound: category + price is the most common combined filter pattern
+ProductSchema.index({ 'category.en': 1, price: 1 });
+
 const ProductModel =
   mongoose.models?.Product || mongoose.model('Product', ProductSchema)
 

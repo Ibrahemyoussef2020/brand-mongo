@@ -115,8 +115,6 @@ export async function getProductsFromDB(searchParams: URLSearchParams | any) {
     totalPages = Math.ceil(totalProducts / limit);
   } else {
     products = await Model.find(query).lean();
-    console.log("no pagggggghhhhhhhhhggggination" , query, products);
-
     totalProducts = products.length;
   }
 

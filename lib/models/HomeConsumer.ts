@@ -84,6 +84,10 @@ const HomeConsumerSchema = new mongoose.Schema(
   }
 )
 
+// Indexes for frequently filtered/looked-up fields
+HomeConsumerSchema.index({ static_id: 1 });
+HomeConsumerSchema.index({ 'category.en': 1 });
+
 const HomeConsumerModel =
   mongoose.models?.HomeConsumer || mongoose.model('HomeConsumer', HomeConsumerSchema)
 

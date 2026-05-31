@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     await dbConnect();
     
     // For admin, fetch all orders
-    const orders = await OrderModel.find({}).sort({ createdAt: -1 });
+    const orders = await OrderModel.find({}).sort({ createdAt: -1 }).lean();
     return NextResponse.json(orders);
   } catch (error: any) {
     console.error("Error in GET /api/admin/orders:", error);

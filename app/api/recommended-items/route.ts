@@ -4,15 +4,12 @@ import ProductModel from "@/lib/models/ProductModel";
 
 export async function GET() {
   try {
-    console.log('API: Fetching recommended items from products collection...');
     await dbConnect();
     
     // Fetch recommended items (products with to_home: true)
     const result = await ProductModel.find({ 
       to_home: true 
     }).lean();
-    
-    console.log(`API: Found ${result.length} recommended items`);
     
     return NextResponse.json({
       total: result.length,

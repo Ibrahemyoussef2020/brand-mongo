@@ -15,8 +15,6 @@ function buildQuery(searchParams: URLSearchParams) {
 
   if (searchParams.has("category")) {
     query.category = { $in: searchParams.getAll("category") };
-    console.log('categoryy', query.category);
-
   }
 
   if (searchParams.has("brand")) {
@@ -83,7 +81,6 @@ async function fetchProducts(query: any, page: number, limit: number, isPaginati
   if (isPaginationEnabled) {
     const skip = (page - 1) * limit;
     products = await DealOffersModel.find(query).skip(skip).limit(limit);
-    console.log('products', products);
     totalProducts = await DealOffersModel.countDocuments(query);
     totalPages = Math.ceil(totalProducts / limit);
   } else {
@@ -105,9 +102,6 @@ export async function GET(req: Request) {
     const { isPaginationEnabled, page, limit } = getPaginationParams(searchParams);
 
     const { products, totalProducts, totalPages } = await fetchProducts(query, page, limit, isPaginationEnabled);
-
-
-    console.log('products', products);
 
     return NextResponse.json({
       total: totalProducts,

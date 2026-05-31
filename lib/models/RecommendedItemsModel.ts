@@ -82,6 +82,9 @@ const RecommendedItemsSchema = new mongoose.Schema(
   }
 )
 
+// Index for static_id — used in findOne lookups and seed logic
+RecommendedItemsSchema.index({ static_id: 1 });
+
 const RecommendedItemsModel =
   mongoose.models?.RecommendedItems || mongoose.model('RecommendedItems', RecommendedItemsSchema)
 

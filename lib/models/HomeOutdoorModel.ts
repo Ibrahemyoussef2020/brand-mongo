@@ -84,6 +84,10 @@ const HomeOutdoorSchema = new mongoose.Schema(
   }
 )
 
+// Indexes for frequently filtered/looked-up fields
+HomeOutdoorSchema.index({ static_id: 1 });
+HomeOutdoorSchema.index({ 'category.en': 1 });
+
 const HomeOutdoorModel =
   mongoose.models?.HomeOutdoor || mongoose.model('HomeOutdoor', HomeOutdoorSchema)
 

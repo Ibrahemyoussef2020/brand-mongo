@@ -30,6 +30,11 @@ const OrderSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// Compound index: covers find({ user }) + sort({ createdAt: -1 }) in one scan
+OrderSchema.index({ user: 1, createdAt: -1 });
+// Single index: covers duplicate-check findOne({ paymentIntentId }) in POST /api/orders
+OrderSchema.index({ paymentIntentId: 1 });
+
 const OrderModel = mongoose.models?.Order || mongoose.model("Order", OrderSchema);
 
 export default OrderModel;

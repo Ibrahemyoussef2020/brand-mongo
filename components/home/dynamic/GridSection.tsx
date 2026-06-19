@@ -12,20 +12,20 @@ import ProductCard from '@/components/general/ProductCard';
 import Pagenations from '@/components/showCategories/Pagenations';
 
 interface GridSectionProps {
-  section: any;
-  locale: Locale;
+    section: any;
+    locale: Locale;
 }
 
 const GridSection = ({ section, locale }: GridSectionProps) => {
     const [products, setProducts] = useState(section.products || []);
     const [loading, setLoading] = useState(false);
-    
+
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
     const [maxCountProducts, setMaxCountProducts] = useState(10);
-    
+
     const config = section.config || {};
-    
+
     const titleObj = section.title || {};
     const currentTitle = titleObj[locale] || titleObj.en || '';
 
@@ -43,7 +43,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                     } else if (section.key === 'recommended-items') {
                         apiUrl = '/api/recommended-items-direct';
                     }
-                    
+
                     if (apiUrl) {
                         console.log(`Fetching ${section.key} data...`);
                         const response = await fetch(apiUrl);
@@ -56,7 +56,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                     setLoading(false);
                 }
             };
-            
+
             fetchProducts();
         }
     }, [section.key, section.products]);
@@ -70,7 +70,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
     }
 
     return (
-        <section className='recomended-items' style={{ 
+        <section className='recomended-items' style={{
             padding: '40px 0',
             backgroundColor: '#ffffff'
         }}>
@@ -82,15 +82,15 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                 margin: '0 auto 30px',
                 padding: '0 30px'
             }}>
-                {currentTitle ? <h2 style={{ 
-                    fontSize: '28px', 
-                    fontWeight: '700', 
+                {currentTitle ? <h2 style={{
+                    fontSize: '28px',
+                    fontWeight: '700',
                     margin: 0,
                     color: '#2c3e50',
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                 }}>{currentTitle}</h2> : <div></div>}
-                
+
                 {/* Dynamically display show ALL if user is scrolling sections */}
                 <Link href={`/${locale}/${section.key}`} style={{
                     background: 'linear-gradient(135deg, #ff9800, #f57c00)',
@@ -107,11 +107,11 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                     Show ALL
                 </Link>
             </div>
-            
+
             {(!config.displayType || config.displayType === 'grid') ? (
                 <>
-                    <div style={{ 
-                        display: 'grid', 
+                    <div style={{
+                        display: 'grid',
                         gridTemplateColumns: `repeat(${config.layout?.columns || 5}, 1fr)`,
                         gap: '25px',
                         maxWidth: '1400px',
@@ -126,12 +126,12 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                     </div>
                     {products.length > maxCountProducts && (
                         <div style={{ maxWidth: '1400px', margin: '30px auto 0', padding: '0 30px', display: 'flex', justifyContent: 'flex-end' }}>
-                            <Pagenations 
-                                maxCountProducts={maxCountProducts} 
-                                setMaxCountProducts={setMaxCountProducts} 
-                                currentPage={currentPage} 
-                                setCurrentPage={setCurrentPage} 
-                                totalItems={products.length} 
+                            <Pagenations
+                                maxCountProducts={maxCountProducts}
+                                setMaxCountProducts={setMaxCountProducts}
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                totalItems={products.length}
                             />
                         </div>
                     )}
@@ -147,7 +147,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                         }}
                     >
                         {products.map((product: any, idx: number) => (
-                            <SwiperSlide key={`slide1-${product._id || product.static_id || idx}-${idx}`} style={{height: 'auto', display: 'flex'}}>
+                            <SwiperSlide key={`slide1-${product._id || product.static_id || idx}-${idx}`} style={{ height: 'auto', display: 'flex' }}>
                                 <ProductCard product={product} locale={locale} sectionKey={section.key} config={config} index={idx} />
                             </SwiperSlide>
                         ))}
@@ -166,7 +166,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                         }}
                     >
                         {products.map((product: any, idx: number) => (
-                            <SwiperSlide key={`slide2-${product._id || product.static_id || idx}-${idx}`} style={{height: 'auto', display: 'flex', marginTop: '15px'}}>
+                            <SwiperSlide key={`slide2-${product._id || product.static_id || idx}-${idx}`} style={{ height: 'auto', display: 'flex', marginTop: '15px' }}>
                                 <ProductCard product={product} locale={locale} sectionKey={section.key} config={config} index={idx} />
                             </SwiperSlide>
                         ))}

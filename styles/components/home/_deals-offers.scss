@@ -5,7 +5,6 @@
     border-block: 1px solid $gray-350;
     border-inline-start: 1px solid $gray-350;
     padding: .5rem;
-    background: linear-gradient(135deg, rgb(33, 150, 243), rgb(25, 118, 210));
 
     @include min-width($medium_size) {
         display: flex;
@@ -15,7 +14,7 @@
     .intro {
         display: flex;
         justify-content: space-between;
-        background: linear-gradient(135deg, rgb(33, 150, 243), rgb(25, 118, 210));
+        // background: linear-gradient(135deg, rgb(33, 150, 243), rgb(25, 118, 210));
 
         border: 0 !important;
 
@@ -45,7 +44,7 @@
             position: relative;
             bottom: unset !important;
             width: 100%;
-            color: #fff;
+            // color: #fff;
 
             @include min-width($medium_size) {
                 margin-bottom: 18px;
@@ -88,8 +87,8 @@
                 color: $gray-500;
                 text-align: center;
                 transition: color .3s ease-in-out, background-color .3s ease-in-out;
-                background-color: #fff !important;
-                color: #606060 !important;
+                background: linear-gradient(135deg, rgb(33, 150, 243), rgb(25, 118, 210)) !important;
+                color: #fff;
 
                 &.days {
                     display: none;

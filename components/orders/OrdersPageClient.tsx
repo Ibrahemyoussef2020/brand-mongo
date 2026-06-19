@@ -19,12 +19,13 @@ const OrdersPageClient = ({ children }: Props) => {
     useEffect(() => {
         const paymentIntent = searchParams.get('payment_intent');
         const redirectStatus = searchParams.get('redirect_status');
+        const shippingAddress = searchParams.get('shipping_address') || '';
 
         if (paymentIntent && redirectStatus === 'succeeded') {
             setOrderStatus('processing');
             setMessage('Processing your order...');
 
-            dispatch(createOrder(paymentIntent))
+            dispatch(createOrder({ paymentIntentId: paymentIntent, shippingAddress }))
                 .unwrap()
                 .then((result) => {
                     setOrderStatus('success');

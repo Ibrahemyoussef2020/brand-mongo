@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 const initialState = {
     products: [] as ProductProps[],
     purchases: [] as ProductProps[],
+    orders: [] as any[],
     productCount: 0,
     bill: 0,
     finalBill: 0,
@@ -87,13 +88,13 @@ export const handleProductsQuantity = createAsyncThunk("cart/handleProductsQuant
     return response.data;
 });
 
-export const createOrder = createAsyncThunk("cart/createOrder", async (paymentIntentId: string, { getState, rejectWithValue }) => {
+export const createOrder = createAsyncThunk("cart/createOrder", async (payload: { paymentIntentId: string, shippingAddress?: string }, { getState, rejectWithValue }) => {
     const state = getState() as IRootState;
     if (!state.combine.log.isLogged) {
         toast.error("You should login first");
         return rejectWithValue("Not logged in");
     }
-    const response = await axios.post("/api/orders", { paymentIntentId });
+    const response = await axios.post("/api/orders", payload);
     return response.data;
 });
 
@@ -188,6 +189,7 @@ const cartSlice = createSlice({
                 state.status = 'succeeded';
             })
             .addCase(fetchOrders.fulfilled, (state, action) => {
+                state.orders = action.payload;
                 // Flatten orders' items into purchases for display
                 const allItems = action.payload.flatMap((order: any) => 
                     order.items.map((item: any) => ({

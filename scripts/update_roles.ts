@@ -8,7 +8,7 @@ async function main() {
   try {
     await dbConnect();
     console.log('Connected to DB');
-
+ 
     const superAdminEmail = 'ibrahimyoussef.dev@gmail.com';
     const ecommerceAdminEmail = 'ibrahimyoussef95.12@gmail.com';
 

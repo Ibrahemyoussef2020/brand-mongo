@@ -32,7 +32,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
     const router = useRouter();
     
     const productId = product._id || product.static_id;
-    const activeColor = config.actionButtonType === 'show-details' ? '#2196F3' : '#4CAF50';
+    const activeColor = config.actionButtonType === 'show-details' ? '#2196F3' : config.actionButtonType === 'add-to-fav' ? '#ff5252' : '#4CAF50';
 
     const handleAddToCart = (e: React.MouseEvent , product:any) => {
         e.preventDefault();
@@ -127,7 +127,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                 )}
                 
                 {/* Action Toggle Top-Right Button */}
-                {config.actionButtonType === 'show-details' ? (
+                {config.actionButtonType === 'show-details' || config.actionButtonType === 'add-to-fav' ? (
                     <button onClick={(e) => handleAddToCart(e,product)} style={{
                         position: 'absolute',
                         top: '15px',
@@ -175,26 +175,28 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     </Link>
                 )}
                 
-                {/* Add to Wishlist */}
-                <button onClick={handleToggleFav} style={{
-                    position: 'absolute',
-                    bottom: '15px',
-                    right: '15px',
-                    background: 'rgba(255,255,255,0.95)',
-                    border: 'none',
-                    borderRadius: '50%',
-                    width: '36px',
-                    height: '36px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    zIndex: 1,
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                    transition: 'all 0.3s ease'
-                }}>
-                    <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: isFav ? activeColor : '#666', fontSize: '18px' }} />
-                </button>
+                {/* Add to Wishlist Toggle */}
+                {config.actionButtonType !== 'add-to-fav' && (
+                    <button onClick={handleToggleFav} style={{
+                        position: 'absolute',
+                        bottom: '15px',
+                        right: '15px',
+                        background: isFav ? 'linear-gradient(135deg, #ff6b6b, #ff5252)' : 'rgba(255,255,255,0.95)',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '36px',
+                        height: '36px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        zIndex: 10,
+                        boxShadow: isFav ? '0 2px 8px rgba(255,107,107,0.4)' : '0 2px 8px rgba(0,0,0,0.15)',
+                        transition: 'all 0.3s ease'
+                    }}>
+                        <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: isFav ? 'white' : '#ff5252', fontSize: '18px' }} />
+                    </button>
+                )}
             </div>
             
             {/* Product Info */}
@@ -306,7 +308,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     )}
                 </div>
                 
-                {/* Action Button: Add to Cart vs Show Details */}
+                {/* Action Button: Add to Cart vs Show Details vs Add to Fav */}
                 {config.actionButtonType === 'show-details' ? (
                     <Link href={`/${locale}/itemDetails/${product.category?.en || sectionKey}/${product.static_id}`} style={{
                         background: 'linear-gradient(135deg, #2196F3, #1976D2)',
@@ -330,6 +332,31 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     }}>
                         Show Details
                     </Link>
+                ) : config.actionButtonType === 'add-to-fav' ? (
+                    <button onClick={handleToggleFav} style={{
+                        background: 'linear-gradient(135deg, #ff6b6b, #ff5252)',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '6px',
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        marginTop: 'auto',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                        boxShadow: '0 2px 8px rgba(255,107,107,0.3)',
+                        position: 'relative',
+                        zIndex: 10,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '8px'
+                    }}>
+                        <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ fontSize: '16px' }} />
+                        {isFav ? 'Remove Fav' : 'Add to Fav'}
+                    </button>
                 ) : (
                     <button onClick={(e)=>handleAddToCart(e,product)} style={{
                         background: 'linear-gradient(135deg, #4CAF50, #45a049)',

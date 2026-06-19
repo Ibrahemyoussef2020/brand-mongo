@@ -19,11 +19,12 @@ interface props{
     products:ProductProps[];
     category:string;
     maxCountProducts:number,
+    currentPage?: number,
     handleFilter:(filterData:FilterProps|any, isAdded:boolean)=>boolean|void|any,
     loading?: boolean;
 }
 
-const Results = ({products,category,maxCountProducts,handleFilter,loading}:props) => {
+const Results = ({products,category,maxCountProducts,currentPage = 1,handleFilter,loading}:props) => {
     const { translate } = useLang();
 
 
@@ -47,7 +48,10 @@ const Results = ({products,category,maxCountProducts,handleFilter,loading}:props
   return  <div className="product-results">
         {
             products?.map((product:ProductProps,index:number) => {
-                if (index < maxCountProducts) {
+                const startIndex = (currentPage - 1) * maxCountProducts;
+                const endIndex = startIndex + maxCountProducts;
+                
+                if (index >= startIndex && index < endIndex) {
                     return <article key={product._id + product.static_id + Math.random()} className="broweserd-product">
                     <div className="img-wrapper in-list">
                         <Image

@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus, faTrash, faEye } from "@fortawesome/free-solid-svg-icons";
 import { dictionaries } from "@/lib/dictionaries";
+import { toast } from 'react-toastify';
 
 interface Order {
   _id: string;
@@ -12,6 +13,12 @@ interface Order {
   totalBill: number;
   status: string;
   createdAt: string;
+  updatedAt: string;
+  requiresUserApproval?: boolean;
+  proposedChanges?: {
+      items?: any[];
+      status?: string;
+  };
 }
 
 interface Product {
@@ -33,11 +40,22 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
     const [editItemQuantity, setEditItemQuantity] = useState<number>(1);
     const [selectedProduct, setSelectedProduct] = useState<string>('');
     const [quantity, setQuantity] = useState<number>(1);
+    const [viewModalOpen, setViewModalOpen] = useState(false);
+    const [orderToView, setOrderToView] = useState<Order | null>(null);
+    const [popupMessage, setPopupMessage] = useState<{title: string, message: string, type: 'success' | 'error'} | null>(null);
 
     useEffect(() => {
         fetchOrders();
         fetchProducts();
     }, []);
+
+    const resolveImage = (imagePath: string) => {
+        if (!imagePath) return "/images/placeholder.webp";
+        if (imagePath.startsWith('http')) return imagePath;
+        const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+        if (path.includes('.')) return path;
+        return `${path}.webp`;
+    };
 
     const fetchOrders = async () => {
         try {
@@ -64,8 +82,10 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
         try {
             const res = await fetch('/api/products');
             if (res.ok) {
-                const data = await res.json();
-                setProducts(data);
+                const result = await res.json();
+                // The API returns { total, page, limit, totalPages, data: [...] }
+                const productsArray = Array.isArray(result) ? result : (result.data || []);
+                setProducts(productsArray);
             }
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -74,7 +94,7 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
 
     const openEditModal = (order: Order) => {
         setSelectedOrder(order);
-        setEditItems([...order.items]);
+        setEditItems(JSON.parse(JSON.stringify(order.items)));
         setEditStatus(order.status);
         setModalOpen(true);
     };
@@ -118,8 +138,11 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
     const saveEditItem = () => {
         if (editingItemIndex !== null) {
             const updatedItems = [...editItems];
-            updatedItems[editingItemIndex].quantity = editItemQuantity;
-            updatedItems[editingItemIndex].total = updatedItems[editingItemIndex].price * editItemQuantity;
+            updatedItems[editingItemIndex] = {
+                ...updatedItems[editingItemIndex],
+                quantity: editItemQuantity,
+                total: updatedItems[editingItemIndex].price * editItemQuantity
+            };
             setEditItems(updatedItems);
             setEditingItemIndex(null);
         }
@@ -131,24 +154,40 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
 
     const saveOrder = async () => {
         if (!selectedOrder) return;
+        
         try {
+            const itemsChanged = JSON.stringify(editItems) !== JSON.stringify(selectedOrder.items);
+            
+            const payload: any = {
+                orderId: selectedOrder._id,
+                status: editStatus,
+            };
+            
+            if (itemsChanged) {
+                payload.items = editItems;
+            }
+
             const res = await fetch('/api/orders', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    orderId: selectedOrder._id,
-                    status: editStatus,
-                    items: editItems
-                })
+                body: JSON.stringify(payload)
             });
             if (res.ok) {
-                fetchOrders();
+                const data = await res.json();
                 closeModal();
+                if (data.order?.requiresUserApproval) {
+                    setPopupMessage({ title: 'Modifications Proposed', message: 'The modification will be sent to the user first to confirm it.', type: 'success' });
+                } else {
+                    setPopupMessage({ title: 'Success', message: 'Order updated successfully.', type: 'success' });
+                }
+                fetchOrders();
             } else {
-                console.error('Error updating order');
+                const errData = await res.json();
+                setPopupMessage({ title: 'Error', message: 'Error updating order: ' + (errData.error || errData.message), type: 'error' });
             }
         } catch (error) {
             console.error('Error updating order:', error);
+            setPopupMessage({ title: 'Error', message: 'Error updating order: ' + String(error), type: 'error' });
         }
     };
 
@@ -190,14 +229,18 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
                                     <td>{order.items?.length || 0}</td>
                                     <td style={{ fontWeight: 700 }}>${order.totalBill?.toFixed(2) || '0.00'}</td>
                                     <td>
-                                        {Object.is(order.status, "Delivered") ? <span className="pill success">{dictionaries.dashboard.tables.statusDelivered[locale]}</span> 
+                                        {order.requiresUserApproval ? <span className="pill warning">Pending User Approval</span>
+                                        : Object.is(order.status, "Delivered") ? <span className="pill success">{dictionaries.dashboard.tables.statusDelivered[locale]}</span> 
                                         : Object.is(order.status, "Pending") ? <span className="pill warning">{dictionaries.dashboard.tables.statusPending[locale]}</span>
                                         : Object.is(order.status, "Cancelled") ? <span className="pill danger">{dictionaries.dashboard.tables.statusCancelled[locale]}</span>
                                         : <span className="pill info">{dictionaries.dashboard.tables.statusProcessing[locale]}</span>}
                                     </td>
                                     <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                                     <td>
-                                        <div className="action-btns">
+                                        <div className="action-btns" style={{ display: 'flex', gap: '5px' }}>
+                                            <button className="btn-outline" title="View Details" onClick={() => { setOrderToView(order); setViewModalOpen(true); }}>
+                                                <FontAwesomeIcon icon={faEye} />
+                                            </button>
                                             <button className="btn-outline" title={dictionaries.dashboard.tables.edit[locale]} onClick={() => openEditModal(order)}>
                                                 <FontAwesomeIcon icon={faEdit} />
                                             </button>
@@ -283,6 +326,90 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
                             <button onClick={closeModal} className="btn-secondary">Cancel</button>
                             <button onClick={saveOrder} className="btn-primary">Save</button>
                         </div>
+                    </div>
+                </div>
+            )}
+            {viewModalOpen && orderToView && (
+                <div className="modal-overlay modal-overlay--product" onClick={() => setViewModalOpen(false)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px' }}>
+                        <h3 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Order Details #{orderToView._id.slice(-6)}</h3>
+                        
+                        <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                            <h4 style={{ marginTop: 0, marginBottom: '10px', color: '#333' }}>Customer Information</h4>
+                            <p style={{ margin: '5px 0' }}><strong>User:</strong> {orderToView.user}</p>
+                            <p style={{ margin: '5px 0' }}><strong>Shipping Address:</strong> {(orderToView as any).shippingAddress || 'Not provided'}</p>
+                        </div>
+
+                        <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                            <h4 style={{ marginTop: 0, marginBottom: '10px', color: '#333' }}>Order Timeline</h4>
+                            <p style={{ margin: '5px 0' }}><strong>Ordered At:</strong> {new Date(orderToView.createdAt).toLocaleString()}</p>
+                            <p style={{ margin: '5px 0' }}><strong>Last Updated:</strong> {new Date((orderToView as any).updatedAt || orderToView.createdAt).toLocaleString()}</p>
+                            <p style={{ margin: '5px 0' }}><strong>Status:</strong> {orderToView.status}</p>
+                            <p style={{ margin: '5px 0' }}><strong>Payment ID:</strong> {(orderToView as any).paymentIntentId || 'N/A'}</p>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <h4 style={{ marginBottom: '10px', color: '#333' }}>Products Purchased</h4>
+                            <div style={{ overflowX: 'auto' }}>
+                                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                                    <thead>
+                                        <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left', backgroundColor: '#f8f9fa' }}>
+                                            <th style={{ padding: '10px' }}>Product</th>
+                                            <th style={{ padding: '10px' }}>Qty</th>
+                                            <th style={{ padding: '10px' }}>Price</th>
+                                            <th style={{ padding: '10px' }}>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {orderToView.items?.map((item, idx) => (
+                                            <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
+                                                <td style={{ padding: '10px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                        {item.image && <img src={resolveImage(item.image)} alt="product" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />}
+                                                        <span>{item.title?.[locale] || item.title?.en || 'Unknown Product'}</span>
+                                                    </div>
+                                                </td>
+                                                <td style={{ padding: '10px' }}>{item.quantity}</td>
+                                                <td style={{ padding: '10px' }}>${item.price?.toFixed(2)}</td>
+                                                <td style={{ padding: '10px', fontWeight: 'bold' }}>${(item.total || (item.price * item.quantity))?.toFixed(2)}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colSpan={3} style={{ textAlign: 'right', padding: '12px 10px', fontWeight: 'bold' }}>Total Bill:</td>
+                                            <td style={{ padding: '12px 10px', fontWeight: 'bold', color: '#0D6EFD', fontSize: '1.1rem' }}>${orderToView.totalBill?.toFixed(2)}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        {(orderToView as any).requiresUserApproval && (
+                            <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#fff3cd', border: '1px solid #ffeeba', borderRadius: '8px', color: '#856404' }}>
+                                <h4 style={{ margin: '0 0 10px 0' }}>⚠️ The modification is waiting for confirmation from user</h4>
+                                <p style={{ margin: 0, fontSize: '0.9rem' }}>The proposed new total is <strong>${(orderToView as any).proposedChanges?.totalBill?.toFixed(2)}</strong>. The order will remain as is until the user accepts the changes.</p>
+                            </div>
+                        )}
+
+                        <div className="modal-actions" style={{ justifyContent: 'flex-end', borderTop: '1px solid #eee', paddingTop: '15px' }}>
+                            <button onClick={() => setViewModalOpen(false)} className="btn-primary" style={{ minWidth: '100px' }}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {popupMessage && (
+                <div className="modal-overlay" style={{ zIndex: 11000 }} onClick={() => setPopupMessage(null)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '400px', textAlign: 'center', padding: '30px' }}>
+                        <div style={{ fontSize: '3rem', marginBottom: '15px', color: popupMessage.type === 'success' ? '#00B517' : '#FA3434' }}>
+                            {popupMessage.type === 'success' ? '✅' : '❌'}
+                        </div>
+                        <h3 style={{ marginBottom: '10px' }}>{popupMessage.title}</h3>
+                        <p style={{ color: '#666', marginBottom: '25px', lineHeight: '1.5' }}>{popupMessage.message}</p>
+                        <button className="btn-primary" style={{ width: '100%', padding: '10px' }} onClick={() => setPopupMessage(null)}>
+                            OK
+                        </button>
                     </div>
                 </div>
             )}

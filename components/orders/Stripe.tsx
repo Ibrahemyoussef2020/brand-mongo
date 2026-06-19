@@ -17,7 +17,8 @@ const CheckoutForm = () => {
     const elements = useElements();
     const [message, setMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [shippingAddress, setShippingAddress] = useState("");
+    const [showMap, setShowMap] = useState(false);
     const { translate } = useLang();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -29,11 +30,17 @@ const CheckoutForm = () => {
 
         setIsLoading(true);
 
+        if (!shippingAddress.trim()) {
+            setMessage("Please enter a shipping address to continue.");
+            setIsLoading(false);
+            return;
+        }
+
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                // Make sure to change this to your payment completion page
-                return_url: `${window.location.origin}/orders`, 
+                // Pass the shipping address through the return URL
+                return_url: `${window.location.origin}/orders?shipping_address=${encodeURIComponent(shippingAddress)}`,
             },
         });
 
@@ -50,8 +57,34 @@ const CheckoutForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="stripe-form"> 
-            <PaymentElement id="payment-element" options={{layout: "tabs"}} />
+        <form onSubmit={handleSubmit} className="stripe-form">
+            <div className="shipping-input-group">
+                <div className="shipping-header">
+                    <label>Shipping Address *</label>
+                    <button type="button" onClick={() => setShowMap(true)} className="btn-outline map-btn">
+                        <span>📍</span> Select on Map
+                    </button>
+                </div>
+                <textarea
+                    className="shipping-textarea"
+                    value={shippingAddress}
+                    onChange={(e) => setShippingAddress(e.target.value)}
+                    placeholder="Enter full shipping address (Street, City, State, Country, ZIP)"
+                    required
+                />
+            </div>
+
+            {showMap && (
+                <LocationPicker
+                    onSelect={(addr) => {
+                        setShippingAddress(addr);
+                        setShowMap(false);
+                    }}
+                    onClose={() => setShowMap(false)}
+                />
+            )}
+
+            <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
             <button disabled={isLoading || !stripe || !elements} id="submit" className="stripe-button">
                 <span id="button-text">
                     {isLoading ? translate(dictionaries.cart.processing) : translate(dictionaries.cart.payNow)}
@@ -63,7 +96,7 @@ const CheckoutForm = () => {
 }
 
 import StripeSkelton from "@/skelton/orders/StripeSkelton";
-
+import LocationPicker from "./LocationPicker";
 
 const Stripe = () => {
     const { translate } = useLang();
@@ -73,22 +106,22 @@ const Stripe = () => {
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        if(bill > 0){
-             axios.post("/api/create-payment-intent", { items: products, amount: bill })
-            .then((res) => setClientSecret(res.data.clientSecret))
-            .catch((err) => {
-                if (err.response && err.response.status === 401) {
-                    router.push("/login");
-                }
-                console.error("Error creating payment intent", err);
-            });
+        if (bill > 0) {
+            axios.post("/api/create-payment-intent", { items: products, amount: bill })
+                .then((res) => setClientSecret(res.data.clientSecret))
+                .catch((err) => {
+                    if (err.response && err.response.status === 401) {
+                        router.push("/login");
+                    }
+                    console.error("Error creating payment intent", err);
+                });
         }
     }, [bill, products, router]);
 
     const appearance = {
         theme: 'stripe' as const,
     };
-    
+
     const options = {
         clientSecret,
         appearance,
@@ -104,7 +137,7 @@ const Stripe = () => {
 
     return (
         <div className="stripe-container">
-             {clientSecret ? (
+            {clientSecret ? (
                 <Elements options={options} stripe={stripePromise}>
                     <CheckoutForm />
                 </Elements>

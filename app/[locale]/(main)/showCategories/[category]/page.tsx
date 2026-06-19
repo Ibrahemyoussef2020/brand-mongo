@@ -18,39 +18,41 @@ import { dictionaries } from "@/lib/dictionaries";
 
 
 const page = () => {
-    const { translate } = useLang();
-    
-    const {
-        category,
-        products,
-        setProducts,
-        constantProducts,
-        filterSelectedList,
-        setFilterSelectedList,
-        selectedValue,
-        filtersClear,
-        setFiltersClear,
-        filterRemove,
-        setFilterRemove,
-        design,
-        setDesign,
-        sort,
-        setSort,
-        maxCountProducts,
-        setMaxCountProducts,
-        handleFilter,
-        handleSortStrategy,
-        updateURL,
-        loading
-    } = useShowCategories();
-    
+  const { translate } = useLang();
+
+  const {
+    category,
+    products,
+    setProducts,
+    constantProducts,
+    filterSelectedList,
+    setFilterSelectedList,
+    selectedValue,
+    filtersClear,
+    setFiltersClear,
+    filterRemove,
+    setFilterRemove,
+    design,
+    setDesign,
+    sort,
+    setSort,
+    maxCountProducts,
+    setMaxCountProducts,
+    currentPage,
+    setCurrentPage,
+    handleFilter,
+    handleSortStrategy,
+    updateURL,
+    loading
+  } = useShowCategories();
+
   return (
     <>
-    <Header page="results" heading={category || ''}/> 
+      <Header page="results" heading={category || ''} />
 
-    <MenuSidebar />
-    
-    <section className="results">
+      <MenuSidebar />
+
+      <section className="results">
         <div className="container">
 
           <CategoriesLinksSwipper />
@@ -59,24 +61,24 @@ const page = () => {
 
           <div className={`${design} show-result`}>
 
-            <FilterSidebar 
-                handleFilter={handleFilter}
-                selectedValue={selectedValue}
-                constantList={constantProducts}
-                setProducts={setProducts}
-                filtersClear={filtersClear}
-                setFiltersClear={setFiltersClear}
-                filterRemove={filterRemove}
-                setFilterRemove={setFilterRemove}
-                filterSelectedList={filterSelectedList}
-                setFilterSelectedList={setFilterSelectedList}
-                loading={loading}
+            <FilterSidebar
+              handleFilter={handleFilter}
+              selectedValue={selectedValue}
+              constantList={constantProducts}
+              setProducts={setProducts}
+              filtersClear={filtersClear}
+              setFiltersClear={setFiltersClear}
+              filterRemove={filterRemove}
+              setFilterRemove={setFilterRemove}
+              filterSelectedList={filterSelectedList}
+              setFilterSelectedList={setFilterSelectedList}
+              loading={loading}
             />
 
             <div className="main">
-              <FilterNav 
-                products={products} 
-                setProducts={setProducts} 
+              <FilterNav
+                products={products}
+                setProducts={setProducts}
                 category={category || ''}
                 sort={sort}
                 setSort={(val) => {
@@ -88,7 +90,7 @@ const page = () => {
                 setDesign={(val) => {
                   setDesign(val);
                   updateURL(filterSelectedList, sort, val);
-                }} 
+                }}
                 filterSelectedList={filterSelectedList}
                 filtersClear={filtersClear}
                 setFiltersClear={setFiltersClear}
@@ -105,15 +107,16 @@ const page = () => {
                 setMaxCountProducts={setMaxCountProducts}
               />
 
-              
-              <Results products={products} category={category || ''} maxCountProducts={maxCountProducts} handleFilter={handleFilter} loading={loading}/>
+
+              <Results products={products} category={category || ''} maxCountProducts={maxCountProducts} currentPage={currentPage} handleFilter={handleFilter} loading={loading} />
+              <Pagenations maxCountProducts={maxCountProducts} setMaxCountProducts={setMaxCountProducts} currentPage={currentPage} setCurrentPage={setCurrentPage} totalItems={products.length} />
+
               <AnotherItems products={products} title={translate(dictionaries.productDetails.youMayAlsoLike)} category={category || ''} />
-              <Pagenations maxCountProducts={maxCountProducts} setMaxCountProducts={setMaxCountProducts} />
             </div>
           </div>
         </div>
         <Subscribe />
-    </section>
+      </section>
     </>
   )
 }

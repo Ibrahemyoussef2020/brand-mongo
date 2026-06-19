@@ -60,7 +60,7 @@ export const getHomeSections = async () => {
         sortOrder: 3,
         config: {
           displayType: 'one-line',
-          actionButtonType: 'show-details',
+          actionButtonType: 'add-to-fav',
           layout: { columns: 5 }
         },
         products: [] // Empty - component will fetch via API

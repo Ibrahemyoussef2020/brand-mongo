@@ -42,7 +42,7 @@
         button{
             width: 44px;
             height: 40px;
-            cursor: not-allowed;
+            cursor: pointer;
 
             &.selected{
                 background-color: $gray_200;

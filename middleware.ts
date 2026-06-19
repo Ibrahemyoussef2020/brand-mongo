@@ -56,6 +56,11 @@ export async function middleware(request: NextRequest) {
     const isSuperAdmin = role === 'super_admin';
     const isAdmin = role === 'admin';
 
+    // Protect all dashboard routes: only allow admin or super_admin
+    if (!isSuperAdmin && !isAdmin) {
+      return NextResponse.redirect(new URL(`/${locale}`, request.url));
+    }
+
     // Protect ecommerce-specific sub-routes if necessary
     if (request.nextUrl.pathname.startsWith(`/${locale}/dashboard/ecommerce`) && !isSuperAdmin && !isAdmin) {
       return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url));

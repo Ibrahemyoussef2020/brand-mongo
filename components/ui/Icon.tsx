@@ -26,13 +26,13 @@ const Icon = ({ name, size = 18, color = '#666', filled = false }: IconProps) =>
   const getUnicode = () => {
     switch (name) {
       case 'heart':
-        return filled ? 'heart' : 'heart';
+        return filled ? '♥' : '♡';
       case 'eye':
-        return 'eye';
+        return '👁';
       case 'star':
-        return 'star';
+        return '★';
       case 'star-empty':
-        return 'star';
+        return '☆';
       default:
         return '';
     }

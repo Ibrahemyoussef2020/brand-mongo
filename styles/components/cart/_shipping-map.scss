@@ -1,0 +1,99 @@
+.shipping-input-group {
+    margin-bottom: 20px;
+
+    .shipping-header {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+
+        @media (min-width: 768px) {
+            flex-direction: row;
+        }
+
+        label {
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .map-btn {
+            padding: 4px 8px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    }
+
+    .shipping-textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-family: inherit;
+    }
+}
+
+.location-picker-overlay {
+    z-index: 10000;
+}
+
+.location-picker-content {
+    max-width: 800px;
+    width: 90%;
+
+    .location-picker-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+
+        h3 {
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    }
+}
+
+.leaflet-map-wrapper {
+    .map-container-box {
+        height: 400px;
+        width: 100%;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #ccc;
+
+        .map-instance {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .address-display-box {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .confirm-location-btn {
+        width: 100%;
+        padding: 12px;
+    }
+}

@@ -84,23 +84,21 @@ export const useShowCategories = () => {
 
     const [sort,setSort] = useState<string>('');
 
+    const [maxCountProducts,setMaxCountProducts] = useState<number>(10);
 
-
-    const [maxCountProducts,setMaxCountProducts] = useState<number>(100);
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
     const [loading, setLoading] = useState<boolean>(true);
-
-
 
     // Update URL with filters, sort, and design
 
     const updateURL = useCallback((filters: FilterProps[], currentSort?: string, currentDesign?: string) => {
 
+      setCurrentPage(1); // Reset page to 1 whenever filters or sort change
+
       updateURLHelper(router, pathname, filters, currentSort, currentDesign);
 
     }, [pathname, router]);
-
-
 
     // Unified sync effect for products and filters
 
@@ -108,23 +106,17 @@ export const useShowCategories = () => {
 
       let isCancelled = false;
 
-
-
       const runSync = async () => {
 
         // 1. Parse Params
 
         const filters = parseSearchParamsHelper(searchParams);
 
-
-
         if (isCancelled) return;
 
         setFilterSelectedList(filters);
 
         filterListRef.current = filters;
-
-
 
         // Parse sort and design
 
@@ -135,8 +127,6 @@ export const useShowCategories = () => {
         const urlDesign = searchParams.get('design') || 'list';
 
         setDesign(urlDesign);
-
-
 
         // 2. Fetch Constant Products (Sidebar)
 
@@ -166,15 +156,11 @@ export const useShowCategories = () => {
 
         }
 
-
-
         // 3. Fetch Displayed Products
 
         let displayProducts: ProductProps[] = [];
 
         const hasFilters = filters.length > 0;
-
-
 
         try {
 
@@ -205,8 +191,6 @@ export const useShowCategories = () => {
                 }
 
             });
-
-
 
             const result = await fetchProductsAction(queryParams);
 
@@ -244,8 +228,6 @@ export const useShowCategories = () => {
 
         }
 
-
-
         // 4. Apply Sorting
 
         if (urlSort && urlSort !== '#') {
@@ -253,8 +235,6 @@ export const useShowCategories = () => {
           displayProducts = sortLists({ filter: urlSort, products: displayProducts });
 
         }
-
-
 
         if (isCancelled) return;
 
@@ -264,8 +244,6 @@ export const useShowCategories = () => {
 
       };
 
-
-
       setLoading(true);
 
       runSync();
@@ -273,10 +251,6 @@ export const useShowCategories = () => {
       return () => { isCancelled = true; };
 
     }, [searchParams, category, section]);
-
-
-
-
 
     const handleFilter = async (filterData: FilterProps, isAdded: boolean) => {
 
@@ -312,8 +286,6 @@ export const useShowCategories = () => {
 
     };
 
-
-
     function handleSortStrategy(){
 
        const sortedProducts = sortLists({filter:sort,products}) 
@@ -321,8 +293,6 @@ export const useShowCategories = () => {
        return sortedProducts
 
     }
-
-
 
     return {
 
@@ -360,6 +330,10 @@ export const useShowCategories = () => {
 
         setMaxCountProducts,
 
+        currentPage,
+
+        setCurrentPage,
+
         handleFilter,
 
         handleSortStrategy,
@@ -371,4 +345,3 @@ export const useShowCategories = () => {
     }
 
 }
-

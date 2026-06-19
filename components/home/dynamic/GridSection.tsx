@@ -9,6 +9,7 @@ import { Grid } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/grid";
 import ProductCard from '@/components/general/ProductCard';
+import Pagenations from '@/components/showCategories/Pagenations';
 
 interface GridSectionProps {
   section: any;
@@ -18,6 +19,11 @@ interface GridSectionProps {
 const GridSection = ({ section, locale }: GridSectionProps) => {
     const [products, setProducts] = useState(section.products || []);
     const [loading, setLoading] = useState(false);
+    
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const [maxCountProducts, setMaxCountProducts] = useState(10);
+    
     const config = section.config || {};
     
     const titleObj = section.title || {};
@@ -103,20 +109,33 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
             </div>
             
             {(!config.displayType || config.displayType === 'grid') ? (
-                <div style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: `repeat(${config.layout?.columns || 5}, 1fr)`,
-                    gap: '25px',
-                    maxWidth: '1400px',
-                    margin: '0 auto',
-                    padding: '0 30px'
-                }}>
-                    {products.map((product: any, idx: number) => (
-                        <div key={`${product._id || product.static_id || 'card'}-${idx}`}>
-                            <ProductCard product={product} locale={locale} sectionKey={section.key} config={config} index={idx} />
+                <>
+                    <div style={{ 
+                        display: 'grid', 
+                        gridTemplateColumns: `repeat(${config.layout?.columns || 5}, 1fr)`,
+                        gap: '25px',
+                        maxWidth: '1400px',
+                        margin: '0 auto',
+                        padding: '0 30px'
+                    }}>
+                        {products.slice((currentPage - 1) * maxCountProducts, currentPage * maxCountProducts).map((product: any, idx: number) => (
+                            <div key={`${product._id || product.static_id || 'card'}-${idx}`}>
+                                <ProductCard product={product} locale={locale} sectionKey={section.key} config={config} index={idx} />
+                            </div>
+                        ))}
+                    </div>
+                    {products.length > maxCountProducts && (
+                        <div style={{ maxWidth: '1400px', margin: '30px auto 0', padding: '0 30px', display: 'flex', justifyContent: 'flex-end' }}>
+                            <Pagenations 
+                                maxCountProducts={maxCountProducts} 
+                                setMaxCountProducts={setMaxCountProducts} 
+                                currentPage={currentPage} 
+                                setCurrentPage={setCurrentPage} 
+                                totalItems={products.length} 
+                            />
                         </div>
-                    ))}
-                </div>
+                    )}
+                </>
             ) : config.displayType === 'one-line' ? (
                 <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 30px', overflow: 'hidden' }}>
                     <Swiper

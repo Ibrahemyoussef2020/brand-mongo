@@ -24,14 +24,68 @@ const OrderResult = () => {
 
 
   const dispatch =useDispatch<AppDispatch>()
-  const {purchases} = useSelector((state:IRootState) => state.combine.cart)
-  const {products} = useSelector((state:IRootState) => state.combine.cart)
+  const {purchases, orders} = useSelector((state:IRootState) => state.combine.cart)
   const router = useRouter()
 
 
   
 
+  const pendingApprovalOrders = orders?.filter((order: any) => order.requiresUserApproval) || [];
+
+  const handleReviewOrder = async (orderId: string, action: 'accept' | 'refuse') => {
+      try {
+          const res = await fetch('/api/orders/review', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ orderId, action })
+          });
+          if (res.ok) {
+              window.location.reload(); // Refresh to fetch updated orders
+          }
+      } catch (error) {
+          console.error("Error reviewing order", error);
+      }
+  };
+
   return  <div className="order-results">
+
+        {pendingApprovalOrders.length > 0 && (
+            <div className="pending-approvals" style={{ marginBottom: '30px' }}>
+                <h2 className="old-purchases__heading" style={{ color: '#FA3434' }}>Action Required: Order Modifications</h2>
+                {pendingApprovalOrders.map((order: any) => (
+                    <div key={order._id} style={{ border: '1px solid #FA3434', borderRadius: '8px', padding: '20px', marginBottom: '20px', backgroundColor: '#fffcfc' }}>
+                        <h3 style={{ marginBottom: '15px' }}>Order #{order._id.slice(-6)}</h3>
+                        <p style={{ marginBottom: '15px' }}>Admin has proposed changes to your order.</p>
+                        
+                        <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', flexWrap: 'wrap' }}>
+                            <div style={{ flex: '1 1 300px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
+                                <h4 style={{ color: '#555', marginBottom: '10px' }}>Original Order</h4>
+                                <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                                    {order.items.map((item: any, idx: number) => (
+                                        <li key={idx} style={{ marginBottom: '5px' }}>{item.title?.[translate('en')] || item.title?.en} (x{item.quantity}) - ${item.total}</li>
+                                    ))}
+                                </ul>
+                                <p style={{ fontWeight: 'bold', marginTop: '10px' }}>Total: ${order.totalBill}</p>
+                            </div>
+                            <div style={{ flex: '1 1 300px', padding: '15px', backgroundColor: '#e8f5e9', borderRadius: '6px', border: '1px solid #c8e6c9' }}>
+                                <h4 style={{ color: '#2e7d32', marginBottom: '10px' }}>Proposed Changes</h4>
+                                <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                                    {order.proposedChanges?.items.map((item: any, idx: number) => (
+                                        <li key={idx} style={{ marginBottom: '5px' }}>{item.title?.[translate('en')] || item.title?.en} (x{item.quantity}) - ${item.total}</li>
+                                    ))}
+                                </ul>
+                                <p style={{ fontWeight: 'bold', marginTop: '10px', color: '#2e7d32' }}>New Total: ${order.proposedChanges?.totalBill}</p>
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <button className="btn-primary" style={{ backgroundColor: '#00B517', borderColor: '#00B517', padding: '8px 16px', borderRadius: '4px', color: 'white', border: 'none', cursor: 'pointer' }} onClick={() => handleReviewOrder(order._id, 'accept')}>Accept Changes</button>
+                            <button className="btn-danger" style={{ backgroundColor: '#FA3434', borderColor: '#FA3434', padding: '8px 16px', borderRadius: '4px', color: 'white', border: 'none', cursor: 'pointer' }} onClick={() => handleReviewOrder(order._id, 'refuse')}>Refuse Changes</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )}
 
             <h2 className="old-purchases__heading">{translate(dictionaries.orderResults.oldPurchases)}</h2>
         {

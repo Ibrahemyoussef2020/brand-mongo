@@ -126,61 +126,15 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     </div>
                 )}
                 
-                {/* Action Toggle Top-Right Button */}
-                {config.actionButtonType === 'show-details' || config.actionButtonType === 'add-to-fav' ? (
-                    <button onClick={(e) => handleAddToCart(e,product)} style={{
+                {/* Floating Add to Wishlist Heart (Consistent Top-End Position) */}
+                <button 
+                    onClick={handleToggleFav} 
+                    type="button"
+                    title={isFav ? "Remove from Favorites" : "Add to Favorites"}
+                    style={{
                         position: 'absolute',
-                        top: '15px',
-                        right: '15px',
-                        background: 'rgba(255,255,255,0.95)',
-                        border: 'none',
-                        borderRadius: currentCartItem ? '18px' : '50%',
-                        width: currentCartItem ? 'auto' : '36px',
-                        padding: currentCartItem ? '0 12px' : '0',
-                        height: '36px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        zIndex: 10,
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                        transition: 'all 0.3s ease',
-                        gap: currentCartItem ? '6px' : '0'
-                    }}>
-                        <FontAwesomeIcon icon={faCartArrowDown} style={{ color: currentCartItem ? activeColor : '#666', fontSize: '16px' }} />
-                        {currentCartItem && (
-                            <span style={{ color: activeColor, fontSize: '13px', fontWeight: 'bold' }}>~ {currentCartItem.quantity}</span>
-                        )}
-                    </button>
-                ) : (
-                    <Link href={`/${locale}/itemDetails/${product.category?.en || sectionKey}/${product.static_id}`} style={{
-                        position: 'absolute',
-                        top: '15px',
-                        right: '15px',
-                        background: 'rgba(255,255,255,0.95)',
-                        border: 'none',
-                        borderRadius: '50%',
-                        width: '36px',
-                        height: '36px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        zIndex: 10,
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                        transition: 'all 0.3s ease',
-                        textDecoration: 'none'
-                    }}>
-                        <FontAwesomeIcon icon={faEye} style={{ color: '#666', fontSize: '18px' }} />
-                    </Link>
-                )}
-                
-                {/* Add to Wishlist Toggle */}
-                {config.actionButtonType !== 'add-to-fav' && (
-                    <button onClick={handleToggleFav} style={{
-                        position: 'absolute',
-                        bottom: '15px',
-                        right: '15px',
+                        top: '12px',
+                        insetInlineEnd: '12px',
                         background: isFav ? 'linear-gradient(135deg, #ff6b6b, #ff5252)' : 'rgba(255,255,255,0.95)',
                         border: 'none',
                         borderRadius: '50%',
@@ -191,17 +145,17 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                         justifyContent: 'center',
                         cursor: 'pointer',
                         zIndex: 10,
-                        boxShadow: isFav ? '0 2px 8px rgba(255,107,107,0.4)' : '0 2px 8px rgba(0,0,0,0.15)',
+                        boxShadow: isFav ? '0 2px 8px rgba(255,107,107,0.4)' : '0 2px 8px rgba(0,0,0,0.12)',
                         transition: 'all 0.3s ease'
-                    }}>
-                        <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: isFav ? 'white' : '#ff5252', fontSize: '18px' }} />
-                    </button>
-                )}
+                    }}
+                >
+                    <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: isFav ? 'white' : '#ff5252', fontSize: '17px' }} />
+                </button>
             </div>
             
             {/* Product Info */}
             <div style={{ 
-                padding: '20px',
+                padding: '18px',
                 flex: 1,
                 display: 'flex',
                 flexDirection: 'column',
@@ -215,7 +169,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                         textTransform: 'uppercase',
                         letterSpacing: '1px',
                         fontWeight: '600',
-                        marginBottom: '8px'
+                        marginBottom: '6px'
                     }}>
                         {product.brand}
                     </div>
@@ -226,7 +180,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     fontSize: '15px', 
                     fontWeight: '600', 
                     color: '#2c3e50',
-                    marginBottom: '12px',
+                    marginBottom: '10px',
                     lineHeight: '1.4',
                     height: '42px',
                     overflow: 'hidden',
@@ -241,7 +195,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                 <div style={{ 
                     display: 'flex', 
                     alignItems: 'center',
-                    marginBottom: '12px',
+                    marginBottom: '10px',
                     gap: '8px'
                 }}>
                     <div style={{ 
@@ -270,8 +224,9 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     display: 'flex', 
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    marginBottom: '15px',
-                    gap: '8px'
+                    marginBottom: '14px',
+                    gap: '8px',
+                    minHeight: '28px'
                 }}>
                     <div>
                         <span style={{
@@ -283,10 +238,10 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                         </span>
                         {product.oldPrice && product.oldPrice > product.price && (
                             <span style={{
-                                fontSize: '14px',
+                                fontSize: '13px',
                                 color: '#999',
                                 textDecoration: 'line-through',
-                                marginLeft: '8px'
+                                marginInlineStart: '8px'
                             }}>
                                 ${product.oldPrice}
                             </span>
@@ -308,76 +263,94 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     )}
                 </div>
                 
-                {/* Action Button: Add to Cart vs Show Details vs Add to Fav */}
-                {config.actionButtonType === 'show-details' ? (
-                    <Link href={`/${locale}/itemDetails/${product.category?.en || sectionKey}/${product.static_id}`} style={{
-                        background: 'linear-gradient(135deg, #2196F3, #1976D2)',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '6px',
-                        padding: '12px 20px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                        marginTop: 'auto',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                        display: 'block',
-                        textAlign: 'center',
-                        boxShadow: '0 2px 8px rgba(33,150,243,0.3)',
-                        textDecoration: 'none',
-                        position: 'relative',
-                        zIndex: 10
-                    }}>
-                        Show Details
-                    </Link>
-                ) : config.actionButtonType === 'add-to-fav' ? (
-                    <button onClick={handleToggleFav} style={{
-                        background: 'linear-gradient(135deg, #ff6b6b, #ff5252)',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '6px',
-                        padding: '12px 20px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                        marginTop: 'auto',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                        boxShadow: '0 2px 8px rgba(255,107,107,0.3)',
-                        position: 'relative',
-                        zIndex: 10,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '8px'
-                    }}>
-                        <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ fontSize: '16px' }} />
-                        {isFav ? 'Remove Fav' : 'Add to Fav'}
+                {/* Action Buttons Row (Locked at bottom in the same line) */}
+                <div style={{ 
+                    display: 'flex', 
+                    gap: '8px', 
+                    marginTop: 'auto', 
+                    alignItems: 'center', 
+                    width: '100%' 
+                }}>
+                    {config.actionButtonType === 'show-details' ? (
+                        <Link 
+                            href={`/${locale}/itemDetails/${product.category?.en || sectionKey}/${product.static_id}`} 
+                            style={{
+                                flex: 1,
+                                background: 'linear-gradient(135deg, #2196F3, #1976D2)',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '6px',
+                                padding: '10px 14px',
+                                fontSize: '13px',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                display: 'block',
+                                textAlign: 'center',
+                                boxShadow: '0 2px 8px rgba(33,150,243,0.3)',
+                                textDecoration: 'none',
+                                position: 'relative',
+                                zIndex: 10
+                            }}
+                        >
+                            {locale === 'ar' ? 'عرض التفاصيل' : 'Show Details'}
+                        </Link>
+                    ) : (
+                        <button 
+                            onClick={(e) => handleAddToCart(e, product)} 
+                            type="button"
+                            style={{
+                                flex: 1,
+                                background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '6px',
+                                padding: '10px 14px',
+                                fontSize: '13px',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                boxShadow: '0 2px 8px rgba(76,175,80,0.3)',
+                                position: 'relative',
+                                zIndex: 10,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '6px'
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCartArrowDown} />
+                            <span>{currentCartItem ? (locale === 'ar' ? `إضافة (${currentCartItem.quantity})` : `Add (${currentCartItem.quantity})`) : (locale === 'ar' ? 'أضف للسلة' : 'Add to Cart')}</span>
+                        </button>
+                    )}
+
+                    {/* Bottom Heart Button in Same Row */}
+                    <button 
+                        onClick={handleToggleFav}
+                        type="button"
+                        title={isFav ? "Remove Favorite" : "Add Favorite"}
+                        style={{
+                            width: '40px',
+                            height: '40px',
+                            border: isFav ? '1px solid #ff6b6b' : '1px solid #e2e8f0',
+                            borderRadius: '6px',
+                            background: isFav ? '#fff5f5' : '#ffffff',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease',
+                            flexShrink: 0,
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.04)'
+                        }}
+                    >
+                        <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: '#ff5252', fontSize: '16px' }} />
                     </button>
-                ) : (
-                    <button onClick={(e)=>handleAddToCart(e,product)} style={{
-                        background: 'linear-gradient(135deg, #4CAF50, #45a049)',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '6px',
-                        padding: '12px 20px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                        marginTop: 'auto',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                        boxShadow: '0 2px 8px rgba(76,175,80,0.3)',
-                        position: 'relative',
-                        zIndex: 10
-                    }}>
-                        {currentCartItem ? `Add More (${currentCartItem.quantity})` : 'Add to Cart'}
-                    </button>
-                )}
+                </div>
             </div>
         </div>
     );

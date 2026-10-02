@@ -117,11 +117,11 @@ const DealCard = ({ product, locale }: DealCardProps) => {
                     </div>
                 )}
 
-                {/* Add to Cart Icon (Top Right) */}
+                {/* Add to Cart Icon (Top End) */}
                 <button onClick={handleAddToCart} style={{
                     position: 'absolute',
                     top: '10px',
-                    right: '10px',
+                    insetInlineEnd: '10px',
                     width: '32px',
                     height: '32px',
                     borderRadius: '50%',
@@ -144,11 +144,11 @@ const DealCard = ({ product, locale }: DealCardProps) => {
                     )}
                 </button>
 
-                {/* Add to Fav Icon (Bottom Right) */}
+                {/* Add to Fav Icon (Bottom End) */}
                 <button onClick={handleToggleFav} style={{
                     position: 'absolute',
                     bottom: '10px',
-                    right: '10px',
+                    insetInlineEnd: '10px',
                     width: '32px',
                     height: '32px',
                     borderRadius: '50%',

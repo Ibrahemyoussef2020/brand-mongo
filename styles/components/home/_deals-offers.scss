@@ -2,8 +2,8 @@
     background: #fff;
     margin-bottom: 10px;
     overflow: hidden;
-    border-block: 1px solid $gray-350;
-    border-inline-start: 1px solid $gray-350;
+    // border-block: 1px solid $gray-350;
+    // border-inline-start: 1px solid $gray-350;
     padding: .5rem;
 
     @include min-width($medium_size) {

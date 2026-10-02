@@ -1,1 +1,2 @@
-solve push and try to run build
+D:\work\portfolio 20225\next\brand-mongo\lib\db\fetchHomeSections.ts now we need to make  sortOrder in admin dashboard in categories page and make admin , 
+and let admin choose syle of displaying category  in home page 

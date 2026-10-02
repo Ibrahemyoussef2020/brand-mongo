@@ -1,11 +1,11 @@
 export const revalidate = 120; // Cache for 2 minutes - critical for performance
 
 import CategoriesLinksSwipper from '@/components/layout/categoriesLinksSwipper';
-import HomeCover from '@/components/home/HomeCover';
-import EasyRrquest from '@/components/home/EasyRrquest';
-import ExtraServices from '@/components/home/ExtraServices';
+import HomeCover from '@/components/home/dynamic/HomeCover';
+import EasyRrquest from '@/components/home/dynamic/EasyRrquest';
+import ExtraServices from '@/components/home/dynamic/ExtraServices';
 import Subscribe from '@/components/layout/Subscribe';
-import Suppliers from '@/components/home/Suppliers';
+import Suppliers from '@/components/home/dynamic/Suppliers';
 import ProgressNav from '@/components/layout/ProgressNav';
 import Header from '@/components/layout/Header';
 import MenuSidebar from '@/components/layout/menu-sidebar';
@@ -20,27 +20,23 @@ import DealOffersSection from '@/components/home/dynamic/DealOffersSection';
 import CategoryTilesGridSection from '@/components/home/dynamic/CategoryTilesGridSection';
 import { HomeSkeleton } from '@/components/skeletons/HomeSkeleton';
 
-// Static content that renders instantly
-const StaticHomeContent = () => (
-  <>
-    <CategoriesLinksSwipper />
-    <div className='home container'>
-      <ProgressNav page='home' category='no category' item='no item' />
-      <HomeCover />
-      <EasyRrquest />
-      <ExtraServices />
-      <Suppliers />
-      <Subscribe />
-    </div>
-  </>
-);
-
-// Dynamic sections that load after static content
+// Dynamic sections that load after static content based on database configuration
 const DynamicHomeSections = async ({ locale }: { locale: string }) => {
   const sections = await getHomeSections();
   
   return sections.map((section: any) => {
+    if (!section) return null;
     switch(section.type) {
+      case HomeSectionType.STATIC_HOME_COVER:
+        return <HomeCover key={section.key} />;
+      case HomeSectionType.STATIC_EASY_REQUEST:
+        return <EasyRrquest key={section.key} />;
+      case HomeSectionType.STATIC_EXTRA_SERVICES:
+        return <ExtraServices key={section.key} />;
+      case HomeSectionType.STATIC_SUBSCRIBE:
+        return <Subscribe key={section.key} />;
+      case HomeSectionType.STATIC_SUPPLIERS:
+        return <Suppliers key={section.key} />;
       case HomeSectionType.INLINE_START_IMAGE:
         return <InlineStartImageSection key={section.key} section={section} />;
       case HomeSectionType.GRID_SECTION:
@@ -57,17 +53,15 @@ const DynamicHomeSections = async ({ locale }: { locale: string }) => {
 
 const Home = ({ params }: { params: { locale: string } }) => {
   const { locale } = params;
-  
+
   return (
     <>
       <Header page='home' heading='Home' />
       <MenuSidebar />
-      
-      {/* Static content renders immediately */}
-      <StaticHomeContent />
-      
-      {/* Dynamic content loads without blocking */}
+      <CategoriesLinksSwipper />
+
       <div className='home container'>
+        <ProgressNav page='home' category='no category' item='no item' />
         <Suspense fallback={<HomeSkeleton />}>
           <DynamicHomeSections locale={locale} />
         </Suspense>

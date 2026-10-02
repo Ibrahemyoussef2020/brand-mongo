@@ -1,94 +1,97 @@
-import dbConnect from "@/lib/dbConnect";
-import { HomeSection } from "@/lib/models/HomeSection";
-import ProductModel from "@/lib/models/ProductModel";
-import { withRetry } from "./withRetry";
+import { HomeSectionType } from '@/lib/constants/homeSectionTypes';
 
 export const getHomeSections = async () => {
   try {
-    // Skip database only during build to prevent failures
     if (process.env.BUILD_TIME === 'true') {
       return [];
     }
-    
-    // Dynamically generate sections from db.ts data
+
     const { products } = await import('@/db');
-    
     let sections = [];
-    
-    // Check if we have deal offers data and create section dynamically
-    const dealOffers = products.filter(p => typeof p.static_id === 'string' && p.static_id.startsWith('deal-'));
-    if (dealOffers.length > 0) {
-      sections.push({
-        key: 'deal-offers',
-        type: 'DEAL_OFFERS',
-        title: { en: 'Deal Offers', ar: ' ofertas especiales' },
-        sortOrder: 1,
-        config: {
-          displayType: 'deal-slider',
-          actionButtonType: 'show-details',
-          showTimer: true,
-          endAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-        },
-        products: [] // Empty - component will fetch via API
-      });
-    }
-    
-    // Check if we have home consumer data and create section dynamically
-    const homeConsumer = products.filter(p => typeof p.static_id === 'string' && p.static_id.startsWith('consumer-'));
+
+    // 1. Home Cover
+    sections.push({ key: 'static-home-cover', type: 'STATIC_HOME_COVER', sortOrder: 1 });
+
+    // 2. Consumer Electronics (GRID_SECTION)
+    const homeConsumer = products.filter((p: any) => typeof p.static_id === 'string' && p.static_id.startsWith('consumer-'));
     if (homeConsumer.length > 0) {
       sections.push({
         key: 'home-consumer',
         type: 'GRID_SECTION',
         title: { en: 'Home Consumer', ar: ' products for home' },
         sortOrder: 2,
-        config: {
-          displayType: 'two-line',
-          actionButtonType: 'show-details',
-          layout: { columns: 5 }
-        },
-        products: [] // Empty - component will fetch via API
+        config: { displayType: 'two-line', actionButtonType: 'show-details', layout: { columns: 5 } },
+        products: []
       });
     }
-    
-    // Check if we have home outdoor data and create section dynamically
-    const homeOutdoor = products.filter(p => typeof p.static_id === 'string' && p.static_id.startsWith('home-'));
+
+    // 3. Home Outdoor (GRID_SECTION)
+    const homeOutdoor = products.filter((p: any) => typeof p.static_id === 'string' && p.static_id.startsWith('home-'));
     if (homeOutdoor.length > 0) {
       sections.push({
         key: 'home-outdoor',
         type: 'GRID_SECTION',
         title: { en: 'Home Outdoor', ar: ' outdoor products' },
         sortOrder: 3,
-        config: {
-          displayType: 'one-line',
-          actionButtonType: 'show-details',
-          layout: { columns: 5 }
-        },
-        products: [] // Empty - component will fetch via API
+        config: { displayType: 'one-line', actionButtonType: 'add-to-fav', layout: { columns: 5 } },
+        products: []
       });
     }
-    
-    // Check if we have recommended items and create section dynamically
-    const recommendedItems = products.filter(p => p.to_home === true);
+
+    // 4. Easy Request
+    sections.push({ key: 'static-easy-request', type: 'STATIC_EASY_REQUEST', sortOrder: 4 });
+
+    // 5. Recommended Items (GRID_SECTION)
+    const recommendedItems = products.filter((p: any) => p.to_home === true);
     if (recommendedItems.length > 0) {
       sections.push({
         key: 'recommended-items',
         type: 'GRID_SECTION',
-        title: { en: 'Recommended Items', ar: ' recommended' },
-        sortOrder: 4,
-        config: {
-          displayType: 'grid',
-          actionButtonType: 'add-to-cart',
-          layout: { columns: 5 }
-        },
-        products: [] // Empty - component will fetch via API
+        title: { en: 'Recommended Items', ar: ' موصى به' },
+        sortOrder: 5,
+        config: { displayType: 'grid', actionButtonType: 'add-to-cart', layout: { columns: 5 } },
+        products: []
       });
     }
-    
-    console.log(`Dynamically created ${sections.length} sections based on available data`);
-    
-    // Sort array using the dashboard-inspired sortOrder system
+
+    // 6. Deal Offers
+    const dealOffers = products.filter((p: any) => typeof p.static_id === 'string' && p.static_id.startsWith('deal-'));
+    if (dealOffers.length > 0) {
+      sections.push({
+        key: 'deal-offers',
+        type: 'DEAL_OFFERS',
+        title: { en: 'Deal Offers', ar: ' عروض خاصة' },
+        sortOrder: 6,
+        config: { displayType: 'deal-slider', actionButtonType: 'show-details', showTimer: true, endAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() },
+        products: []
+      });
+    }
+
+    // 7. Recommended Items 2 (GRID_SECTION)
+    if (recommendedItems.length > 0) {
+      sections.push({
+        key: 'recommended-items-2',
+        type: 'GRID_SECTION',
+        title: { en: 'More Recommended Items', ar: 'المزيد من الموصى به' },
+        sortOrder: 7,
+        config: { displayType: 'grid', actionButtonType: 'add-to-cart', layout: { columns: 5 } },
+        products: []
+      });
+    }
+
+    // 8. Subscribe
+    sections.push({ key: 'static-subscribe', type: 'STATIC_SUBSCRIBE', sortOrder: 8 });
+
+    // 9. Suppliers
+    sections.push({ key: 'static-suppliers', type: 'STATIC_SUPPLIERS', sortOrder: 9 });
+
+    // 10. Extra Services
+    sections.push({ key: 'static-extra-services', type: 'STATIC_EXTRA_SERVICES', sortOrder: 10 });
+
+
+
+
     sections.sort((a, b) => a.sortOrder - b.sortOrder);
-    
     return sections;
   } catch (error: any) {
     console.error('Error in getHomeSections:', error);

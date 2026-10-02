@@ -40,7 +40,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                         apiUrl = '/api/home-consumer-direct';
                     } else if (section.key === 'home-outdoor') {
                         apiUrl = '/api/home-outdoor-direct';
-                    } else if (section.key === 'recommended-items') {
+                    } else if (section.key === 'recommended-items' || section.key === 'recommended-items-2') {
                         apiUrl = '/api/recommended-items-direct';
                     }
 

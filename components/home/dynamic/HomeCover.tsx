@@ -5,15 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
 import HomeCoverSkelton from '@/skelton/home/HomeCover'
 import { useLang } from '@/context/LangContext'
-import { spawn } from 'child_process'
 
 import { dictionaries } from '@/lib/dictionaries'
 
 const HomeCover = () => {
   const [loading, setLoading] = useState(true)
   const { lang, translate } = useLang();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const img = new window.Image()
@@ -61,16 +62,39 @@ const HomeCover = () => {
 
     <div className='welcome'>
       <div className='intro'>
-          <div className="user-wrapper">
-            <FontAwesomeIcon icon={faUser}/>
+          <div className="user-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+            {session?.user?.image ? (
+              <Image 
+                src={session.user.image} 
+                alt={session.user.name || 'User'} 
+                width={44} 
+                height={44} 
+                style={{ borderRadius: '50%', objectFit: 'cover' }}
+              />
+            ) : (
+              <FontAwesomeIcon icon={faUser} style={{ fontSize: '22px' }} />
+            )}
           </div>
           <div className='intro__desc'>
-              <p>{translate(dictionaries.homeCover.hiUser)}</p>
+              <p>{session?.user?.name ? `Hi, ${session.user.name.split(' ')[0]}` : translate(dictionaries.homeCover.hiUser)}</p>
               <p>{translate(dictionaries.homeCover.letsGetStarted)}</p>
           </div>
           <div className="log">
-            <button className='join'>{translate(dictionaries.homeCover.joinNow)}</button>
-            <button className='login'>{translate(dictionaries.homeCover.logIn)}</button>
+            {session ? (
+              <>
+                <Link href={`/${lang}/profile`} style={{ flex: 1 }}><button className='join' style={{ width: '100%' }}>Profile</button></Link>
+                {((session.user as any)?.role === 'admin' || (session.user as any)?.role === 'super_admin' || (session.user as any)?.role === 'seller') ? (
+                  <Link href={`/${lang}/dashboard`} style={{ flex: 1 }}><button className='login' style={{ width: '100%' }}>Dashboard</button></Link>
+                ) : (
+                  <Link href={`/${lang}/orders`} style={{ flex: 1 }}><button className='login' style={{ width: '100%' }}>Orders</button></Link>
+                )}
+              </>
+            ) : (
+              <>
+                <Link href={`/${lang}/register`} style={{ flex: 1 }}><button className='join' style={{ width: '100%' }}>{translate(dictionaries.homeCover.joinNow)}</button></Link>
+                <Link href={`/${lang}/login`} style={{ flex: 1 }}><button className='login' style={{ width: '100%' }}>{translate(dictionaries.homeCover.logIn)}</button></Link>
+              </>
+            )}
           </div>
         </div>
 

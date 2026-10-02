@@ -228,39 +228,51 @@
   .user-menu-trigger {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    border: 1px solid $gray-300;
-    border-radius: 8px;
-    background: white;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1.5px solid #d0e1fd;
+    border-radius: 10px;
+    background: #f0f7ff;
     cursor: pointer;
+    overflow: hidden;
     transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 
     &:hover {
-      border-color: $gray-500;
-      background: $gray-100;
+      border-color: $primary;
+      background: #e5f1ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+
+      .user-icon-square svg {
+        color: $primary !important;
+        transform: scale(1.05);
+      }
     }
 
-    .user-avatar {
-      border-radius: 50%;
+    .user-avatar-square {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
       object-fit: cover;
+      display: block;
     }
 
-    .user-name {
-      font-size: 13px;
-      color: $gray-600;
-      max-width: 80px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+    .user-icon-square {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: $primary;
+      font-size: 20px;
 
-    .chevron {
-      color: $gray-500;
-      transition: transform 0.2s ease;
-
-      &.open {
-        transform: rotate(180deg);
+      svg {
+        width: 20px;
+        height: 20px;
+        transition: all 0.2s ease;
       }
     }
   }
@@ -269,10 +281,10 @@
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
-    min-width: 240px;
+    min-width: 270px;
     background: white;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     animation: dropdownFadeIn 0.2s ease;
 
@@ -284,38 +296,81 @@
       background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
 
       .user-avatar-large {
-        border-radius: 50%;
+        border-radius: 10px;
         object-fit: cover;
+        width: 48px;
+        height: 48px;
+        border: 2px solid #0D6EFD;
+        box-shadow: 0 2px 6px rgba(13, 110, 253, 0.15);
       }
 
       .user-avatar-placeholder {
         width: 48px;
         height: 48px;
-        border-radius: 50%;
-        background: $gray-200;
+        border-radius: 10px;
+        background: #e0f2fe;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: $gray-500;
+        color: #0D6EFD;
+        font-size: 22px;
+        border: 2px solid #bae6fd;
+        flex-shrink: 0;
+        box-shadow: 0 2px 6px rgba(13, 110, 253, 0.1);
+
+        svg {
+          width: 22px;
+          height: 22px;
+        }
       }
 
       .user-details {
         flex: 1;
         min-width: 0;
 
-        .user-full-name {
-          font-weight: 600;
-          font-size: 14px;
-          color: #1e293b;
-          margin-bottom: 2px;
+        .user-name-role-row {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          flex-wrap: wrap;
+          margin-bottom: 4px;
+
+          .user-full-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e293b;
+          }
+
+          .user-role-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+          }
         }
 
-        .user-email {
+        .user-email-row {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: #64748b;
           font-size: 12px;
-          color: $gray-500;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+
+          .email-side-icon {
+            color: #0D6EFD;
+            font-size: 11px;
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+          }
+
+          .user-email-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
         }
       }
     }
@@ -331,12 +386,19 @@
       .guest-avatar {
         width: 48px;
         height: 48px;
-        border-radius: 50%;
+        border-radius: 10px;
         background: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: $gray-400;
+        color: #0D6EFD;
+        font-size: 22px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+        svg {
+          width: 22px;
+          height: 22px;
+        }
       }
 
       .guest-text {

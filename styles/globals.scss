@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700;800&display=swap');
 
 @import './utils/vars.scss';
 
@@ -38,8 +38,22 @@
 
 
 html,
-body {
-  font-family: "Cairo", sans-serif !important;
+body,
+button,
+input,
+select,
+textarea {
+  font-family: 'Cairo', var(--font-cairo), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+[dir="rtl"] {
+  font-family: 'Cairo', var(--font-cairo), 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  direction: rtl;
+  text-align: right;
+
+  .modal-actions {
+    justify-content: flex-start;
+  }
 }
 
 // Modal styles
@@ -186,5 +200,5 @@ textarea.is-invalid {
 
 
 select {
-  min-width: 150px !important;
+  // min-width: 150px !important;
 }

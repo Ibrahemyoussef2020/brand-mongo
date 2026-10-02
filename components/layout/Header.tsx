@@ -60,15 +60,15 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
         <Searchbar size="pc" />
         <div className='navigations_pc'>
           <UserMenu />
-          <Link href={`/${lang}/message`} prefetch={false}>
+          <Link href={`/${lang}/message`}>
             <FontAwesomeIcon icon={faEnvelopeOpenText} width={19} color="gray" />
             <div>{translate(dictionaries.header.message)}</div>
           </Link>
-          <Link href={`/${lang}/orders`} prefetch={false}>
+          <Link href={`/${lang}/orders`}>
             <FontAwesomeIcon icon={faHeart} width={19} color="gray"  />
             <div>{translate(dictionaries.header.orders)}</div>
           </Link>
-          <Link href={`/${lang}/cart`} prefetch={false}>
+          <Link href={`/${lang}/cart`}>
             <FontAwesomeIcon icon={faCartShopping} width={19} color="gray" />
             <div>{translate(dictionaries.header.myCart)}</div>
           </Link>

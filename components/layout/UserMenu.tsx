@@ -2,7 +2,7 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faSignOutAlt, faCartShopping, faChevronDown, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faSignOutAlt, faCartShopping, faChevronDown, faChartLine, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { dictionaries } from "@/lib/dictionaries";
@@ -26,51 +26,69 @@ export default function UserMenu() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const role = (session?.user as any)?.role || 'user';
+  const roleLabel = role === 'super_admin' ? 'Super Admin' : role === 'admin' ? 'Admin' : role === 'seller' ? 'Seller' : 'Customer';
+  const roleBg = role === 'super_admin' ? '#eef2ff' : role === 'admin' ? '#eff6ff' : role === 'seller' ? '#fffbeb' : '#f1f5f9';
+  const roleColor = role === 'super_admin' ? '#4f46e5' : role === 'admin' ? '#2563eb' : role === 'seller' ? '#d97706' : '#64748b';
+
   return (
     <div className="user-menu-dropdown" ref={dropdownRef}>
+      {/* Outside Trigger: Large Square Card with Image / Large Icon */}
       <button 
         className="user-menu-trigger"
         onClick={() => setIsOpen(!isOpen)}
+        type="button"
+        title={session?.user?.name || translate(dictionaries.userMenu.account)}
+        aria-label="User Menu"
       >
         {session?.user?.image ? (
           <Image 
             src={session.user.image} 
-            alt={session.user.name || translate(dictionaries.userMenu.account)} 
-            width={32} 
-            height={32} 
-            className="user-avatar"
+            alt={session.user.name || "User Avatar"} 
+            width={44} 
+            height={44} 
+            className="user-avatar-square"
           />
         ) : (
-          <FontAwesomeIcon icon={faUser} width={20} color="gray" />
+          <div className="user-icon-square">
+            <FontAwesomeIcon icon={faUser} />
+          </div>
         )}
-        <span className="user-name">
-          {session ? session.user?.name?.split(' ')[0] || translate(dictionaries.userMenu.account) : translate(dictionaries.userMenu.account)}
-        </span>
-        <FontAwesomeIcon icon={faChevronDown} width={12} className={`chevron ${isOpen ? 'open' : ''}`} />
       </button>
 
       {isOpen && (
         <div className="user-menu-content">
           {session ? (
             <>
-              {/* User Info Header */}
+              {/* User Info Header: Name, Role Badge, and Email with Side Icon */}
               <div className="user-info-header">
                 {session.user?.image ? (
                   <Image 
                     src={session.user.image} 
-                    alt={session.user.name || translate(dictionaries.userMenu.account)} 
+                    alt={session.user.name || "User"} 
                     width={48} 
                     height={48} 
                     className="user-avatar-large"
                   />
                 ) : (
                   <div className="user-avatar-placeholder">
-                    <FontAwesomeIcon icon={faUser} width={24} />
+                    <FontAwesomeIcon icon={faUser} />
                   </div>
                 )}
                 <div className="user-details">
-                  <div className="user-full-name">{session.user?.name || translate(dictionaries.userMenu.guest)}</div>
-                  <div className="user-email">{session.user?.email}</div>
+                  <div className="user-name-role-row">
+                    <span className="user-full-name">{session.user?.name || translate(dictionaries.userMenu.guest)}</span>
+                    <span 
+                      className="user-role-badge" 
+                      style={{ backgroundColor: roleBg, color: roleColor }}
+                    >
+                      {roleLabel}
+                    </span>
+                  </div>
+                  <div className="user-email-row">
+                    <FontAwesomeIcon icon={faEnvelope} className="email-side-icon" />
+                    <span className="user-email-text">{session.user?.email}</span>
+                  </div>
                 </div>
               </div>
 
@@ -109,7 +127,7 @@ export default function UserMenu() {
               {/* Guest View */}
               <div className="guest-header">
                 <div className="guest-avatar">
-                  <FontAwesomeIcon icon={faUser} width={24} />
+                  <FontAwesomeIcon icon={faUser} />
                 </div>
                 <div className="guest-text">{translate(dictionaries.userMenu.welcome)}</div>
               </div>
@@ -127,11 +145,6 @@ export default function UserMenu() {
                 <FontAwesomeIcon icon={faUser} width={16} />
                 <span>Sign In</span>
               </Link>
-
-          
-
-              <div className="menu-divider"></div>
-
             </>
           )}
         </div>

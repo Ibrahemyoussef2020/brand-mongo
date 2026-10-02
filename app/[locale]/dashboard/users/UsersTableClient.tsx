@@ -1,19 +1,19 @@
 'use client';
-import { toggleUserRole, deleteUser } from "./actions";
+import { toggleUserRole, setUserRole, deleteUser } from "./actions";
 import { useState } from "react";
 import { useLang } from "@/context/LangContext";
 import { dictionaries } from "@/lib/dictionaries";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faStore, faCashRegister, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faStore, faUserShield, faUser } from "@fortawesome/free-solid-svg-icons";
 
 export default function UsersTableClient({ users }: { users: any[] }) {
     const [loadingId, setLoadingId] = useState<string | null>(null);
     const { lang, translate } = useLang();
     const t = dictionaries.dashboard.tables;
 
-    const handleToggleRole = async (userId: string, roleType: 'isCashier' | 'isSeller' | 'isAdmin', currentValue: boolean) => {
-        setLoadingId(`${userId}-${roleType}`);
-        await toggleUserRole(userId, roleType, currentValue);
+    const handleRoleChange = async (userId: string, newRole: string) => {
+        setLoadingId(`${userId}-${newRole}`);
+        await setUserRole(userId, newRole);
         setLoadingId(null);
     };
 
@@ -37,49 +37,80 @@ export default function UsersTableClient({ users }: { users: any[] }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user) => (
-                        <tr key={user._id}>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                            <td>
-                                <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
-                                    {user.isAdmin && <span className="pill info">{translate(t.roleAdmin)}</span>}
-                                    {user.isCashier && <span className="pill success">{translate(t.roleCashier)}</span>}
-                                    {user.isSeller && <span className="pill warning">{translate(t.roleSeller)}</span>}
-                                    {!user.isAdmin && !user.isCashier && !user.isSeller && <span className="pill">{translate(t.roleCustomer)}</span>}
-                                </div>
-                            </td>
-                            <td>
-                                <div className="action-btns">
-                                    <button 
-                                        className="btn-outline"
-                                        onClick={() => handleToggleRole(user._id, 'isSeller', user.isSeller || false)}
-                                        disabled={loadingId === `${user._id}-isSeller`}
-                                        title={user.isSeller ? translate(t.removeSeller) : translate(t.makeSeller)}
-                                    >
-                                        <FontAwesomeIcon icon={user.isSeller ? faCircleXmark : faStore} />
-                                    </button>
-                                    <button 
-                                        className="btn-outline"
-                                        onClick={() => handleToggleRole(user._id, 'isCashier', user.isCashier || false)}
-                                        disabled={loadingId === `${user._id}-isCashier`}
-                                        title={user.isCashier ? translate(t.removeCashier) : translate(t.makeCashier)}
-                                    >
-                                        <FontAwesomeIcon icon={user.isCashier ? faCircleXmark : faCashRegister} />
-                                    </button>
-                                    <button 
-                                        className="btn-danger"
-                                        onClick={() => handleDelete(user._id)}
-                                        disabled={loadingId === `delete-${user._id}`}
-                                        title={translate(t.deleteUser)}
-                                    >
-                                        <FontAwesomeIcon icon={faTrash} />
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
+                    {users.map((user) => {
+                        const effectiveRole = user.role || (user.isAdmin ? 'admin' : user.isSeller ? 'seller' : 'user');
+                        const isSuperAdmin = effectiveRole === 'super_admin';
+                        const isAdmin = effectiveRole === 'admin';
+                        const isSeller = effectiveRole === 'seller';
+
+                        return (
+                            <tr key={user._id}>
+                                <td>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <div style={{
+                                            width: '32px',
+                                            height: '32px',
+                                            borderRadius: '50%',
+                                            background: isSuperAdmin ? '#6366f1' : isAdmin ? '#3b82f6' : isSeller ? '#f59e0b' : '#64748b',
+                                            color: '#fff',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            fontWeight: 600,
+                                            fontSize: '13px'
+                                        }}>
+                                            {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                                        </div>
+                                        <span>{user.name}</span>
+                                    </div>
+                                </td>
+                                <td>{user.email}</td>
+                                <td>{user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '—'}</td>
+                                <td>
+                                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                                        {isSuperAdmin && <span className="pill" style={{ background: '#eef2ff', color: '#4f46e5', fontWeight: 600 }}>Super Admin</span>}
+                                        {isAdmin && <span className="pill info">{translate(t.roleAdmin)}</span>}
+                                        {isSeller && <span className="pill warning">{translate(t.roleSeller)}</span>}
+                                        {!isSuperAdmin && !isAdmin && !isSeller && <span className="pill">{translate(t.roleCustomer)}</span>}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="action-btns" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                        {!isSuperAdmin && (
+                                            <select
+                                                value={effectiveRole}
+                                                onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                                                disabled={!!loadingId}
+                                                style={{
+                                                    padding: '4px 8px',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #cbd5e1',
+                                                    fontSize: '12px',
+                                                    background: '#fff',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <option value="user">User / Customer</option>
+                                                <option value="seller">Seller</option>
+                                                <option value="admin">Admin</option>
+                                            </select>
+                                        )}
+                                        {!isSuperAdmin && (
+                                            <button 
+                                                className="btn-danger"
+                                                onClick={() => handleDelete(user._id)}
+                                                disabled={loadingId === `delete-${user._id}`}
+                                                title={translate(t.deleteUser)}
+                                                style={{ padding: '6px 10px', borderRadius: '6px' }}
+                                            >
+                                                <FontAwesomeIcon icon={faTrash} />
+                                            </button>
+                                        )}
+                                    </div>
+                                </td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
         </div>

@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/grid";
 import ProductCard from '@/components/general/ProductCard';
 import Pagenations from '@/components/showCategories/Pagenations';
+import GridSectionSkeleton from '@/components/skeletons/GridSectionSkeleton';
 
 interface GridSectionProps {
     section: any;
@@ -66,7 +67,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
     }, [section.key, section.products]);
 
     if (loading) {
-        return <div>Loading {section.key}...</div>;
+        return <GridSectionSkeleton columns={config.layout?.columns || 5} count={config.layout?.columns || 5} />;
     }
 
     if (!products || products.length === 0) {

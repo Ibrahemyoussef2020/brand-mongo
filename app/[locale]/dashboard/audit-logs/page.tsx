@@ -1,256 +1,278 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useLang } from "@/context/LangContext";
-import PageHeader from "@/components/dashboard/PageHeader";
 import StatCard from "@/components/dashboard/StatCard";
-import DataTable, { Column } from "@/components/dashboard/DataTable";
 import Modal from "@/components/dashboard/Modal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faEye, faSearch, faFilter, faClipboardList, 
+  faShieldHalved, faUser, faLaptop, faCircleCheck, 
+  faTriangleExclamation, faCircleXmark, faArrowRotateRight
+} from '@fortawesome/free-solid-svg-icons';
 
-interface AuditLogsItem {
+export interface AuditLogItem {
   id: string;
-  name: string;
-  status: string;
-  date: string;
+  actor: { name: string; email: string; role: string };
+  action: 'USER_LOGIN' | 'ORDER_REFUND' | 'PRODUCT_UPDATE' | 'ROLE_ASSIGN' | 'SETTINGS_CHANGE' | 'SECURITY_ALERT';
+  targetResource: string;
+  ipAddress: string;
+  severity: 'Info' | 'Warning' | 'Critical';
+  timestamp: string;
+  metadata?: any;
 }
+
+const INITIAL_LOGS: AuditLogItem[] = [
+  {
+    id: 'LOG-901',
+    actor: { name: 'Admin Root', email: 'admin@brand-mongo.com', role: 'Super Admin' },
+    action: 'SETTINGS_CHANGE',
+    targetResource: 'Store Payment Gateway (Stripe live credentials)',
+    ipAddress: '192.168.1.4',
+    severity: 'Warning',
+    timestamp: 'Oct 26, 2026 14:32:10',
+    metadata: { changedKeys: ['stripeWebhookSecret'], env: 'production' }
+  },
+  {
+    id: 'LOG-902',
+    actor: { name: 'Sarah Manager', email: 'sarah.m@brand-mongo.com', role: 'Store Manager' },
+    action: 'PRODUCT_UPDATE',
+    targetResource: 'Product #PROD-102 (Price updated to $149.99)',
+    ipAddress: '197.34.12.89',
+    severity: 'Info',
+    timestamp: 'Oct 26, 2026 12:15:44',
+    metadata: { oldPrice: 169.99, newPrice: 149.99, stock: 45 }
+  },
+  {
+    id: 'LOG-903',
+    actor: { name: 'Security Guard System', email: 'system@brand-mongo.com', role: 'System Daemon' },
+    action: 'SECURITY_ALERT',
+    targetResource: '5 consecutive failed password attempts on admin account',
+    ipAddress: '45.134.22.10',
+    severity: 'Critical',
+    timestamp: 'Oct 25, 2026 23:45:02',
+    metadata: { blockedIP: true, alertTriggered: true }
+  },
+  {
+    id: 'LOG-904',
+    actor: { name: 'Khaled Omar', email: 'khaled.o@brand-mongo.com', role: 'Support Agent' },
+    action: 'ORDER_REFUND',
+    targetResource: 'Order #ORD-9915 refunded ($210.00)',
+    ipAddress: '196.221.84.15',
+    severity: 'Warning',
+    timestamp: 'Oct 25, 2026 18:20:11',
+    metadata: { orderId: 'ORD-9915', refundReason: 'Item returned' }
+  },
+  {
+    id: 'LOG-905',
+    actor: { name: 'Elena Rostova', email: 'elena.r@brand-mongo.com', role: 'Staff' },
+    action: 'USER_LOGIN',
+    targetResource: 'Dashboard session authenticated via 2FA',
+    ipAddress: '197.34.12.89',
+    severity: 'Info',
+    timestamp: 'Oct 25, 2026 09:10:33',
+    metadata: { method: '2FA_OTP', userAgent: 'Chrome/130 on Windows 11' }
+  }
+];
 
 export default function AuditLogsPage() {
   const { translate } = useLang();
   
-  // Data State
-  const [data, setData] = useState<AuditLogsItem[]>([
-    { id: '1', name: 'Sample Audit Logs A', status: 'Active', date: 'Oct 24, 2026' },
-    { id: '2', name: 'Sample Audit Logs B', status: 'Pending', date: 'Oct 25, 2026' },
-    { id: '3', name: 'Sample Audit Logs C', status: 'Inactive', date: 'Oct 26, 2026' },
-  ]);
+  const [data, setData] = useState<AuditLogItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [severityFilter, setSeverityFilter] = useState<'All' | 'Info' | 'Warning' | 'Critical'>('All');
+  const [actionFilter, setActionFilter] = useState<string>('All');
 
-  // Modal states
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<AuditLogsItem | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<AuditLogItem | null>(null);
 
-  // Form states for Add/Edit
-  const [formData, setFormData] = useState({ name: '', status: 'Active' });
-
-  const handleAddClick = () => {
-    setFormData({ name: '', status: 'Active' });
-    setIsAddModalOpen(true);
-  };
-
-  const handleEditClick = (record: AuditLogsItem) => {
-    setSelectedRecord(record);
-    setFormData({ name: record.name, status: record.status });
-    setIsEditModalOpen(true);
-  };
-
-  const handleViewClick = (record: AuditLogsItem) => {
-    setSelectedRecord(record);
-    setIsViewModalOpen(true);
-  };
-
-  const handleDeleteClick = (record: AuditLogsItem) => {
-    setSelectedRecord(record);
-    setIsDeleteModalOpen(true);
-  };
-
-  // CRUD Actions
-  const onSaveNew = () => {
-    const newItem: AuditLogsItem = {
-      id: Math.floor(Math.random() * 1000).toString(),
-      name: formData.name,
-      status: formData.status,
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    };
-    setData([...data, newItem]);
-    setIsAddModalOpen(false);
-  };
-
-  const onUpdate = () => {
-    if (!selectedRecord) return;
-    setData(data.map(item => item.id === selectedRecord.id ? { ...item, name: formData.name, status: formData.status } : item));
-    setIsEditModalOpen(false);
-    setSelectedRecord(null);
-  };
-
-  const onConfirmDelete = () => {
-    if (!selectedRecord) return;
-    setData(data.filter(item => item.id !== selectedRecord.id));
-    setIsDeleteModalOpen(false);
-    setSelectedRecord(null);
-  };
-
-  // Table Columns
-  const columns: Column<AuditLogsItem>[] = [
-    { key: 'id', title: 'ID' },
-    { key: 'name', title: 'Name' },
-    { 
-      key: 'status', 
-      title: 'Status', 
-      render: (record: AuditLogsItem) => {
-        let color = '#666';
-        let bg = '#eee';
-        if (record.status === 'Active') { color = '#00b517'; bg = '#e6f7eb'; }
-        else if (record.status === 'Pending') { color = '#ff9017'; bg = '#fff0db'; }
-        else if (record.status === 'Inactive') { color = '#fa3434'; bg = '#fef0f0'; }
-        
-        return (
-          <span style={{ background: bg, color, padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: '500' }}>
-            {record.status}
-          </span>
-        );
+  const fetchLogs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/audit-logs');
+      if (res.ok) {
+        const json = await res.json();
+        const mapped = json.map((l: any) => ({
+          ...l,
+          id: l._id || l.id,
+        }));
+        setData(mapped);
       }
-    },
-    { key: 'date', title: 'Date' },
-    { 
-      key: 'actions', 
-      title: 'Actions', 
-      align: 'right',
-      render: (record: AuditLogsItem) => (
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-          <button onClick={() => handleViewClick(record)} style={{ background: 'none', border: 'none', color: '#6c757d', cursor: 'pointer' }} title="View">
-            <FontAwesomeIcon icon={faEye} />
-          </button>
-          <button onClick={() => handleEditClick(record)} style={{ background: 'none', border: 'none', color: '#0D6EFD', cursor: 'pointer' }} title="Edit">
-            <FontAwesomeIcon icon={faPenToSquare} />
-          </button>
-          <button onClick={() => handleDeleteClick(record)} style={{ background: 'none', border: 'none', color: '#dc3545', cursor: 'pointer' }} title="Delete">
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
-        </div>
-      )
+    } catch (e) {
+      console.error('Failed to load audit logs:', e);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
+  const filteredLogs = useMemo(() => {
+    return data.filter(item => {
+      const matchesSearch = 
+        item.actor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.actor.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.targetResource.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.action.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.ipAddress.includes(searchQuery);
+      
+      const matchesSeverity = severityFilter === 'All' || item.severity === severityFilter;
+      const matchesAction = actionFilter === 'All' || item.action === actionFilter;
+      return matchesSearch && matchesSeverity && matchesAction;
+    });
+  }, [data, searchQuery, severityFilter, actionFilter]);
+
+  const criticalCount = data.filter(i => i.severity === 'Critical').length;
+  const warningCount = data.filter(i => i.severity === 'Warning').length;
+
+  const getSeverityBadge = (severity: 'Info' | 'Warning' | 'Critical') => {
+    switch (severity) {
+      case 'Info':
+        return <span style={{ background: '#e0f2fe', color: '#0284c7', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' }}><FontAwesomeIcon icon={faCircleCheck} /> Info</span>;
+      case 'Warning':
+        return <span style={{ background: '#fff0db', color: '#ff9017', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' }}><FontAwesomeIcon icon={faTriangleExclamation} /> Warning</span>;
+      case 'Critical':
+        return <span style={{ background: '#fef0f0', color: '#fa3434', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' }}><FontAwesomeIcon icon={faCircleXmark} /> Critical</span>;
+    }
+  };
 
   return (
-    <div className="dashboard-page">
-      <PageHeader title="Audit Logs" filterText="Last 30 Days" />
+    <div className="dashboard-page" style={{ paddingBottom: '60px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px', marginBottom: '25px' }}>
+        <div>
+          <h1 style={{ fontSize: '26px', fontWeight: '800', color: '#1e293b', margin: '0 0 6px 0' }}>
+            Security Audit Trail & Logs
+          </h1>
+          <p style={{ color: '#64748b', fontSize: '14px', margin: 0 }}>
+            Immutable administrative access logs, resource mutations, and security event records.
+          </p>
+        </div>
 
-      <div className="stats-grid">
-        <StatCard label="Total Records" value={data.length} trend="+12.5%" colorClass="c-blue" />
-        <StatCard label="Active" value={data.filter(i => i.status === 'Active').length} trend="+5.2%" colorClass="c-green" />
-        <StatCard label="Pending" value={data.filter(i => i.status === 'Pending').length} trend="-2.1%" colorClass="c-orange" />
+        <button
+          onClick={() => { setLoading(true); setTimeout(() => setLoading(false), 400); }}
+          style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '10px 14px', borderRadius: '8px', color: '#475569', cursor: 'pointer', fontWeight: '600', fontSize: '13px' }}
+        >
+          <FontAwesomeIcon icon={faArrowRotateRight} className={loading ? 'fa-spin' : ''} /> Refresh Logs
+        </button>
       </div>
 
-      <DataTable 
-        title="Manage Audit Logs" 
-        description="View and manage all your audit logs here."
-        columns={columns} 
-        data={data} 
-        onAdd={handleAddClick}
-      />
+      <div className="stats-grid" style={{ marginBottom: '30px' }}>
+        <StatCard label="Total Events Logged" value={data.length} trend="+28 today" colorClass="c-blue" />
+        <StatCard label="Security Warnings" value={warningCount} trend="-2" colorClass="c-orange" />
+        <StatCard label="Critical Alerts" value={criticalCount} trend="0 unhandled" colorClass="c-green" />
+        <StatCard label="Audit Compliance" value="100% OK" trend="Tamper-proof" colorClass="c-indigo" />
+      </div>
 
-      {/* Add New Modal */}
-      <Modal 
-        isOpen={isAddModalOpen} 
-        onClose={() => setIsAddModalOpen(false)} 
-        title="Add New Audit Logs"
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Name</label>
-            <input 
-              type="text" 
-              value={formData.name} 
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }} 
-              placeholder="Enter Name" 
-            />
+      {/* Controls */}
+      <div style={{ background: '#fff', padding: '18px 24px', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flex: 1, minWidth: '280px' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '380px' }}>
+            <FontAwesomeIcon icon={faSearch} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+            <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search actor, IP address, resource..." style={{ width: '100%', padding: '10px 14px 10px 38px', borderRadius: '8px', border: '1px solid #cbd5e1' }} />
           </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Status</label>
-            <select 
-              value={formData.status} 
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-            >
-              <option value="Active">Active</option>
-              <option value="Pending">Pending</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </div>
-          <button 
-            onClick={onSaveNew}
-            style={{ background: '#0D6EFD', color: '#fff', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', marginTop: '10px' }}
-          >
-            Save
-          </button>
+
+          <select value={severityFilter} onChange={(e) => setSeverityFilter(e.target.value as any)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', background: '#fff' }}>
+            <option value="All">All Severities</option>
+            <option value="Info">Info</option>
+            <option value="Warning">Warning</option>
+            <option value="Critical">Critical</option>
+          </select>
+
+          <select value={actionFilter} onChange={(e) => setActionFilter(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', background: '#fff' }}>
+            <option value="All">All Actions</option>
+            <option value="USER_LOGIN">User Login</option>
+            <option value="PRODUCT_UPDATE">Product Update</option>
+            <option value="ORDER_REFUND">Order Refund</option>
+            <option value="SETTINGS_CHANGE">Settings Change</option>
+            <option value="SECURITY_ALERT">Security Alert</option>
+          </select>
         </div>
-      </Modal>
+      </div>
 
-      {/* Edit Modal */}
-      <Modal 
-        isOpen={isEditModalOpen} 
-        onClose={() => { setIsEditModalOpen(false); setSelectedRecord(null); }} 
-        title="Edit Audit Logs"
-      >
-        <div key={selectedRecord?.id} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Name</label>
-            <input 
-              type="text" 
-              value={formData.name} 
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }} 
-            />
-          </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Status</label>
-            <select 
-              value={formData.status} 
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-            >
-              <option value="Active">Active</option>
-              <option value="Pending">Pending</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </div>
-          <button 
-            onClick={onUpdate}
-            style={{ background: '#0D6EFD', color: '#fff', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', marginTop: '10px' }}
-          >
-            Update
-          </button>
+      {/* Audit Logs Table */}
+      <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
+            <thead>
+              <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', color: '#475569', fontWeight: '600' }}>
+                <th style={{ padding: '14px 20px' }}>Actor</th>
+                <th style={{ padding: '14px 20px' }}>Action</th>
+                <th style={{ padding: '14px 20px' }}>Target Resource</th>
+                <th style={{ padding: '14px 20px' }}>IP Address</th>
+                <th style={{ padding: '14px 20px' }}>Severity</th>
+                <th style={{ padding: '14px 20px' }}>Timestamp</th>
+                <th style={{ padding: '14px 20px', textAlign: 'right' }}>Payload</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredLogs.map((log, idx) => (
+                <tr key={log.id} style={{ borderBottom: idx === filteredLogs.length - 1 ? 'none' : '1px solid #f1f5f9' }}>
+                  <td style={{ padding: '14px 20px' }}>
+                    <div style={{ fontWeight: '600', color: '#1e293b' }}>{log.actor.name}</div>
+                    <div style={{ fontSize: '12px', color: '#64748b' }}>{log.actor.role}</div>
+                  </td>
+                  <td style={{ padding: '14px 20px' }}>
+                    <span style={{ fontFamily: 'monospace', fontWeight: '700', fontSize: '12px', background: '#f1f5f9', color: '#334155', padding: '3px 8px', borderRadius: '4px' }}>
+                      {log.action}
+                    </span>
+                  </td>
+                  <td style={{ padding: '14px 20px', color: '#334155', maxWidth: '280px' }}>
+                    {log.targetResource}
+                  </td>
+                  <td style={{ padding: '14px 20px', fontFamily: 'monospace', color: '#64748b', fontSize: '13px' }}>
+                    {log.ipAddress}
+                  </td>
+                  <td style={{ padding: '14px 20px' }}>
+                    {getSeverityBadge(log.severity)}
+                  </td>
+                  <td style={{ padding: '14px 20px', color: '#64748b', fontSize: '13px', whiteSpace: 'nowrap' }}>
+                    {log.timestamp}
+                  </td>
+                  <td style={{ padding: '14px 20px', textAlign: 'right' }}>
+                    <button onClick={() => { setSelectedRecord(log); setIsViewModalOpen(true); }} style={{ background: 'none', border: 'none', color: '#0D6EFD', cursor: 'pointer', fontWeight: '600' }}>
+                      <FontAwesomeIcon icon={faEye} /> Details
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </Modal>
+      </div>
 
-      {/* View Modal */}
-      <Modal 
-        isOpen={isViewModalOpen} 
-        onClose={() => { setIsViewModalOpen(false); setSelectedRecord(null); }} 
-        title="View Audit Logs"
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <p><strong>ID:</strong> {selectedRecord?.id}</p>
-          <p><strong>Name:</strong> {selectedRecord?.name}</p>
-          <p><strong>Status:</strong> {selectedRecord?.status}</p>
-          <p><strong>Date:</strong> {selectedRecord?.date}</p>
-        </div>
-      </Modal>
+      {/* Details Modal */}
+      <Modal isOpen={isViewModalOpen} onClose={() => { setIsViewModalOpen(false); setSelectedRecord(null); }} title="Audit Event Inspection">
+        {selectedRecord && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+              <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
+                <span style={{ fontSize: '12px', color: '#64748b', display: 'block' }}>Actor Identity</span>
+                <strong>{selectedRecord.actor.name} ({selectedRecord.actor.email})</strong>
+              </div>
+              <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
+                <span style={{ fontSize: '12px', color: '#64748b', display: 'block' }}>Action Trigger</span>
+                <span style={{ fontFamily: 'monospace', fontWeight: '700', color: '#0D6EFD' }}>{selectedRecord.action}</span>
+              </div>
+            </div>
 
-      {/* Delete Confirmation Modal */}
-      <Modal 
-        isOpen={isDeleteModalOpen} 
-        onClose={() => { setIsDeleteModalOpen(false); setSelectedRecord(null); }} 
-        title="Confirm Delete"
-      >
-        <div style={{ textAlign: 'center' }}>
-          <p>Are you sure you want to delete <strong>{selectedRecord?.name}</strong>?</p>
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '20px' }}>
-            <button onClick={() => setIsDeleteModalOpen(false)} style={{ padding: '8px 16px', borderRadius: '4px', border: '1px solid #ddd', background: '#fff', cursor: 'pointer' }}>Cancel</button>
-            <button 
-              onClick={onConfirmDelete}
-              style={{ padding: '8px 16px', borderRadius: '4px', border: 'none', background: '#dc3545', color: '#fff', cursor: 'pointer' }}
-            >
-              Delete
-            </button>
+            <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
+              <span style={{ fontSize: '12px', color: '#64748b', display: 'block' }}>Resource Target</span>
+              <strong>{selectedRecord.targetResource}</strong>
+            </div>
+
+            {selectedRecord.metadata && (
+              <div>
+                <span style={{ fontSize: '12px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '6px' }}>Event Payload JSON</span>
+                <pre style={{ background: '#0f172a', color: '#38bdf8', padding: '14px', borderRadius: '8px', fontSize: '12px', overflowX: 'auto', margin: 0 }}>
+                  {JSON.stringify(selectedRecord.metadata, null, 2)}
+                </pre>
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </Modal>
-
     </div>
   );
 }

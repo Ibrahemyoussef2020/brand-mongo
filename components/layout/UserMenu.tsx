@@ -82,7 +82,7 @@ export default function UserMenu() {
                 <span>{translate(dictionaries.userMenu.myProfile)}</span>
               </Link>
               
-              {((session.user as any)?.role === 'admin' || (session.user as any)?.role === 'super_admin') && (
+              {((session.user as any)?.role === 'admin' || (session.user as any)?.role === 'super_admin' || (session.user as any)?.role === 'seller') && (
                 <Link href={`/${lang}/dashboard`} className="menu-item" onClick={() => setIsOpen(false)}>
                   <FontAwesomeIcon icon={faChartLine} width={16} />
                   <span>Dashboard</span>

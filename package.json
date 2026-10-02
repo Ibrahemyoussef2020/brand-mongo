@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "migrate:images": "tsx scripts/migrate-images.ts",
-    "seed:sections": "tsx scripts/seedHomeSections.ts"
+    "seed:sections": "tsx scripts/seedHomeSections.ts",
+    "seed:accounts": "tsx scripts/seed-accounts.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",

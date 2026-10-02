@@ -1,256 +1,236 @@
 'use client';
 import React, { useState } from 'react';
 import { useLang } from "@/context/LangContext";
-import PageHeader from "@/components/dashboard/PageHeader";
 import StatCard from "@/components/dashboard/StatCard";
-import DataTable, { Column } from "@/components/dashboard/DataTable";
-import Modal from "@/components/dashboard/Modal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
-
-interface SettingsItem {
-  id: string;
-  name: string;
-  status: string;
-  date: string;
-}
+import { 
+  faSliders, faStore, faShieldHalved, faCreditCard, 
+  faBell, faGlobe, faFloppyDisk, faCheck, faKey, faLock
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function SettingsPage() {
   const { translate } = useLang();
-  
-  // Data State
-  const [data, setData] = useState<SettingsItem[]>([
-    { id: '1', name: 'Sample Settings A', status: 'Active', date: 'Oct 24, 2026' },
-    { id: '2', name: 'Sample Settings B', status: 'Pending', date: 'Oct 25, 2026' },
-    { id: '3', name: 'Sample Settings C', status: 'Inactive', date: 'Oct 26, 2026' },
-  ]);
+  const [activeTab, setActiveTab] = useState<'general' | 'ecommerce' | 'security' | 'integrations'>('general');
+  const [savedSuccess, setSavedSuccess] = useState(false);
 
-  // Modal states
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<SettingsItem | null>(null);
+  // Settings State
+  const [generalSettings, setGeneralSettings] = useState({
+    storeName: 'Brand Commerce Inc.',
+    supportEmail: 'support@brand-mongo.com',
+    defaultCurrency: 'USD',
+    timezone: 'UTC+03:00 (Riyadh/Cairo)',
+    defaultLanguage: 'en'
+  });
 
-  // Form states for Add/Edit
-  const [formData, setFormData] = useState({ name: '', status: 'Active' });
+  const [ecommerceSettings, setEcommerceSettings] = useState({
+    guestCheckout: true,
+    autoArchiveOrders: true,
+    lowStockThreshold: 5,
+    enableTaxCalculation: true,
+    taxPercentage: 15
+  });
 
-  const handleAddClick = () => {
-    setFormData({ name: '', status: 'Active' });
-    setIsAddModalOpen(true);
+  const [securitySettings, setSecuritySettings] = useState({
+    twoFactorAuth: true,
+    sessionTimeoutMinutes: 60,
+    enforceStrongPasswords: true,
+    maxLoginAttempts: 5
+  });
+
+  const [integrationSettings, setIntegrationSettings] = useState({
+    stripeKey: 'pk_live_51Nw28xALkdIwHu7ix91z4wLA****************',
+    stripeWebhookSecret: 'whsec_9918237461908234****************',
+    cloudinaryCloudName: 'brand-cloudinary-prod',
+    enableLiveStripePayments: true
+  });
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavedSuccess(true);
+    setTimeout(() => setSavedSuccess(false), 3000);
   };
-
-  const handleEditClick = (record: SettingsItem) => {
-    setSelectedRecord(record);
-    setFormData({ name: record.name, status: record.status });
-    setIsEditModalOpen(true);
-  };
-
-  const handleViewClick = (record: SettingsItem) => {
-    setSelectedRecord(record);
-    setIsViewModalOpen(true);
-  };
-
-  const handleDeleteClick = (record: SettingsItem) => {
-    setSelectedRecord(record);
-    setIsDeleteModalOpen(true);
-  };
-
-  // CRUD Actions
-  const onSaveNew = () => {
-    const newItem: SettingsItem = {
-      id: Math.floor(Math.random() * 1000).toString(),
-      name: formData.name,
-      status: formData.status,
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    };
-    setData([...data, newItem]);
-    setIsAddModalOpen(false);
-  };
-
-  const onUpdate = () => {
-    if (!selectedRecord) return;
-    setData(data.map(item => item.id === selectedRecord.id ? { ...item, name: formData.name, status: formData.status } : item));
-    setIsEditModalOpen(false);
-    setSelectedRecord(null);
-  };
-
-  const onConfirmDelete = () => {
-    if (!selectedRecord) return;
-    setData(data.filter(item => item.id !== selectedRecord.id));
-    setIsDeleteModalOpen(false);
-    setSelectedRecord(null);
-  };
-
-  // Table Columns
-  const columns: Column<SettingsItem>[] = [
-    { key: 'id', title: 'ID' },
-    { key: 'name', title: 'Name' },
-    { 
-      key: 'status', 
-      title: 'Status', 
-      render: (record: SettingsItem) => {
-        let color = '#666';
-        let bg = '#eee';
-        if (record.status === 'Active') { color = '#00b517'; bg = '#e6f7eb'; }
-        else if (record.status === 'Pending') { color = '#ff9017'; bg = '#fff0db'; }
-        else if (record.status === 'Inactive') { color = '#fa3434'; bg = '#fef0f0'; }
-        
-        return (
-          <span style={{ background: bg, color, padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: '500' }}>
-            {record.status}
-          </span>
-        );
-      }
-    },
-    { key: 'date', title: 'Date' },
-    { 
-      key: 'actions', 
-      title: 'Actions', 
-      align: 'right',
-      render: (record: SettingsItem) => (
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-          <button onClick={() => handleViewClick(record)} style={{ background: 'none', border: 'none', color: '#6c757d', cursor: 'pointer' }} title="View">
-            <FontAwesomeIcon icon={faEye} />
-          </button>
-          <button onClick={() => handleEditClick(record)} style={{ background: 'none', border: 'none', color: '#0D6EFD', cursor: 'pointer' }} title="Edit">
-            <FontAwesomeIcon icon={faPenToSquare} />
-          </button>
-          <button onClick={() => handleDeleteClick(record)} style={{ background: 'none', border: 'none', color: '#dc3545', cursor: 'pointer' }} title="Delete">
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
-        </div>
-      )
-    }
-  ];
 
   return (
-    <div className="dashboard-page">
-      <PageHeader title="Settings" filterText="Last 30 Days" />
+    <div className="dashboard-page" style={{ paddingBottom: '60px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px', marginBottom: '25px' }}>
+        <div>
+          <h1 style={{ fontSize: '26px', fontWeight: '800', color: '#1e293b', margin: '0 0 6px 0' }}>
+            Store & System Configuration
+          </h1>
+          <p style={{ color: '#64748b', fontSize: '14px', margin: 0 }}>
+            Fine-tune store telemetry, payment gateways, checkout parameters, and auth policies.
+          </p>
+        </div>
 
-      <div className="stats-grid">
-        <StatCard label="Total Records" value={data.length} trend="+12.5%" colorClass="c-blue" />
-        <StatCard label="Active" value={data.filter(i => i.status === 'Active').length} trend="+5.2%" colorClass="c-green" />
-        <StatCard label="Pending" value={data.filter(i => i.status === 'Pending').length} trend="-2.1%" colorClass="c-orange" />
+        {savedSuccess && (
+          <div style={{ background: '#e6f7eb', color: '#00b517', padding: '10px 16px', borderRadius: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid #bbf7d0' }}>
+            <FontAwesomeIcon icon={faCheck} /> Changes Saved Successfully
+          </div>
+        )}
       </div>
 
-      <DataTable 
-        title="Manage Settings" 
-        description="View and manage all your settings here."
-        columns={columns} 
-        data={data} 
-        onAdd={handleAddClick}
-      />
-
-      {/* Add New Modal */}
-      <Modal 
-        isOpen={isAddModalOpen} 
-        onClose={() => setIsAddModalOpen(false)} 
-        title="Add New Settings"
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Name</label>
-            <input 
-              type="text" 
-              value={formData.name} 
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }} 
-              placeholder="Enter Name" 
-            />
-          </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Status</label>
-            <select 
-              value={formData.status} 
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-            >
-              <option value="Active">Active</option>
-              <option value="Pending">Pending</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </div>
-          <button 
-            onClick={onSaveNew}
-            style={{ background: '#0D6EFD', color: '#fff', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', marginTop: '10px' }}
+      {/* Tabs Navigation */}
+      <div style={{ display: 'flex', gap: '10px', borderBottom: '1px solid #e2e8f0', marginBottom: '28px', overflowX: 'auto', paddingBottom: '2px' }}>
+        {[
+          { key: 'general', label: 'General Info', icon: faStore },
+          { key: 'ecommerce', label: 'E-Commerce & Checkout', icon: faSliders },
+          { key: 'security', label: 'Security & Access', icon: faShieldHalved },
+          { key: 'integrations', label: 'API & Gateways', icon: faCreditCard },
+        ].map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key as any)}
+            style={{
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === tab.key ? '3px solid #0D6EFD' : '3px solid transparent',
+              padding: '12px 18px',
+              color: activeTab === tab.key ? '#0D6EFD' : '#64748b',
+              fontWeight: '700',
+              fontSize: '14px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap'
+            }}
           >
-            Save
+            <FontAwesomeIcon icon={tab.icon} />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Panels */}
+      <form onSubmit={handleSave} style={{ maxWidth: '900px' }}>
+        {activeTab === 'general' && (
+          <div style={{ background: '#fff', borderRadius: '14px', border: '1px solid #e2e8f0', padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', margin: 0 }}>General Store Information</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '600', color: '#334155' }}>Store Brand Name</label>
+                <input type="text" value={generalSettings.storeName} onChange={(e) => setGeneralSettings({ ...generalSettings, storeName: e.target.value })} style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '600', color: '#334155' }}>Customer Support Email</label>
+                <input type="email" value={generalSettings.supportEmail} onChange={(e) => setGeneralSettings({ ...generalSettings, supportEmail: e.target.value })} style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '600', color: '#334155' }}>Base Currency</label>
+                <select value={generalSettings.defaultCurrency} onChange={(e) => setGeneralSettings({ ...generalSettings, defaultCurrency: e.target.value })} style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }}>
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="SAR">SAR (ر.س)</option>
+                  <option value="AED">AED (د.إ)</option>
+                  <option value="EGP">EGP (ج.م)</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '600', color: '#334155' }}>Store Timezone</label>
+                <input type="text" value={generalSettings.timezone} onChange={(e) => setGeneralSettings({ ...generalSettings, timezone: e.target.value })} style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'ecommerce' && (
+          <div style={{ background: '#fff', borderRadius: '14px', border: '1px solid #e2e8f0', padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', margin: 0 }}>E-Commerce Checkout & Inventory</h3>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#334155', cursor: 'pointer' }}>
+                <input type="checkbox" checked={ecommerceSettings.guestCheckout} onChange={(e) => setEcommerceSettings({ ...ecommerceSettings, guestCheckout: e.target.checked })} style={{ width: '18px', height: '18px', accentColor: '#0D6EFD' }} />
+                Enable Guest Checkout (Allow buyers to purchase without registering)
+              </label>
+
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#334155', cursor: 'pointer' }}>
+                <input type="checkbox" checked={ecommerceSettings.autoArchiveOrders} onChange={(e) => setEcommerceSettings({ ...ecommerceSettings, autoArchiveOrders: e.target.checked })} style={{ width: '18px', height: '18px', accentColor: '#0D6EFD' }} />
+                Automatically archive completed orders after 30 days
+              </label>
+
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#334155', cursor: 'pointer' }}>
+                <input type="checkbox" checked={ecommerceSettings.enableTaxCalculation} onChange={(e) => setEcommerceSettings({ ...ecommerceSettings, enableTaxCalculation: e.target.checked })} style={{ width: '18px', height: '18px', accentColor: '#0D6EFD' }} />
+                Enable Automated VAT / Sales Tax Calculation (15%)
+              </label>
+            </div>
+
+            <div style={{ maxWidth: '300px', marginTop: '10px' }}>
+              <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '600', color: '#334155' }}>Low Stock Alert Threshold</label>
+              <input type="number" value={ecommerceSettings.lowStockThreshold} onChange={(e) => setEcommerceSettings({ ...ecommerceSettings, lowStockThreshold: Number(e.target.value) })} style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'security' && (
+          <div style={{ background: '#fff', borderRadius: '14px', border: '1px solid #e2e8f0', padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', margin: 0 }}>Administrative Security & Sessions</h3>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#334155', cursor: 'pointer' }}>
+                <input type="checkbox" checked={securitySettings.twoFactorAuth} onChange={(e) => setSecuritySettings({ ...securitySettings, twoFactorAuth: e.target.checked })} style={{ width: '18px', height: '18px', accentColor: '#0D6EFD' }} />
+                Enforce 2-Factor Authentication (2FA) for all Administrator Accounts
+              </label>
+
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#334155', cursor: 'pointer' }}>
+                <input type="checkbox" checked={securitySettings.enforceStrongPasswords} onChange={(e) => setSecuritySettings({ ...securitySettings, enforceStrongPasswords: e.target.checked })} style={{ width: '18px', height: '18px', accentColor: '#0D6EFD' }} />
+                Enforce Strong Passwords (Minimum 8 chars, symbols & numbers)
+              </label>
+            </div>
+
+            <div style={{ maxWidth: '300px', marginTop: '10px' }}>
+              <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '600', color: '#334155' }}>Session Inactivity Timeout (Minutes)</label>
+              <input type="number" value={securitySettings.sessionTimeoutMinutes} onChange={(e) => setSecuritySettings({ ...securitySettings, sessionTimeoutMinutes: Number(e.target.value) })} style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'integrations' && (
+          <div style={{ background: '#fff', borderRadius: '14px', border: '1px solid #e2e8f0', padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', margin: 0 }}>Payment Gateways & Cloud Storage</h3>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '600', color: '#334155' }}>Stripe Publishable Key</label>
+              <input type="text" value={integrationSettings.stripeKey} onChange={(e) => setIntegrationSettings({ ...integrationSettings, stripeKey: e.target.value })} style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontFamily: 'monospace' }} />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '600', color: '#334155' }}>Stripe Webhook Secret</label>
+              <input type="password" value={integrationSettings.stripeWebhookSecret} onChange={(e) => setIntegrationSettings({ ...integrationSettings, stripeWebhookSecret: e.target.value })} style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontFamily: 'monospace' }} />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '600', color: '#334155' }}>Cloudinary Cloud Name</label>
+              <input type="text" value={integrationSettings.cloudinaryCloudName} onChange={(e) => setIntegrationSettings({ ...integrationSettings, cloudinaryCloudName: e.target.value })} style={{ width: '100%', padding: '10px 12px', borderRadius: '6px', border: '1px solid #cbd5e1' }} />
+            </div>
+          </div>
+        )}
+
+        <div style={{ marginTop: '24px' }}>
+          <button
+            type="submit"
+            style={{
+              background: 'linear-gradient(135deg, #0D6EFD 0%, #0052cc 100%)',
+              color: '#fff',
+              border: 'none',
+              padding: '12px 28px',
+              borderRadius: '8px',
+              fontWeight: '700',
+              fontSize: '15px',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 12px rgba(13, 110, 253, 0.25)'
+            }}
+          >
+            <FontAwesomeIcon icon={faFloppyDisk} />
+            Save Configuration Changes
           </button>
         </div>
-      </Modal>
-
-      {/* Edit Modal */}
-      <Modal 
-        isOpen={isEditModalOpen} 
-        onClose={() => { setIsEditModalOpen(false); setSelectedRecord(null); }} 
-        title="Edit Settings"
-      >
-        <div key={selectedRecord?.id} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Name</label>
-            <input 
-              type="text" 
-              value={formData.name} 
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }} 
-            />
-          </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', fontSize: '14px', color: '#333' }}>Status</label>
-            <select 
-              value={formData.status} 
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-            >
-              <option value="Active">Active</option>
-              <option value="Pending">Pending</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </div>
-          <button 
-            onClick={onUpdate}
-            style={{ background: '#0D6EFD', color: '#fff', border: 'none', padding: '10px', borderRadius: '4px', cursor: 'pointer', marginTop: '10px' }}
-          >
-            Update
-          </button>
-        </div>
-      </Modal>
-
-      {/* View Modal */}
-      <Modal 
-        isOpen={isViewModalOpen} 
-        onClose={() => { setIsViewModalOpen(false); setSelectedRecord(null); }} 
-        title="View Settings"
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <p><strong>ID:</strong> {selectedRecord?.id}</p>
-          <p><strong>Name:</strong> {selectedRecord?.name}</p>
-          <p><strong>Status:</strong> {selectedRecord?.status}</p>
-          <p><strong>Date:</strong> {selectedRecord?.date}</p>
-        </div>
-      </Modal>
-
-      {/* Delete Confirmation Modal */}
-      <Modal 
-        isOpen={isDeleteModalOpen} 
-        onClose={() => { setIsDeleteModalOpen(false); setSelectedRecord(null); }} 
-        title="Confirm Delete"
-      >
-        <div style={{ textAlign: 'center' }}>
-          <p>Are you sure you want to delete <strong>{selectedRecord?.name}</strong>?</p>
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '20px' }}>
-            <button onClick={() => setIsDeleteModalOpen(false)} style={{ padding: '8px 16px', borderRadius: '4px', border: '1px solid #ddd', background: '#fff', cursor: 'pointer' }}>Cancel</button>
-            <button 
-              onClick={onConfirmDelete}
-              style={{ padding: '8px 16px', borderRadius: '4px', border: 'none', background: '#dc3545', color: '#fff', cursor: 'pointer' }}
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      </Modal>
-
+      </form>
     </div>
   );
 }

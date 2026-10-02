@@ -3,7 +3,21 @@ import dynamic from 'next/dynamic';
 
 const LeafletMap = dynamic(() => import('./LeafletMap'), {
     ssr: false,
-    loading: () => <p style={{ padding: '20px', textAlign: 'center' }}>Loading interactive map...</p>
+    loading: () => (
+        <div 
+            className="skelton-shimmer" 
+            style={{ 
+                height: '350px', 
+                width: '100%', 
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#64748b',
+                fontSize: '14px'
+            }}
+        />
+    )
 });
 
 interface LocationPickerProps {

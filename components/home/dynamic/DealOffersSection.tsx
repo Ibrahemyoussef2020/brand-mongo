@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from 'next/link';
 import { useLang } from '@/context/LangContext'
 import DealCard from './DealCard';
+import HomeOffersSkelton from '@/skelton/home/HomeOffers';
 
 interface DealOffersSectionProps {
     section: any;
@@ -82,7 +83,7 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
     }, [endAt]);
 
     if (loading) {
-        return <div>Loading deals...</div>;
+        return <HomeOffersSkelton />;
     }
 
     if (!products || products.length === 0) {

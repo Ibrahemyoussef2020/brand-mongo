@@ -1,21 +1,22 @@
 import React from 'react';
+import HomeOffersSkelton from '@/skelton/home/HomeOffers';
+import GridSectionSkeleton from './GridSectionSkeleton';
 
 export const HomeSkeleton = () => (
-  <div className="home-skeleton">
-    <div className="skeleton-section">
-      <div className="skeleton-header">
-        <div className="skeleton-title" />
-        <div className="skeleton-subtitle" />
-      </div>
-      <div className="skeleton-grid">
-        {[...Array(8)].map((_, i) => (
-          <div key={i} className="skeleton-product">
-            <div className="skeleton-image" />
-            <div className="skeleton-price" />
-            <div className="skeleton-title-line" />
-          </div>
-        ))}
-      </div>
+  <div className="home-skeleton" style={{ width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
+    {/* Deals & Offers Skeleton */}
+    <div style={{ marginBottom: '30px' }}>
+      <HomeOffersSkelton />
+    </div>
+
+    {/* Section 1 Grid Skeleton */}
+    <div style={{ marginBottom: '30px' }}>
+      <GridSectionSkeleton columns={5} count={5} />
+    </div>
+
+    {/* Section 2 Grid Skeleton */}
+    <div style={{ marginBottom: '30px' }}>
+      <GridSectionSkeleton columns={5} count={5} />
     </div>
   </div>
 );

@@ -109,7 +109,7 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                     boxShadow: '0 4px 10px rgba(255, 152, 0, 0.3)',
                     transition: 'all 0.3s ease'
                 }}>
-                    Show ALL
+                    {locale === 'ar' ? 'عرض الكل' : 'Show All'}
                 </Link>
             </div>
 

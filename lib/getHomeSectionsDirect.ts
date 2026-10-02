@@ -10,7 +10,7 @@ export const getHomeSectionsDirect = async () => {
       {
         key: 'deal-offers',
         type: HomeSectionType.DEAL_OFFERS,
-        title: { en: 'Deal Offers', ar: ' ofertas especiales' },
+        title: { en: 'Deal Offers', ar: 'العروض والخصومات' },
         config: {
           showTimer: true,
           endAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours from now
@@ -20,7 +20,7 @@ export const getHomeSectionsDirect = async () => {
       {
         key: 'home-consumer',
         type: HomeSectionType.GRID_SECTION,
-        title: { en: 'Home Consumer', ar: ' products for home' },
+        title: { en: 'Home Consumer', ar: 'إلكترونيات وأجهزة منزلية' },
         config: {
           layout: { columns: 5 }
         },
@@ -29,7 +29,7 @@ export const getHomeSectionsDirect = async () => {
       {
         key: 'home-outdoor',
         type: HomeSectionType.GRID_SECTION,
-        title: { en: 'Home Outdoor', ar: ' outdoor products' },
+        title: { en: 'Home Outdoor', ar: 'المنزل والمنتجات الخارجية' },
         config: {
           layout: { columns: 5 }
         },
@@ -38,7 +38,7 @@ export const getHomeSectionsDirect = async () => {
       {
         key: 'recommended-items',
         type: HomeSectionType.GRID_SECTION,
-        title: { en: 'Recommended Items', ar: ' recommended' },
+        title: { en: 'Recommended Items', ar: 'المنتجات الموصى بها' },
         config: {
           layout: { columns: 5 }
         },

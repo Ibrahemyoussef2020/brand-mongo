@@ -21,11 +21,34 @@ export default function SidebarItem({ item, isExpanded, onToggle }: SidebarItemP
   // A helper function to translate the label key. 
   // You might need to adjust this depending on how deep your dictionary is.
   // Assuming keys are passed directly like "dashboard.sidebar.products" or just fallbacks to English strings.
+  const SIDEBAR_TRANSLATIONS: Record<string, { en: string; ar: string }> = {
+    "Global Overview": { en: "Global Overview", ar: "لوحة التحكم الرئيسية" },
+    "Ecommerce": { en: "Ecommerce", ar: "التجارة الإلكترونية" },
+    "Products": { en: "Products", ar: "المنتجات" },
+    "Orders": { en: "Orders", ar: "الطلبات" },
+    "Users / Customers": { en: "Users / Customers", ar: "المستخدمون والعملاء" },
+    "Categories": { en: "Categories", ar: "التصنيفات" },
+    "Reviews & Ratings": { en: "Reviews & Ratings", ar: "التقييمات والمراجعات" },
+    "Coupons & Discounts": { en: "Coupons & Discounts", ar: "الكوبونات والخصومات" },
+    "Promotional Offers": { en: "Promotional Offers", ar: "العروض الترويجية" },
+    "Merchant Packages": { en: "Merchant Packages", ar: "باقات التجار" },
+    "Shipping & Delivery": { en: "Shipping & Delivery", ar: "الشحن والتوصيل" },
+    "Payments & Transactions": { en: "Payments & Transactions", ar: "المدفوعات والمعاملات" },
+    "Roles & Permissions": { en: "Roles & Permissions", ar: "الأدوار والصلاحيات" },
+    "Settings": { en: "Settings", ar: "إعدادات النظام" },
+    "Audit Logs": { en: "Audit Logs", ar: "سجل العمليات" },
+    "Notifications": { en: "Notifications", ar: "الإشعارات" },
+    "Store Overview": { en: "Store Overview", ar: "نظرة عامة على المتجر" },
+    "My Products": { en: "My Products", ar: "منتجاتي" },
+    "Orders & Sales": { en: "Orders & Sales", ar: "الطلبات والمبيعات" },
+    "Customer Reviews": { en: "Customer Reviews", ar: "تقييمات العملاء" },
+    "Subscription Plan": { en: "Subscription Plan", ar: "خطة الاشتراك" },
+  };
+
   const getTranslatedLabel = (key: string) => {
-    // If it's a known key, we could map it. For now, we'll try to find it in the dictionary 
-    // or just return the key if it's the english default string we put in config.
-    // Example: translate(dictionaries.dashboard.sidebar.products)
-    // To handle dynamic keys from config simply:
+    if (SIDEBAR_TRANSLATIONS[key]) {
+      return SIDEBAR_TRANSLATIONS[key][lang] || SIDEBAR_TRANSLATIONS[key]['en'];
+    }
     try {
       const parts = key.split('.');
       if (parts.length > 1) {
@@ -36,7 +59,7 @@ export default function SidebarItem({ item, isExpanded, onToggle }: SidebarItemP
           }
           return translate(curr as string);
       }
-      return key; // return the english string for now if it's not a path
+      return key;
     } catch {
       return key;
     }

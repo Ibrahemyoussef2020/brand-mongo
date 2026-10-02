@@ -7,6 +7,8 @@ import { ProductProps } from '@/types';
 import Image from 'next/image';
 import { AppDispatch, IRootState } from '@/redux/store';
 
+import { useLang } from '@/context/LangContext';
+
 interface props{
     product:ProductProps,
     process:string
@@ -14,8 +16,7 @@ interface props{
 
 
 const AddRemoveCart = ({product,process='add' }:props) => {
-
-  
+    const { lang } = useLang();
     const dispatch = useDispatch<AppDispatch>()
     const {products} = useSelector((state:IRootState) => state.combine.cart);
     
@@ -51,14 +52,14 @@ const AddRemoveCart = ({product,process='add' }:props) => {
             
             return(
                 <button className='buy' onClick={addToCartProduct}>
-                   {targetProduct ? `Add More ${targetProduct.quantity}+` : 'Add To Cart' }
+                   {targetProduct ? (lang === 'ar' ? `إضافة المزيد (${targetProduct.quantity}+)` : `Add More ${targetProduct.quantity}+`) : (lang === 'ar' ? 'أضف للسلة' : 'Add To Cart') }
                 </button>
             )
         }
         else{
            return (
             <button className='buy' onClick={addToCartProduct}>
-                Add To Cart
+                {lang === 'ar' ? 'أضف للسلة' : 'Add To Cart'}
             </button>
            ) 
         }
@@ -66,7 +67,9 @@ const AddRemoveCart = ({product,process='add' }:props) => {
 
   if (process === 'add-from-fav-sm') {
     return (
-        <button className="add-fav" onClick={addFavToCartProduct}>Move to cart</button>
+        <button className="add-fav" onClick={addFavToCartProduct}>
+            {lang === 'ar' ? 'نقل إلى السلة' : 'Move to cart'}
+        </button>
       )
   }
 
@@ -79,7 +82,7 @@ const AddRemoveCart = ({product,process='add' }:props) => {
             width={20}
             height={20}
             />
-            <span>Move to cart</span>
+            <span>{lang === 'ar' ? 'نقل إلى السلة' : 'Move to cart'}</span>
     </button>
     )
   }
@@ -87,7 +90,7 @@ const AddRemoveCart = ({product,process='add' }:props) => {
   if (process === 'remove') {
     return (
         <button className='return' onClick={removeFromCartProduct}>
-            remove
+            {lang === 'ar' ? 'حذف' : 'Remove'}
         </button>
       )
   }

@@ -19,7 +19,7 @@ const fetchHomeSectionsData = async () => {
       sections.push({
         key: 'home-consumer',
         type: 'GRID_SECTION',
-        title: { en: 'Home Consumer', ar: ' products for home' },
+        title: { en: 'Home Consumer', ar: 'إلكترونيات وأجهزة منزلية' },
         sortOrder: 2,
         config: { displayType: 'two-line', actionButtonType: 'show-details', layout: { columns: 5 } },
         products: homeConsumer
@@ -32,7 +32,7 @@ const fetchHomeSectionsData = async () => {
       sections.push({
         key: 'home-outdoor',
         type: 'GRID_SECTION',
-        title: { en: 'Home Outdoor', ar: ' outdoor products' },
+        title: { en: 'Home Outdoor', ar: 'المنزل والمنتجات الخارجية' },
         sortOrder: 3,
         config: { displayType: 'one-line', actionButtonType: 'add-to-fav', layout: { columns: 5 } },
         products: homeOutdoor
@@ -48,7 +48,7 @@ const fetchHomeSectionsData = async () => {
       sections.push({
         key: 'recommended-items',
         type: 'GRID_SECTION',
-        title: { en: 'Recommended Items', ar: ' موصى به' },
+        title: { en: 'Recommended Items', ar: 'المنتجات الموصى بها' },
         sortOrder: 5,
         config: { displayType: 'grid', actionButtonType: 'add-to-cart', layout: { columns: 5 } },
         products: recommendedItems.slice(0, 10)
@@ -61,7 +61,7 @@ const fetchHomeSectionsData = async () => {
       sections.push({
         key: 'deal-offers',
         type: 'DEAL_OFFERS',
-        title: { en: 'Deal Offers', ar: ' عروض خاصة' },
+        title: { en: 'Deal Offers', ar: 'العروض والخصومات' },
         sortOrder: 6,
         config: { displayType: 'deal-slider', actionButtonType: 'show-details', showTimer: true, endAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() },
         products: dealOffers

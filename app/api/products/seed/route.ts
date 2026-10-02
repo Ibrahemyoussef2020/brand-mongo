@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import dbConnect from "@/lib/dbConnect";
 import ProductModel from "@/lib/models/ProductModel";
 import DealOffersModel from "@/lib/models/DealOffersModel";
@@ -68,3 +69,4 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Failed to seed database", error: (error as Error).message || String(error) }, { status: 500 });
   }
 }
+

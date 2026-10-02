@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import CartModel from "@/lib/models/CartModel";
@@ -208,3 +209,4 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({success: false , message: "Internal Server Error", error: (error as Error).message || String(error) , status: 500 }, { status: 500 });
     }
 }
+

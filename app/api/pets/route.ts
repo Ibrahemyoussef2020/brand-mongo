@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import dbConnect from "@/lib/dbConnect";
 import ProductModel from "@/lib/models/ProductModel";
 import { NextRequest, NextResponse } from "next/server";
@@ -10,3 +11,4 @@ export const GET = async (request: NextRequest) => {
         data: items
     })
 }
+

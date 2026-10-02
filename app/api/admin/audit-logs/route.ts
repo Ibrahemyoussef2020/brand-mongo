@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import AuditLogModel from '@/lib/models/AuditLogModel';
 
+export const dynamic = 'force-dynamic';
+
 const SEED_LOGS = [
   {
     actor: { name: 'Super Admin', role: 'super_admin', email: 'superadmin@brand.com' },

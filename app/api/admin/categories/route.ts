@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import CategoryModel from '@/lib/models/CategoryModel';
 
+export const dynamic = 'force-dynamic';
+
 const SEED_CATEGORIES = [
   { name: { en: 'Consumer Electronics', ar: 'إلكترونيات استهلاكية' }, slug: 'electronics', itemCount: 428, featured: true, status: 'Active', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60' },
   { name: { en: 'Home & Outdoor', ar: 'المنزل والحديقة' }, slug: 'home-outdoor', itemCount: 312, featured: true, status: 'Active', image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500&auto=format&fit=crop&q=60' },

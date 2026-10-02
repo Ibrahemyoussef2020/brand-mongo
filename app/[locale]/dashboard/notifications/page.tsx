@@ -13,15 +13,20 @@ import {
 export interface NotificationItem {
   id: string;
   title: string;
+  titleAr?: string;
   message: string;
+  messageAr?: string;
   type: 'Order' | 'Marketing' | 'Security' | 'System';
   audience: 'All Users' | 'Customers' | 'Admins';
+  audienceAr?: string;
   channel: 'In-App & Email' | 'In-App Only' | 'Push Notification';
+  channelAr?: string;
   status: 'Sent' | 'Scheduled' | 'Draft';
+  statusAr?: string;
   sentAt: string;
 }
 
-const INITIAL_NOTIFICATIONS: (NotificationItem & { titleAr?: string; messageAr?: string; audienceAr?: string; channelAr?: string; statusAr?: string })[] = [
+const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   { 
     id: 'NTF-101', 
     title: 'Flash Weekend Sale is Live!', 
@@ -279,7 +284,7 @@ export default function NotificationsPage() {
             </div>
 
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <span style={{ background: ntf.status === 'Sent' || ntf.status === 'تم الإرسال' ? '#e6f7eb' : '#fff0db', color: ntf.status === 'Sent' || ntf.status === 'تم الإرسال' ? '#00b517' : '#ff9017', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' }}>
+              <span style={{ background: ntf.status === 'Sent' ? '#e6f7eb' : '#fff0db', color: ntf.status === 'Sent' ? '#00b517' : '#ff9017', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' }}>
                 {(isAr && ntf.statusAr) ? ntf.statusAr : ntf.status}
               </span>
               <button onClick={() => { setSelectedRecord(ntf); setIsViewModalOpen(true); }} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', padding: '6px' }}><FontAwesomeIcon icon={faEye} /></button>
@@ -372,7 +377,7 @@ export default function NotificationsPage() {
               </div>
               <div>
                 <span style={{ color: '#64748b', display: 'block', fontSize: '11px', fontWeight: '600' }}>{isAr ? 'الحالة' : 'STATUS'}</span>
-                <span style={{ background: selectedRecord.status === 'Sent' || selectedRecord.status === 'تم الإرسال' ? '#e6f7eb' : '#fff0db', color: selectedRecord.status === 'Sent' || selectedRecord.status === 'تم الإرسال' ? '#00b517' : '#ff9017', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: '700' }}>
+                <span style={{ background: selectedRecord.status === 'Sent' ? '#e6f7eb' : '#fff0db', color: selectedRecord.status === 'Sent' ? '#00b517' : '#ff9017', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: '700' }}>
                   {(isAr && selectedRecord.statusAr) ? selectedRecord.statusAr : selectedRecord.status}
                 </span>
               </div>

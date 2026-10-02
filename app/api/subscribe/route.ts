@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Subscriber from '@/lib/models/SubscriberModel';
@@ -48,3 +49,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+

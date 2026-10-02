@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import ReviewModel from '@/lib/models/ReviewModel';
 
+export const dynamic = 'force-dynamic';
+
 const SEED_REVIEWS = [
   { customer: 'Alexander Wright', email: 'alex.wright@example.com', productTitle: 'Sony WH-1000XM5 Wireless Headphones', rating: 5, comment: 'Exceptional active noise cancellation and crystal clear audio fidelity. Highly recommend for frequent travelers!', status: 'Approved', date: 'Oct 24, 2026' },
   { customer: 'Sophia Chen', email: 'sophia.c@example.com', productTitle: 'Apple iPad Pro 12.9 M2', rating: 4, comment: 'Great screen quality and battery life. Only minus is the heavy weight when combined with the Magic Keyboard.', status: 'Approved', date: 'Oct 22, 2026' },

@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import ShipmentModel from '@/lib/models/ShipmentModel';
 
+export const dynamic = 'force-dynamic';
+
 const SEED_SHIPMENTS = [
   { trackingNumber: 'DHL-98421948', carrier: 'DHL Express', recipient: 'Emma Watson', destination: 'New York, USA', rate: 24.50, status: 'In Transit', estDelivery: 'Oct 30, 2026' },
   { trackingNumber: 'FDX-55102941', carrier: 'FedEx Priority', recipient: 'Liam Johnson', destination: 'London, UK', rate: 38.00, status: 'Delivered', estDelivery: 'Oct 26, 2026' },

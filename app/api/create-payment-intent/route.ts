@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import dbConnect from "@/lib/dbConnect";
@@ -48,3 +49,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: (error as Error).message || String(error) }, { status: 500 });
   }
 }
+

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import data from "@/lib/data";
 import dbConnect from "@/lib/dbConnect";
 import DealOffersModel from "@/lib/models/DealOffersModel";
@@ -115,6 +116,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "Failed to fetch products" }, { status: 500 });
   }
 }
+
 
 
 

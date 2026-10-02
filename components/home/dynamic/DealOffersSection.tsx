@@ -161,7 +161,7 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
                 display: 'block',
                 maxWidth: 'fit-content',
             }}>
-                {locale === 'ar' ? 'عرض الكل' : 'Show All'}
+                {lang === 'ar' ? 'عرض الكل' : 'Show All'}
             </Link>
 
         </section>

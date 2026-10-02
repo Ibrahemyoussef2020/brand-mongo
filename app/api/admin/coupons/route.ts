@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import CouponModel from '@/lib/models/CouponModel';
 
+export const dynamic = 'force-dynamic';
+
 const SEED_COUPONS = [
   { code: 'SUMMER2026', discountType: 'percentage', discountValue: 20, minSpend: 150, usageCount: 68, usageLimit: 200, status: 'Active', expiresAt: 'Nov 30, 2026' },
   { code: 'VIPTECH50', discountType: 'fixed', discountValue: 50, minSpend: 300, usageCount: 142, usageLimit: 150, status: 'Active', expiresAt: 'Dec 15, 2026' },

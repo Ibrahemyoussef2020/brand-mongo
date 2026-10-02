@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import OrderModel from "@/lib/models/OrderModel";
@@ -61,3 +62,4 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: (error as Error).message || String(error) }, { status: 500 });
     }
 }
+

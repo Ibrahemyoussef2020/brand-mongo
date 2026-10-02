@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
 import { products } from "@/db";
 
@@ -44,3 +45,4 @@ export async function GET() {
     }, { status: 500 });
   }
 }
+

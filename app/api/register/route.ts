@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
@@ -80,3 +81,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

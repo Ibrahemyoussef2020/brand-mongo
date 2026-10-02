@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import OfferModel from '@/lib/models/OfferModel';
 
+export const dynamic = 'force-dynamic';
+
 const SEED_OFFERS = [
   { title: 'Flash Deals: 50% Off Smart Watches', badge: 'Flash Sale', discount: '50% OFF', targetCategory: 'Consumer Electronics', status: 'Active', startDate: 'Oct 01, 2026', endDate: 'Nov 01, 2026', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60' },
   { title: 'Summer Outdoor Gadgets Bundle', badge: 'Special Offer', discount: '30% OFF', targetCategory: 'Home & Outdoor', status: 'Active', startDate: 'Oct 10, 2026', endDate: 'Nov 15, 2026', image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500&auto=format&fit=crop&q=60' },

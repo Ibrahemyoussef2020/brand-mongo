@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import { SectionModel } from '@/lib/models/Section';
@@ -21,3 +22,4 @@ export async function GET() {
     return new NextResponse('Internal Server Error', { status: 500 });
   }
 }
+

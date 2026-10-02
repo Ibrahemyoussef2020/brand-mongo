@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import dbConnect from "@/lib/dbConnect";
 import HomeOutdoorModel from "@/lib/models/HomeOutdoorModel";
 import data from "@/lib/data";
@@ -25,3 +26,4 @@ export const GET = async (request: NextRequest) => {
         data: homeOutdoor
     })
 }
+

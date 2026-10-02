@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import { HomeSection } from "@/lib/models/HomeSection";
@@ -62,3 +63,4 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ success: false, message: "Internal Server Error", error: (error as Error).message || String(error) }, { status: 500 });
     }
 }
+

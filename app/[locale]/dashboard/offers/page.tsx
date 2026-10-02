@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useLang } from "@/context/LangContext";
 import StatCard from "@/components/dashboard/StatCard";
 import Modal from "@/components/dashboard/Modal";
+import TableSkeleton from "@/components/skeletons/TableSkeleton";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faPenToSquare, faTrash, faEye, faPlus, faSearch, faFilter, 
@@ -252,7 +253,16 @@ export default function OffersPage() {
 
       {viewMode === 'grid' ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '22px' }}>
-          {filteredOffers.map((offer) => (
+          {loading ? (
+            Array.from({ length: 6 }).map((_, idx) => (
+              <div key={idx} style={{ background: '#fff', borderRadius: '14px', border: '1px solid #e2e8f0', overflow: 'hidden', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div className="skelton-shimmer" style={{ width: '100%', height: '140px', borderRadius: '8px' }} />
+                <div className="skelton-shimmer" style={{ width: '70%', height: '20px', borderRadius: '4px' }} />
+                <div className="skelton-shimmer" style={{ width: '40%', height: '14px', borderRadius: '4px' }} />
+                <div className="skelton-shimmer" style={{ width: '100%', height: '32px', borderRadius: '6px', marginTop: 'auto' }} />
+              </div>
+            ))
+          ) : filteredOffers.map((offer) => (
             <div key={offer.id} style={{ background: '#fff', borderRadius: '14px', border: '1px solid #e2e8f0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
               <div style={{ position: 'relative', height: '150px' }}>
                 <img src={offer.image} alt={offer.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -294,7 +304,9 @@ export default function OffersPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredOffers.map((item) => (
+              {loading ? (
+                <TableSkeleton columns={6} rows={5} />
+              ) : filteredOffers.map((item) => (
                 <tr key={item.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                   <td style={{ padding: '14px 20px', fontWeight: '600' }}>{item.title}</td>
                   <td style={{ padding: '14px 20px', color: '#475569' }}>{item.targetCategory}</td>

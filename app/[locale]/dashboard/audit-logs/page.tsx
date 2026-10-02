@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useLang } from "@/context/LangContext";
 import StatCard from "@/components/dashboard/StatCard";
 import Modal from "@/components/dashboard/Modal";
+import TableSkeleton from "@/components/skeletons/TableSkeleton";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEye, faSearch, faFilter, faClipboardList, 
@@ -207,7 +208,9 @@ export default function AuditLogsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredLogs.map((log, idx) => (
+              {loading ? (
+                <TableSkeleton columns={7} rows={6} />
+              ) : filteredLogs.map((log, idx) => (
                 <tr key={log.id} style={{ borderBottom: idx === filteredLogs.length - 1 ? 'none' : '1px solid #f1f5f9' }}>
                   <td style={{ padding: '14px 20px' }}>
                     <div style={{ fontWeight: '600', color: '#1e293b' }}>{log.actor.name}</div>

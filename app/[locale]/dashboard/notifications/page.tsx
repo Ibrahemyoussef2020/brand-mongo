@@ -180,7 +180,20 @@ export default function NotificationsPage() {
 
       {/* Notifications List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-        {filteredNotifications.map((ntf) => (
+        {loading ? (
+          Array.from({ length: 5 }).map((_, idx) => (
+            <div key={idx} style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flex: 1 }}>
+                <div className="skelton-shimmer" style={{ width: '40px', height: '40px', borderRadius: '10px', flexShrink: 0 }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+                  <div className="skelton-shimmer" style={{ width: '35%', height: '16px', borderRadius: '4px' }} />
+                  <div className="skelton-shimmer" style={{ width: '70%', height: '14px', borderRadius: '4px' }} />
+                </div>
+              </div>
+              <div className="skelton-shimmer" style={{ width: '70px', height: '24px', borderRadius: '20px' }} />
+            </div>
+          ))
+        ) : filteredNotifications.map((ntf) => (
           <div key={ntf.id} style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', flex: 1, minWidth: '280px' }}>
               <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>

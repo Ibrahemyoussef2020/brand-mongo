@@ -189,7 +189,24 @@ export default function ReviewsRatingsPage() {
 
       {/* Reviews Cards List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {filteredReviews.map((rev) => (
+        {loading ? (
+          Array.from({ length: 4 }).map((_, idx) => (
+            <div key={idx} style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="skelton-shimmer" style={{ width: '42px', height: '42px', borderRadius: '50%' }} />
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div className="skelton-shimmer" style={{ width: '120px', height: '16px', borderRadius: '4px' }} />
+                    <div className="skelton-shimmer" style={{ width: '180px', height: '12px', borderRadius: '4px' }} />
+                  </div>
+                </div>
+                <div className="skelton-shimmer" style={{ width: '90px', height: '24px', borderRadius: '12px' }} />
+              </div>
+              <div className="skelton-shimmer" style={{ width: '80%', height: '16px', borderRadius: '4px' }} />
+              <div className="skelton-shimmer" style={{ width: '60%', height: '14px', borderRadius: '4px' }} />
+            </div>
+          ))
+        ) : filteredReviews.map((rev) => (
           <div key={rev.id} style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>

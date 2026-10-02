@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useLang } from "@/context/LangContext";
 import StatCard from "@/components/dashboard/StatCard";
 import Modal from "@/components/dashboard/Modal";
+import TableSkeleton from "@/components/skeletons/TableSkeleton";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faPenToSquare, faTrash, faEye, faPlus, faSearch, faFilter, 
@@ -207,7 +208,9 @@ export default function ShippingDeliveryPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredShipments.map((item, idx) => (
+              {loading ? (
+                <TableSkeleton columns={7} rows={5} />
+              ) : filteredShipments.map((item, idx) => (
                 <tr key={item.id} style={{ borderBottom: idx === filteredShipments.length - 1 ? 'none' : '1px solid #f1f5f9' }}>
                   <td style={{ padding: '14px 20px', fontFamily: 'monospace', fontWeight: '700', color: '#0D6EFD' }}>
                     {item.trackingNumber}

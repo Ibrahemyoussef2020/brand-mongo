@@ -5,6 +5,7 @@ import MenuSidebar from "@/components/layout/menu-sidebar"
 import OrderResult from "@/components/orders/OrderResult"
 import OrdersPageClient from "@/components/orders/OrdersPageClient"
 import { Suspense } from "react"
+import OrderListSkeleton from "@/components/skeletons/OrderListSkeleton"
 
 import MayLikeSkelton from "@/skelton/general/MayLike"
 
@@ -15,7 +16,7 @@ const page = ({ params: { locale } }: { params: { locale: Locale } }) => {
     return <>
     <Header page='details' heading='My Orders' /> 
     <MenuSidebar />
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<OrderListSkeleton />}>
         <OrdersPageClient>
             <div className="orders-page">
                 <div className="container">

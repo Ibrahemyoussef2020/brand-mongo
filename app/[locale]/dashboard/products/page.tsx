@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTimes, faPlus, faArrowUpFromBracket, faLayerGroup } from "@fortawesome/free-solid-svg-icons";
 import { dictionaries } from "@/lib/dictionaries";
 import { getImageSrc } from "@/helpers/getImageSrc";
+import TableSkeleton from "@/components/skeletons/TableSkeleton";
 
 // Dynamic section definitions fetched from API
 interface Section {
@@ -403,9 +404,7 @@ export default function ProductsPage({ params: { locale } }: { params: { locale:
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr>
-                                    <td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>Loading...</td>
-                                </tr>
+                                <TableSkeleton columns={6} rows={6} />
                             ) : productsData.map((product: any) => (
                                 <tr key={product._id.toString()}>
                                     <td>

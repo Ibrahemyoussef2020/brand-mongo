@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faPlus, faTrash, faEye } from "@fortawesome/free-solid-svg-icons";
 import { dictionaries } from "@/lib/dictionaries";
 import { toast } from 'react-toastify';
+import TableSkeleton from "@/components/skeletons/TableSkeleton";
 
 interface Order {
   _id: string;
@@ -215,9 +216,7 @@ export default function OrdersPage({ params: { locale } }: { params: { locale: '
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr>
-                                    <td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>Loading...</td>
-                                </tr>
+                                <TableSkeleton columns={7} rows={6} />
                             ) : orders.map((order) => (
                                 <tr key={order._id}>
                                     <td>

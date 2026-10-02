@@ -30,7 +30,7 @@ export default function TestDirectAPIPage() {
     <div style={{ padding: '20px', fontFamily: 'monospace' }}>
       <h1>Direct API Test</h1>
       
-      {loading && <p>Loading...</p>}
+      {loading && <div className="skelton-shimmer" style={{ width: '200px', height: '24px', borderRadius: '4px', margin: '15px 0' }} />}
       
       {error && (
         <div style={{ color: 'red' }}>

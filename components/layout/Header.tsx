@@ -60,38 +60,39 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
   return (
     <header className='header'>
 
-      <div className={` container container_header_top`}>
-       
-        {page && heading ? <HeaderTopLeft page={page} heading={heading}/> : null}
+      <div className="container">
+        <div className="container_header_top">
+          {page && heading ? <HeaderTopLeft page={page} heading={heading}/> : null}
 
-        <Searchbar size="pc" />
-        <div className='navigations_pc'>
-          <UserMenu />
-          <Link href={`/${lang}/message`}>
-            <FontAwesomeIcon icon={faEnvelopeOpenText} width={19} color="gray" />
-            <div>{translate(dictionaries.header.message)}</div>
-          </Link>
-          <Link href={`/${lang}/orders`}>
-            <FontAwesomeIcon icon={faHeart} width={19} color="gray"  />
-            <div>{translate(dictionaries.header.orders)}</div>
-          </Link>
-          <Link href={`/${lang}/cart`}>
-            <FontAwesomeIcon icon={faCartShopping} width={19} color="gray" />
-            <div>{translate(dictionaries.header.myCart)}</div>
-          </Link>
+          <Searchbar size="pc" />
+          <div className='navigations_pc'>
+            <UserMenu />
+            <Link href={`/${lang}/message`}>
+              <FontAwesomeIcon icon={faEnvelopeOpenText} width={19} color="gray" />
+              <div>{translate(dictionaries.header.message)}</div>
+            </Link>
+            <Link href={`/${lang}/orders`}>
+              <FontAwesomeIcon icon={faHeart} width={19} color="gray"  />
+              <div>{translate(dictionaries.header.orders)}</div>
+            </Link>
+            <Link href={`/${lang}/cart`}>
+              <FontAwesomeIcon icon={faCartShopping} width={19} color="gray" />
+              <div>{translate(dictionaries.header.myCart)}</div>
+            </Link>
+          </div>
+
+          <div className='navigations_mobile'>
+            <UserMenu />
+          </div>
         </div>
 
-        <div className='navigations_mobile'>
-          <UserMenu />
+        <div className="container_header_bottom_mobile">
+          <Searchbar size="mob" />
         </div>
-      </div>
-
-      <div className={` container container_header_bottom_mobile`}>
-        <Searchbar size="mob" />
       </div>
 
      <div className="container_header_bottom_pc">
-      <div className={` container`}>
+      <div className="container">
           <ul className="right">
             <li>
                 <button>{translate(dictionaries.header.hotOffers)}</button>

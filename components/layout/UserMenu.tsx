@@ -13,6 +13,7 @@ export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { translate, lang } = useLang();
+  const isAr = lang === 'ar';
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -27,15 +28,19 @@ export default function UserMenu() {
   }, []);
 
   const role = (session?.user as any)?.role || 'user';
-  const roleLabel = role === 'super_admin' ? 'Super Admin' : role === 'admin' ? 'Admin' : role === 'seller' ? 'Seller' : 'Customer';
+  const roleLabel = role === 'super_admin' ? (isAr ? 'مشرف عام' : 'Super Admin')
+                  : role === 'admin' ? (isAr ? 'مشرف' : 'Admin')
+                  : role === 'seller' ? (isAr ? 'تاجر' : 'Seller')
+                  : (isAr ? 'عميل' : 'Customer');
+
   const roleBg = role === 'super_admin' ? '#eef2ff' : role === 'admin' ? '#eff6ff' : role === 'seller' ? '#fffbeb' : '#f1f5f9';
   const roleColor = role === 'super_admin' ? '#4f46e5' : role === 'admin' ? '#2563eb' : role === 'seller' ? '#d97706' : '#64748b';
 
   return (
     <div className="user-menu-dropdown" ref={dropdownRef}>
-      {/* Outside Trigger: Large Square Card with Image / Large Icon */}
+      {/* Outside Trigger: Typical Clickable Card with Avatar, Name, Email, and Chevron */}
       <button 
-        className="user-menu-trigger"
+        className={`user-menu-card-trigger ${isOpen ? 'active' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
         type="button"
         title={session?.user?.name || translate(dictionaries.userMenu.account)}
@@ -45,15 +50,24 @@ export default function UserMenu() {
           <Image 
             src={session.user.image} 
             alt={session.user.name || "User Avatar"} 
-            width={44} 
-            height={44} 
-            className="user-avatar-square"
+            width={38} 
+            height={38} 
+            className="user-avatar-img"
           />
         ) : (
-          <div className="user-icon-square">
+          <div className="user-avatar-fallback">
             <FontAwesomeIcon icon={faUser} />
           </div>
         )}
+        <div className="user-info-col">
+          <p className="user-name-text">
+            {session ? (session.user?.name || 'User') : translate(dictionaries.userMenu.account)}
+          </p>
+          <p className="user-sub-text">
+            {session ? (session.user?.email || roleLabel) : (isAr ? 'تسجيل الدخول' : 'Sign In')}
+          </p>
+        </div>
+        <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon ${isOpen ? 'open' : ''}`} />
       </button>
 
       {isOpen && (

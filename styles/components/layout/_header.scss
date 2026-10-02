@@ -225,54 +225,79 @@
   position: relative;
   z-index: 1001;
 
-  .user-menu-trigger {
+  .user-menu-card-trigger {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border: 1.5px solid #d0e1fd;
+    gap: 0.75rem;
+    padding: 6px 14px;
+    background-color: #f8fafc;
+    border: 1.5px solid #e2e8f0;
     border-radius: 10px;
-    background: #f0f7ff;
     cursor: pointer;
-    overflow: hidden;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+    text-align: start;
 
-    &:hover {
+    &:hover, &.active {
+      background-color: #ffffff;
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    &.active {
       border-color: $primary;
-      background: #e5f1ff;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
-
-      .user-icon-square svg {
-        color: $primary !important;
-        transform: scale(1.05);
-      }
+      box-shadow: 0 0 0 3px rgba($primary, 0.12);
     }
 
-    .user-avatar-square {
-      width: 100%;
-      height: 100%;
+    .user-avatar-img, .user-avatar-fallback {
+      width: 38px;
+      height: 38px;
       border-radius: 8px;
-      object-fit: cover;
-      display: block;
+      flex-shrink: 0;
     }
 
-    .user-icon-square {
-      width: 100%;
-      height: 100%;
+    .user-avatar-img {
+      object-fit: cover;
+      border: 1.5px solid #e2e8f0;
+    }
+
+    .user-avatar-fallback {
+      background: #eff6ff;
+      color: $primary;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: $primary;
-      font-size: 20px;
+      font-size: 18px;
+    }
 
-      svg {
-        width: 20px;
-        height: 20px;
-        transition: all 0.2s ease;
+    .user-info-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+
+      .user-name-text {
+        font-weight: 700;
+        font-size: 0.875rem;
+        color: #1e293b;
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      .user-sub-text {
+        font-size: 0.75rem;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.2;
+      }
+    }
+
+    .chevron-icon {
+      font-size: 11px;
+      color: #94a3b8;
+      transition: transform 0.2s ease;
+      margin-inline-start: 4px;
+
+      &.open {
+        transform: rotate(180deg);
       }
     }
   }
@@ -280,7 +305,7 @@
   .user-menu-content {
     position: absolute;
     top: calc(100% + 8px);
-    right: 0;
+    inset-inline-end: 0;
     min-width: 270px;
     background: white;
     border-radius: 12px;

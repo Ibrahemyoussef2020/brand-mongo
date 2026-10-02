@@ -126,31 +126,78 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     </div>
                 )}
                 
-                {/* Floating Add to Wishlist Heart (Consistent Top-End Position) */}
-                <button 
-                    onClick={handleToggleFav} 
-                    type="button"
-                    title={isFav ? "Remove from Favorites" : "Add to Favorites"}
-                    style={{
-                        position: 'absolute',
-                        top: '12px',
-                        insetInlineEnd: '12px',
-                        background: isFav ? 'linear-gradient(135deg, #ff6b6b, #ff5252)' : 'rgba(255,255,255,0.95)',
-                        border: 'none',
-                        borderRadius: '50%',
-                        width: '36px',
-                        height: '36px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        zIndex: 10,
-                        boxShadow: isFav ? '0 2px 8px rgba(255,107,107,0.4)' : '0 2px 8px rgba(0,0,0,0.12)',
-                        transition: 'all 0.3s ease'
-                    }}
-                >
-                    <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: isFav ? 'white' : '#ff5252', fontSize: '17px' }} />
-                </button>
+                {/* Floating Absolute Icon: Cart for blue button cards, Fav for red/default cards */}
+                {config.actionButtonType === 'show-details' ? (
+                    <button 
+                        onClick={(e) => handleAddToCart(e, product)} 
+                        type="button"
+                        title={currentCartItem ? "Added to Cart" : "Add to Cart"}
+                        style={{
+                            position: 'absolute',
+                            top: '12px',
+                            insetInlineEnd: '12px',
+                            background: currentCartItem ? 'linear-gradient(135deg, #0D6EFD, #0b5ed7)' : 'rgba(255,255,255,0.95)',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '36px',
+                            height: '36px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            zIndex: 10,
+                            boxShadow: currentCartItem ? '0 2px 8px rgba(13,110,253,0.4)' : '0 2px 8px rgba(0,0,0,0.12)',
+                            transition: 'all 0.3s ease'
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faCartArrowDown} style={{ color: currentCartItem ? 'white' : '#0D6EFD', fontSize: '15px' }} />
+                        {currentCartItem && (
+                            <span style={{
+                                position: 'absolute',
+                                top: '-3px',
+                                insetInlineEnd: '-3px',
+                                background: '#FF416C',
+                                color: 'white',
+                                fontSize: '9px',
+                                fontWeight: 'bold',
+                                width: '15px',
+                                height: '15px',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+                            }}>
+                                {currentCartItem.quantity}
+                            </span>
+                        )}
+                    </button>
+                ) : (
+                    <button 
+                        onClick={handleToggleFav} 
+                        type="button"
+                        title={isFav ? "Remove from Favorites" : "Add to Favorites"}
+                        style={{
+                            position: 'absolute',
+                            top: '12px',
+                            insetInlineEnd: '12px',
+                            background: isFav ? 'linear-gradient(135deg, #ff6b6b, #ff5252)' : 'rgba(255,255,255,0.95)',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '36px',
+                            height: '36px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            zIndex: 10,
+                            boxShadow: isFav ? '0 2px 8px rgba(255,107,107,0.4)' : '0 2px 8px rgba(0,0,0,0.12)',
+                            transition: 'all 0.3s ease'
+                        }}
+                    >
+                        <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: isFav ? 'white' : '#ff5252', fontSize: '17px' }} />
+                    </button>
+                )}
             </div>
             
             {/* Product Info */}
@@ -272,84 +319,184 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     width: '100%' 
                 }}>
                     {config.actionButtonType === 'show-details' ? (
-                        <Link 
-                            href={`/${locale}/itemDetails/${product.category?.en || sectionKey}/${product.static_id}`} 
-                            style={{
-                                flex: 1,
-                                background: 'linear-gradient(135deg, #2196F3, #1976D2)',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '6px',
-                                padding: '10px 14px',
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px',
-                                display: 'block',
-                                textAlign: 'center',
-                                boxShadow: '0 2px 8px rgba(33,150,243,0.3)',
-                                textDecoration: 'none',
-                                position: 'relative',
-                                zIndex: 10
-                            }}
-                        >
-                            {locale === 'ar' ? 'عرض التفاصيل' : 'Show Details'}
-                        </Link>
+                        <>
+                            <Link 
+                                href={`/${locale}/itemDetails/${product.category?.en || sectionKey}/${product.static_id}`} 
+                                style={{
+                                    flex: 1,
+                                    background: 'linear-gradient(135deg, #2196F3, #1976D2)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    padding: '10px 14px',
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    display: 'block',
+                                    textAlign: 'center',
+                                    boxShadow: '0 2px 8px rgba(33,150,243,0.3)',
+                                    textDecoration: 'none',
+                                    position: 'relative',
+                                    zIndex: 10
+                                }}
+                            >
+                                {locale === 'ar' ? 'عرض التفاصيل' : 'Show Details'}
+                            </Link>
+                            {/* Bottom Heart Button */}
+                            <button 
+                                onClick={handleToggleFav}
+                                type="button"
+                                title={isFav ? "Remove Favorite" : "Add Favorite"}
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    border: isFav ? '1px solid #ff6b6b' : '1px solid #e2e8f0',
+                                    borderRadius: '6px',
+                                    background: isFav ? '#fff5f5' : '#ffffff',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    flexShrink: 0,
+                                    boxShadow: '0 2px 5px rgba(0,0,0,0.04)'
+                                }}
+                            >
+                                <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: '#ff5252', fontSize: '16px' }} />
+                            </button>
+                        </>
+                    ) : config.actionButtonType === 'add-to-fav' ? (
+                        <>
+                            {/* Red Favorite Main Button */}
+                            <button 
+                                onClick={handleToggleFav}
+                                type="button"
+                                style={{
+                                    flex: 1,
+                                    background: isFav ? 'linear-gradient(135deg, #e53935, #c62828)' : 'linear-gradient(135deg, #ff6b6b, #ff5252)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    padding: '10px 14px',
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    boxShadow: '0 2px 8px rgba(255,82,82,0.3)',
+                                    position: 'relative',
+                                    zIndex: 10,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '6px'
+                                }}
+                            >
+                                <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} />
+                                <span>{isFav ? (locale === 'ar' ? 'في المفضلة' : 'Favorited') : (locale === 'ar' ? 'أضف للمفضلة' : 'Add to Wishlist')}</span>
+                            </button>
+                            {/* Bottom Cart Side Button */}
+                            <button 
+                                onClick={(e) => handleAddToCart(e, product)}
+                                type="button"
+                                title="Add to Cart"
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    border: currentCartItem ? '1px solid #0D6EFD' : '1px solid #e2e8f0',
+                                    borderRadius: '6px',
+                                    background: currentCartItem ? '#eff6ff' : '#ffffff',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    flexShrink: 0,
+                                    boxShadow: '0 2px 5px rgba(0,0,0,0.04)',
+                                    position: 'relative'
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faCartArrowDown} style={{ color: currentCartItem ? '#0D6EFD' : '#64748b', fontSize: '15px' }} />
+                                {currentCartItem && (
+                                    <span style={{
+                                        position: 'absolute',
+                                        top: '-4px',
+                                        insetInlineEnd: '-4px',
+                                        background: '#0D6EFD',
+                                        color: 'white',
+                                        fontSize: '9px',
+                                        fontWeight: 'bold',
+                                        width: '15px',
+                                        height: '15px',
+                                        borderRadius: '50%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}>
+                                        {currentCartItem.quantity}
+                                    </span>
+                                )}
+                            </button>
+                        </>
                     ) : (
-                        <button 
-                            onClick={(e) => handleAddToCart(e, product)} 
-                            type="button"
-                            style={{
-                                flex: 1,
-                                background: 'linear-gradient(135deg, #4CAF50, #45a049)',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '6px',
-                                padding: '10px 14px',
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px',
-                                boxShadow: '0 2px 8px rgba(76,175,80,0.3)',
-                                position: 'relative',
-                                zIndex: 10,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '6px'
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faCartArrowDown} />
-                            <span>{currentCartItem ? (locale === 'ar' ? `إضافة (${currentCartItem.quantity})` : `Add (${currentCartItem.quantity})`) : (locale === 'ar' ? 'أضف للسلة' : 'Add to Cart')}</span>
-                        </button>
+                        <>
+                            {/* Standard Add to Cart Main Button */}
+                            <button 
+                                onClick={(e) => handleAddToCart(e, product)} 
+                                type="button"
+                                style={{
+                                    flex: 1,
+                                    background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    padding: '10px 14px',
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    boxShadow: '0 2px 8px rgba(76,175,80,0.3)',
+                                    position: 'relative',
+                                    zIndex: 10,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '6px'
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faCartArrowDown} />
+                                <span>{currentCartItem ? (locale === 'ar' ? `إضافة (${currentCartItem.quantity})` : `Add (${currentCartItem.quantity})`) : (locale === 'ar' ? 'أضف للسلة' : 'Add to Cart')}</span>
+                            </button>
+                            {/* Bottom Heart Button */}
+                            <button 
+                                onClick={handleToggleFav}
+                                type="button"
+                                title={isFav ? "Remove Favorite" : "Add Favorite"}
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    border: isFav ? '1px solid #ff6b6b' : '1px solid #e2e8f0',
+                                    borderRadius: '6px',
+                                    background: isFav ? '#fff5f5' : '#ffffff',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    flexShrink: 0,
+                                    boxShadow: '0 2px 5px rgba(0,0,0,0.04)'
+                                }}
+                            >
+                                <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: '#ff5252', fontSize: '16px' }} />
+                            </button>
+                        </>
                     )}
-
-                    {/* Bottom Heart Button in Same Row */}
-                    <button 
-                        onClick={handleToggleFav}
-                        type="button"
-                        title={isFav ? "Remove Favorite" : "Add Favorite"}
-                        style={{
-                            width: '40px',
-                            height: '40px',
-                            border: isFav ? '1px solid #ff6b6b' : '1px solid #e2e8f0',
-                            borderRadius: '6px',
-                            background: isFav ? '#fff5f5' : '#ffffff',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                            flexShrink: 0,
-                            boxShadow: '0 2px 5px rgba(0,0,0,0.04)'
-                        }}
-                    >
-                        <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: '#ff5252', fontSize: '16px' }} />
-                    </button>
                 </div>
             </div>
         </div>

@@ -18,9 +18,9 @@ export default function SidebarItem({ item, isExpanded, onToggle }: SidebarItemP
   const pathname = usePathname();
   const { lang, translate } = useLang();
   
+  const currentLang = (pathname && pathname.startsWith('/ar')) ? 'ar' : (lang || 'en');
+
   // A helper function to translate the label key. 
-  // You might need to adjust this depending on how deep your dictionary is.
-  // Assuming keys are passed directly like "dashboard.sidebar.products" or just fallbacks to English strings.
   const SIDEBAR_TRANSLATIONS: Record<string, { en: string; ar: string }> = {
     "Global Overview": { en: "Global Overview", ar: "لوحة التحكم الرئيسية" },
     "Ecommerce": { en: "Ecommerce", ar: "التجارة الإلكترونية" },
@@ -47,7 +47,7 @@ export default function SidebarItem({ item, isExpanded, onToggle }: SidebarItemP
 
   const getTranslatedLabel = (key: string) => {
     if (SIDEBAR_TRANSLATIONS[key]) {
-      return SIDEBAR_TRANSLATIONS[key][lang] || SIDEBAR_TRANSLATIONS[key]['en'];
+      return SIDEBAR_TRANSLATIONS[key][currentLang] || SIDEBAR_TRANSLATIONS[key]['en'];
     }
     try {
       const parts = key.split('.');
@@ -68,8 +68,8 @@ export default function SidebarItem({ item, isExpanded, onToggle }: SidebarItemP
   const hasChildren = item.children && item.children.length > 0;
   
   // Check if any child is active to keep the accordion open
-  const isChildActive = hasChildren && item.children!.some(child => pathname.startsWith(`/${lang}${child.href}`));
-  const isDirectActive = !hasChildren && pathname === `/${lang}${item.href}`;
+  const isChildActive = hasChildren && item.children!.some(child => pathname.startsWith(`/${currentLang}${child.href}`));
+  const isDirectActive = !hasChildren && pathname === `/${currentLang}${item.href}`;
   const isActive = isDirectActive || isChildActive;
 
   // Auto-expand if a child is active initially
@@ -98,11 +98,11 @@ export default function SidebarItem({ item, isExpanded, onToggle }: SidebarItemP
         {isExpanded && (
           <div className="nav-sub-menu" style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '5px', marginTop: '5px' }}>
             {item.children!.map((child) => {
-              const isChildDirectActive = pathname === `/${lang}${child.href}`;
+              const isChildDirectActive = pathname === `/${currentLang}${child.href}`;
               return (
                 <Link 
                   key={child.href} 
-                  href={`/${lang}${child.href}`}
+                  href={`/${currentLang}${child.href}`}
                   className={`nav-link sub-link ${isChildDirectActive ? 'active' : ''}`}
                   style={{ fontSize: '0.9em', padding: '8px 10px' }}
                 >
@@ -119,7 +119,7 @@ export default function SidebarItem({ item, isExpanded, onToggle }: SidebarItemP
 
   return (
     <Link 
-      href={`/${lang}${item.href}`}
+      href={`/${currentLang}${item.href}`}
       className={`nav-link ${isActive ? 'active' : ''}`}
     >
       <FontAwesomeIcon icon={item.icon} />

@@ -12,6 +12,8 @@ export default function DashboardHeader() {
   const { lang, setLang, translate } = useLang();
   const router = useRouter();
   const pathname = usePathname();
+  const currentLang = (pathname && pathname.startsWith('/ar')) ? 'ar' : (lang || 'en');
+  const isAr = currentLang === 'ar';
 
   const handleLangChange = (newLang: string) => {
     const segments = pathname.split('/');
@@ -25,12 +27,12 @@ export default function DashboardHeader() {
     <header className="dashboard-header">
       <div className="header-search">
         <FontAwesomeIcon icon={faSearch} />
-        <input type="text" placeholder={translate(dictionaries.dashboard.header.searchPlaceholder)} />
+        <input type="text" placeholder={isAr ? 'ابحث في لوحة التحكم...' : translate(dictionaries.dashboard.header.searchPlaceholder)} />
       </div>
 
       <div className="header-actions">
         <select
-          value={lang}
+          value={currentLang}
           onChange={(e) => handleLangChange(e.target.value)}
           style={{
             padding: '0.5rem',

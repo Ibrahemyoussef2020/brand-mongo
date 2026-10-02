@@ -13,7 +13,7 @@ import UserMenu from "./UserMenu"
 import { useLang } from "@/context/LangContext"
 
 
-import { useRouter, usePathname } from "next/navigation"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
 import { dictionaries } from "@/lib/dictionaries"
 import { useState } from "react"
@@ -26,6 +26,7 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
   const { lang, setLang, translate } = useLang(); 
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [country, setCountry] = useState<string>('1');
 
 
@@ -43,9 +44,15 @@ const Header = ({page='results',heading='Show Categories'}:props) => {
 ];
 
   const handleLangChange = (newLang: string) => {
+    if (!pathname) return;
     const segments = pathname.split('/');
-    segments[1] = newLang;
-    const newPathname = segments.join('/') || `/${newLang}`;
+    if (segments[1] === 'ar' || segments[1] === 'en') {
+      segments[1] = newLang;
+    } else {
+      segments.splice(1, 0, newLang);
+    }
+    const queryString = searchParams?.toString() ? `?${searchParams.toString()}` : '';
+    const newPathname = `${segments.join('/') || `/${newLang}`}${queryString}`;
     router.push(newPathname);
     setLang(newLang as any);
   };

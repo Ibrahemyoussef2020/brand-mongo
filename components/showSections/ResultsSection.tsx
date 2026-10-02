@@ -25,7 +25,7 @@ interface props{
 }
 
 const ResultsSection = ({products,section,maxCountProducts,currentPage = 1,handleFilter,loading}:props) => {
-  const { translate } = useLang();
+  const { translate, lang } = useLang();
 
 
   if (loading) {
@@ -73,14 +73,14 @@ const ResultsSection = ({products,section,maxCountProducts,currentPage = 1,handl
                                 </div>
 
                                 <div className="ratings-else">
-                                    <ProductRating avgRating={+product.avgRating} />.
+                                    <ProductRating avgRating={+product.avgRating} />
                                     <span>{product.avgRating}.0</span>
                                     <span className="orders in-list">{product.price.toString().slice(0,3)} {translate(dictionaries.orderResults.orders)}</span>
                                     {product.free_delivery ? <span className="shipping in-list">{translate(dictionaries.orderResults.freeShipping)}</span> : 
                                     
                                     <span className="shipping in-list">{translate(dictionaries.orderResults.plusDelivery)}</span>
                                     }
-                                    <Link href={`/itemDetails/${section}/${product.static_id}`} className="mobile-details in-list">
+                                    <Link href={`/${lang}/itemDetails/${section}/${product.static_id}`} className="mobile-details in-list">
                                         {translate(dictionaries.orderResults.viewDetails)}       
                                     </Link>
                                 </div>
@@ -108,7 +108,7 @@ const ResultsSection = ({products,section,maxCountProducts,currentPage = 1,handl
                         </p>
 
 
-                        <Link href={`/itemDetails/${section}/${product.static_id}`} className="details in-list">
+                        <Link href={`/${lang}/itemDetails/${section}/${product.static_id}`} className="details in-list">
                             {translate(dictionaries.orderResults.viewDetails)}       
                         </Link>
 

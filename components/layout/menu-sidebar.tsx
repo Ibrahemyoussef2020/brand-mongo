@@ -10,7 +10,7 @@ import { AppDispatch, IRootState } from "@/redux/store";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useLang } from "@/context/LangContext";
 import { dictionaries } from "@/lib/dictionaries";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 
@@ -22,11 +22,18 @@ const MenuSidebar = () => {
   const { lang, setLang, translate } = useLang();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const handleLangChange = (newLang: string) => {
+    if (!pathname) return;
     const segments = pathname.split('/');
-    segments[1] = newLang;
-    const newPathname = segments.join('/') || `/${newLang}`;
+    if (segments[1] === 'ar' || segments[1] === 'en') {
+      segments[1] = newLang;
+    } else {
+      segments.splice(1, 0, newLang);
+    }
+    const queryString = searchParams?.toString() ? `?${searchParams.toString()}` : '';
+    const newPathname = `${segments.join('/') || `/${newLang}`}${queryString}`;
     router.push(newPathname);
     setLang(newLang as any);
     handleClose();

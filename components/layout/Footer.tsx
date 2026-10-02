@@ -4,9 +4,27 @@ import Image from "next/image"
 import Link from "next/link"
 import { useLang } from "@/context/LangContext"
 import { dictionaries } from "@/lib/dictionaries"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
 const Footer = () => {
-  const { translate, lang ,setLang } = useLang();
+  const { translate, lang, setLang } = useLang();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const handleLangChange = (newLang: string) => {
+    if (!pathname) return;
+    const segments = pathname.split('/');
+    if (segments[1] === 'ar' || segments[1] === 'en') {
+      segments[1] = newLang;
+    } else {
+      segments.splice(1, 0, newLang);
+    }
+    const queryString = searchParams?.toString() ? `?${searchParams.toString()}` : '';
+    const newPathname = `${segments.join('/') || `/${newLang}`}${queryString}`;
+    router.push(newPathname);
+    setLang(newLang as any);
+  };
 
   return (
     <footer>
@@ -140,7 +158,7 @@ const Footer = () => {
               width={24} 
             />
             <span>{translate(lang === 'en' ? dictionaries.languages.english : dictionaries.languages.arabic)}</span>
-            <select value={lang} onChange={(e) => setLang(e.target.value as 'en' | 'ar')}>
+            <select value={lang} onChange={(e) => handleLangChange(e.target.value)}>
               <option value="en">{translate(dictionaries.languages.english)}</option>
               <option value="ar">{translate(dictionaries.languages.arabic)}</option>
             </select>

@@ -30,6 +30,8 @@
     margin-bottom: 10px;
     border-radius: 6px;
     background: #fff;
+    position: relative;
+    min-height: 180px;
 
     @include min-width($small_size){
         gap: 2px;
@@ -93,7 +95,7 @@
                 .current{
                     font-size:20px;
                     font-weight: 800;
-                    margin-right: 8px;
+                    margin-inline-end: 8px;
 
                     @include min-max-width(0,$small_size){
                         font-size:16px;
@@ -115,15 +117,13 @@
     
             .ratings-else{
                 display: flex;
+                align-items: center;
                 flex-wrap: wrap;
+                gap: 12px;
                 margin-bottom: 12px;
                 min-width: 250px;
 
                 > *:first-child{
-                    margin-right: 6px;
-                    
-                    
-                
                     .fill{
                         color: #FF9017;
                     }
@@ -134,19 +134,12 @@
 
                 > *:nth-child(2){
                     color: #FF9017;
-                    font-weight: 400;
-                    margin-right: 27px;
+                    font-weight: 500;
                 }
 
                 > *:nth-child(3){
                     color: $gray_500;
                     font-weight: 500;
-                    margin-right: 8px;
-                    margin-bottom: 9px;
-
-                    @include min-width(400px){
-                        margin-right: 24px;
-                    }
                 }
 
                 > *:nth-child(4){
@@ -155,20 +148,16 @@
 
                     @include min-max-width(0,$small_size){
                         min-width:100px;
-                        margin-right: 20px;
                     }
-
                 }
 
                 .mobile-details{
                     color: #0D6EFD;
                     font-weight: 600;
-                    margin-right: 20px;
 
                     @include min-width($small_size){
                         display: none;
                     }
-            
                 }
             }
         }
@@ -178,23 +167,32 @@
         /// 
         
         .left{
+            position: absolute;
+            top: 20px;
+            inset-inline-end: 20px;
+            z-index: 2;
+
             .add-fav{
                 width: 40px;
                 height: 40px;
                 border: 1px solid $gray_300;
-                border-radius: 2px;
+                border-radius: 6px;
+                background: #fff;
+                cursor: pointer;
+                transition: all 0.2s ease;
 
-                display: none;
+                display: flex;
                 align-items: center;
                 justify-content: center;
+
+                &:hover {
+                    border-color: $primary;
+                    background: #f8fafc;
+                }
 
                 svg{
                     color: $primary;
                     font-size: 1.2rem;
-                }
-
-                @include min-width(450px){
-                    display: flex;
                 }
             }
         }

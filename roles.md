@@ -200,3 +200,4 @@ emails
 1- superadmin@brand.com password superadmin@brand.com
 2- user1@brand.com password superadmin@brand.com
 3- seller1@brand.com password seller1@brand.com
+4- admin1@brand.com password admin1@brand.com

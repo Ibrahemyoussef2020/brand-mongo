@@ -33,6 +33,12 @@ const accounts = [
     passwordPlain: 'seller1@brand.com',
     role: 'seller',
   },
+  {
+    name: 'Admin 1',
+    email: 'admin1@brand.com',
+    passwordPlain: 'admin1@brand.com',
+    role: 'admin',
+  },
 ];
 
 async function seed() {
@@ -62,7 +68,7 @@ async function seed() {
     console.log(`[OK] Seeded account: ${acc.email} | Role: ${acc.role} | ID: ${updatedUser._id}`);
   }
 
-  console.log('\nAll 3 accounts seeded successfully!');
+  console.log('\nAll accounts seeded successfully!');
   await mongoose.disconnect();
   process.exit(0);
 }

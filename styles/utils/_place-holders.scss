@@ -2,14 +2,15 @@
 @import './vars.scss';
 
 %search-bar{
-    width: 665px;
+    width: 440px;
+    max-width: 100%;
     height: 40px;
     border: 2px solid $primary !important;
     border-radius: 7px;
     display: flex; 
-    margin: 0 1.5rem 0 .5rem;
+    margin: 0 1rem 0 .5rem;
     @include min-width($large_size){
-        margin: 0 2.5rem 0 .5rem;
+        margin: 0 1.5rem 0 .5rem;
     }
     
     .search_input_wrapper{

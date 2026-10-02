@@ -24,8 +24,8 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
     const currentSubtitle = subtitleObj[lang] || subtitleObj.en || '';
 
     const { endAt, badgeText } = section.config || {};
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState(section.products || []);
+    const [loading, setLoading] = useState(!section.products || section.products.length === 0);
 
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
@@ -34,14 +34,18 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
         seconds: 0
     });
 
-    // Fetch deal offers data
+    // Fetch deal offers data ONLY if not already provided by server
     useEffect(() => {
+        if (section.products && section.products.length > 0) {
+            setProducts(section.products);
+            setLoading(false);
+            return;
+        }
+
         const fetchDealOffers = async () => {
-            console.log('Fetching deal offers for DealOffersSection...');
             try {
                 const response = await fetch('/api/deal-offers-direct');
                 const data = await response.json();
-                console.log('Deal offers data received:', data);
                 setProducts(data.data || []);
                 setLoading(false);
             } catch (error) {
@@ -51,7 +55,7 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
         };
 
         fetchDealOffers();
-    }, []);
+    }, [section.products]);
 
     useEffect(() => {
         if (!endAt) return;

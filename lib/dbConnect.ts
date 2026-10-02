@@ -31,13 +31,22 @@ async function dbConnect() {
   try {
     if (!cached.promise) {
       console.log('Initializing new MongoDB Connection Pool...');
+      // Connection options tuned for high throughput and fast failure recovery
+      const connectionOptions: mongoose.ConnectOptions = {
+        bufferCommands: process.env.NODE_ENV === 'development',
+        maxPoolSize: 20,
+        minPoolSize: 5,
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000,
+        family: 4, // Use IPv4, skip IPv6 DNS lookup latency
+      };
+
       // Prefer direct connection URI if provided to avoid SRV DNS issues
       if (process.env.MONGODB_URI_DIRECT) {
         const directUriMasked = process.env.MONGODB_URI_DIRECT.replace(/:[^@]+@/, ':***@');
         console.log(`Using direct MongoDB URI (masked): ${directUriMasked}`);
         cached.promise = mongoose.connect(process.env.MONGODB_URI_DIRECT, {
-          bufferCommands: true,
-          maxPoolSize: 10,
+          ...connectionOptions,
           serverSelectionTimeoutMS: 15000,
         }).then(() => {
           console.log('✓ MongoDB connected successfully via direct connection');
@@ -50,12 +59,8 @@ async function dbConnect() {
         // Fallback to SRV connection
         const uriMasked = process.env.MONGODB_URI?.replace(/:[^@]+@/, ':***@') || 'MISSING';
         console.log(`Connection URI (masked): ${uriMasked}`);
-        console.log('Server Selection Timeout: 5000ms, Buffer Commands: true');
-        cached.promise = mongoose.connect(process.env.MONGODB_URI, {
-          bufferCommands: true,
-          maxPoolSize: 10,
-          serverSelectionTimeoutMS: 5000,
-        }).then(() => {
+        console.log('Server Selection Timeout: 5000ms');
+        cached.promise = mongoose.connect(process.env.MONGODB_URI, connectionOptions).then(() => {
           console.log('✓ MongoDB connected successfully via SRV');
           return mongoose;
         }).catch((srvError: any) => {

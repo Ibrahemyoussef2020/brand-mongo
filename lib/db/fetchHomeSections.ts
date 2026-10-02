@@ -1,6 +1,7 @@
 import { HomeSectionType } from '@/lib/constants/homeSectionTypes';
+import { unstable_cache } from 'next/cache';
 
-export const getHomeSections = async () => {
+const fetchHomeSectionsData = async () => {
   try {
     if (process.env.BUILD_TIME === 'true') {
       return [];
@@ -10,7 +11,7 @@ export const getHomeSections = async () => {
     let sections = [];
 
     // 1. Home Cover
-    sections.push({ key: 'static-home-cover', type: 'STATIC_HOME_COVER', sortOrder: 1 });
+    sections.push({ key: 'static-home-cover', type: 'STATIC_HOME_COVER', sortOrder: 1, products: [] });
 
     // 2. Consumer Electronics (GRID_SECTION)
     const homeConsumer = products.filter((p: any) => typeof p.static_id === 'string' && p.static_id.startsWith('consumer-'));
@@ -21,7 +22,7 @@ export const getHomeSections = async () => {
         title: { en: 'Home Consumer', ar: ' products for home' },
         sortOrder: 2,
         config: { displayType: 'two-line', actionButtonType: 'show-details', layout: { columns: 5 } },
-        products: []
+        products: homeConsumer
       });
     }
 
@@ -34,12 +35,12 @@ export const getHomeSections = async () => {
         title: { en: 'Home Outdoor', ar: ' outdoor products' },
         sortOrder: 3,
         config: { displayType: 'one-line', actionButtonType: 'add-to-fav', layout: { columns: 5 } },
-        products: []
+        products: homeOutdoor
       });
     }
 
     // 4. Easy Request
-    sections.push({ key: 'static-easy-request', type: 'STATIC_EASY_REQUEST', sortOrder: 4 });
+    sections.push({ key: 'static-easy-request', type: 'STATIC_EASY_REQUEST', sortOrder: 4, products: [] });
 
     // 5. Recommended Items (GRID_SECTION)
     const recommendedItems = products.filter((p: any) => p.to_home === true);
@@ -50,7 +51,7 @@ export const getHomeSections = async () => {
         title: { en: 'Recommended Items', ar: ' موصى به' },
         sortOrder: 5,
         config: { displayType: 'grid', actionButtonType: 'add-to-cart', layout: { columns: 5 } },
-        products: []
+        products: recommendedItems.slice(0, 10)
       });
     }
 
@@ -63,33 +64,30 @@ export const getHomeSections = async () => {
         title: { en: 'Deal Offers', ar: ' عروض خاصة' },
         sortOrder: 6,
         config: { displayType: 'deal-slider', actionButtonType: 'show-details', showTimer: true, endAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() },
-        products: []
+        products: dealOffers
       });
     }
 
     // 7. Recommended Items 2 (GRID_SECTION)
-    if (recommendedItems.length > 0) {
+    if (recommendedItems.length > 10) {
       sections.push({
         key: 'recommended-items-2',
         type: 'GRID_SECTION',
         title: { en: 'More Recommended Items', ar: 'المزيد من الموصى به' },
         sortOrder: 7,
         config: { displayType: 'grid', actionButtonType: 'add-to-cart', layout: { columns: 5 } },
-        products: []
+        products: recommendedItems.slice(10, 20)
       });
     }
 
     // 8. Subscribe
-    sections.push({ key: 'static-subscribe', type: 'STATIC_SUBSCRIBE', sortOrder: 8 });
+    sections.push({ key: 'static-subscribe', type: 'STATIC_SUBSCRIBE', sortOrder: 8, products: [] });
 
     // 9. Suppliers
-    sections.push({ key: 'static-suppliers', type: 'STATIC_SUPPLIERS', sortOrder: 9 });
+    sections.push({ key: 'static-suppliers', type: 'STATIC_SUPPLIERS', sortOrder: 9, products: [] });
 
     // 10. Extra Services
-    sections.push({ key: 'static-extra-services', type: 'STATIC_EXTRA_SERVICES', sortOrder: 10 });
-
-
-
+    sections.push({ key: 'static-extra-services', type: 'STATIC_EXTRA_SERVICES', sortOrder: 10, products: [] });
 
     sections.sort((a, b) => a.sortOrder - b.sortOrder);
     return sections;
@@ -98,3 +96,10 @@ export const getHomeSections = async () => {
     return [];
   }
 };
+
+export const getHomeSections = unstable_cache(
+  fetchHomeSectionsData,
+  ['home-sections-payload'],
+  { revalidate: 120, tags: ['home-sections'] }
+);
+

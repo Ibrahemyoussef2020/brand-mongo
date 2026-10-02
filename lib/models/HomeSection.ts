@@ -74,6 +74,10 @@ const HomeSectionSchema = new Schema<IHomeSection>(
   }
 );
 
+// Indexes for fast lookup & sorted retrieval
+HomeSectionSchema.index({ enabled: 1, order: 1 });
+HomeSectionSchema.index({ status: 1, enabled: 1 });
+
 export const HomeSection: Model<IHomeSection> =
   mongoose.models.HomeSection ||
   mongoose.model<IHomeSection>('HomeSection', HomeSectionSchema);

@@ -31,7 +31,12 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
 
     // Fetch data if products array is empty
     useEffect(() => {
-        if (section.products && section.products.length === 0) {
+        if (section.products && section.products.length > 0) {
+            setProducts(section.products);
+            return;
+        }
+
+        if (!products || products.length === 0) {
             const fetchProducts = async () => {
                 setLoading(true);
                 try {
@@ -45,7 +50,6 @@ const GridSection = ({ section, locale }: GridSectionProps) => {
                     }
 
                     if (apiUrl) {
-                        console.log(`Fetching ${section.key} data...`);
                         const response = await fetch(apiUrl);
                         const data = await response.json();
                         setProducts(data.data || []);

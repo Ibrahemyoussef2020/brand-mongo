@@ -104,6 +104,8 @@ ProductSchema.index({ price: 1 });
 ProductSchema.index({ avgRating: 1 });
 // Compound: category + price is the most common combined filter pattern
 ProductSchema.index({ 'category.en': 1, price: 1 });
+// to_home: used in homepage recommended products
+ProductSchema.index({ to_home: 1, createdAt: -1 });
 
 const ProductModel =
   mongoose.models?.Product || mongoose.model('Product', ProductSchema)

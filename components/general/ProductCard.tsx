@@ -126,7 +126,11 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     </div>
                 )}
                 
-                {/* Floating Absolute Icon: Cart for blue button cards, Fav for red/default cards */}
+                {/* Floating Absolute Icon: 
+                    - Blue button cards (show-details) -> Cart icon
+                    - Red button cards (add-to-fav) -> Fav Heart icon
+                    - Green button cards (add-to-cart) -> Show Details (Eye icon)
+                */}
                 {config.actionButtonType === 'show-details' ? (
                     <button 
                         onClick={(e) => handleAddToCart(e, product)} 
@@ -172,7 +176,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                             </span>
                         )}
                     </button>
-                ) : (
+                ) : config.actionButtonType === 'add-to-fav' ? (
                     <button 
                         onClick={handleToggleFav} 
                         type="button"
@@ -197,6 +201,31 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                     >
                         <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} style={{ color: isFav ? 'white' : '#ff5252', fontSize: '17px' }} />
                     </button>
+                ) : (
+                    <Link 
+                        href={`/${locale}/itemDetails/${product.category?.en || sectionKey}/${product.static_id}`}
+                        title={locale === 'ar' ? "عرض التفاصيل" : "Show Details"}
+                        style={{
+                            position: 'absolute',
+                            top: '12px',
+                            insetInlineEnd: '12px',
+                            background: 'rgba(255,255,255,0.95)',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '36px',
+                            height: '36px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            zIndex: 10,
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                            transition: 'all 0.3s ease',
+                            textDecoration: 'none'
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faEye} style={{ color: '#0D6EFD', fontSize: '16px' }} />
+                    </Link>
                 )}
             </div>
             
@@ -370,7 +399,7 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                         </>
                     ) : config.actionButtonType === 'add-to-fav' ? (
                         <>
-                            {/* Red Favorite Main Button */}
+                            {/* Red Favorite Main Button (Text Only) */}
                             <button 
                                 onClick={handleToggleFav}
                                 type="button"
@@ -393,10 +422,9 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    gap: '6px'
+                                    textAlign: 'center'
                                 }}
                             >
-                                <FontAwesomeIcon icon={isFav ? faHeartSolid : faHeart} />
                                 <span>{isFav ? (locale === 'ar' ? 'في المفضلة' : 'Favorited') : (locale === 'ar' ? 'أضف للمفضلة' : 'Add to Wishlist')}</span>
                             </button>
                             {/* Bottom Cart Side Button */}

@@ -128,11 +128,51 @@
     }
 
 
-    /// product
-    /// 
-
     .product {
+        flex: 1;
+        min-width: 0;
         overflow: hidden;
+
+        .deals-scroll-x {
+            display: flex;
+            gap: 18px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 8px 6px 14px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+
+            &::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: #f1f5f9;
+                border-radius: 10px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #cbd5e1;
+                border-radius: 10px;
+                &:hover {
+                    background: #94a3b8;
+                }
+            }
+
+            .deal-card-item {
+                flex: 0 0 310px;
+                min-width: 290px;
+                max-width: 330px;
+                scroll-snap-align: start;
+
+                @include min-max-width(0, $small_size) {
+                    flex: 0 0 280px;
+                    min-width: 260px;
+                }
+            }
+        }
 
         .offers-swiper {
             .swiper-slide {

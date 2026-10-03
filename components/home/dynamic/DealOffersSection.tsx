@@ -120,28 +120,15 @@ const DealOffersSection = ({ section }: DealOffersSectionProps) => {
                     )}
                 </div>
                 <div className='product'>
-                    <div className="offers-swiper">
-                        <div className="container" style={{ padding: 0 }}>
-                            <Swiper
-                                slidesPerView={1}
-                                spaceBetween={20}
-                                loop={false}
-                                className="wraper-center"
-                                breakpoints={{
-                                    768: { slidesPerView: 2, spaceBetween: 25 },
-                                    1200: { slidesPerView: 3, spaceBetween: 30 }
-                                }}
-                            >
-                                {products.map((product: any, idx: number) => (
-                                    <SwiperSlide key={product._id + product.static_id} style={{ height: 'auto', display: 'flex' }}>
-                                        <DealCard
-                                            product={product}
-                                            locale={lang as any}
-                                        />
-                                    </SwiperSlide>
-                                ))}
-                            </Swiper>
-                        </div>
+                    <div className="deals-scroll-x">
+                        {products.map((product: any, idx: number) => (
+                            <div key={`${product._id || product.static_id || idx}-${idx}`} className="deal-card-item">
+                                <DealCard
+                                    product={product}
+                                    locale={lang as any}
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

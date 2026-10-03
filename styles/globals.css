@@ -1204,8 +1204,49 @@ select {
 }
 
 .home-offers .product {
-  border-inline-start: 1px solid #ccc;
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
+}
+
+.home-offers .product .deals-scroll-x {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 6px 14px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.home-offers .product .deals-scroll-x::-webkit-scrollbar {
+  height: 6px;
+}
+
+.home-offers .product .deals-scroll-x::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.home-offers .product .deals-scroll-x::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.home-offers .product .deals-scroll-x .deal-card-item {
+  flex: 0 0 310px;
+  min-width: 290px;
+  max-width: 330px;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 570px) {
+  .home-offers .product .deals-scroll-x .deal-card-item {
+    flex: 0 0 280px;
+    min-width: 260px;
+  }
 }
 
 .home-offers .product .offers-swiper .swiper-slide {

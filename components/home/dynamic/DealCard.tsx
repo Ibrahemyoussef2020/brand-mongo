@@ -102,7 +102,7 @@ const DealCard = ({ product, locale }: DealCardProps) => {
                     <div style={{
                         position: 'absolute',
                         top: '12px',
-                        left: '12px',
+                        insetInlineStart: '12px',
                         background: 'linear-gradient(135deg, #ff6b6b, #ff5252)',
                         color: 'white',
                         padding: '4px 10px',

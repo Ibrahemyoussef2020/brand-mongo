@@ -109,8 +109,8 @@ const ProductCard = ({ product, locale, sectionKey = 'items', config = {}, index
                 {product.discount && (
                     <div style={{
                         position: 'absolute',
-                        top: '15px',
-                        left: '15px',
+                        top: '12px',
+                        insetInlineStart: '12px',
                         background: 'linear-gradient(135deg, #ff6b6b, #ff5252)',
                         color: 'white',
                         padding: '6px 12px',
